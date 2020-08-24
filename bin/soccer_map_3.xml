@@ -17,7 +17,7 @@
 		<Y>6600.13281</Y>
 		<Z>355.359406</Z>
 	</ReferenceCoords>
-        <Placement>
+    <Placement>
 		<ModelHash>0x7a5f8915</ModelHash>
 		<Type>3</Type>
 		<Dynamic>false</Dynamic>

@@ -62,13 +62,6 @@ namespace GamemodesServer.Gamemodes
 
         private async Task OnTickHandleBall()
         {
-            if (m_ball.Owner == null)
-            {
-                Debug.WriteLine("aaa");
-
-                return;
-            }
-
             if (m_ball.Position.Z < 340f)
             {
                 await ResetBall();

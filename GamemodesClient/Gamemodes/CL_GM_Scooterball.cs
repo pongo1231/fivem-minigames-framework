@@ -53,14 +53,12 @@ namespace GamemodesClient.Gamemodes
         }
 
         [EventHandler("gamemodes:cl_sv_scooterball_stop")]
-        private void OnStop()
+        private async void OnStop()
         {
             m_running = false;
 
             Game.PlayerPed.IsInvincible = false;
             Game.PlayerPed.CanBeKnockedOffBike = true;
-
-            m_scooter.Entity?.Delete();
 
             BoostManager.DisableBoosting();
 
@@ -68,6 +66,12 @@ namespace GamemodesClient.Gamemodes
 
             API.ClearTimecycleModifier();
             API.ClearExtraTimecycleModifier();
+
+            Game.PlayerPed.Task.LeaveVehicle(LeaveVehicleFlags.WarpOut);
+
+            await Delay(200);
+
+            m_scooter.Entity?.Delete();
         }
 
         [EventHandler("gamemodes:cl_sv_scooterball_spawnedscooter")]

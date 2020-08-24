@@ -1,4 +1,4 @@
-fx_version "cerulean"
+fx_version "bodacious"
 games { "gta5" }
 
 author "pongo1231"
