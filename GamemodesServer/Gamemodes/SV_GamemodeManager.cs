@@ -57,7 +57,10 @@ namespace GamemodesServer
 
                 await s_curGamemode.OnStart();
 
-                Tick += s_curGamemode.OnTick;
+                foreach (Delegate gmTickFunc in s_curGamemode.GmTick.GetInvocationList())
+                {
+                    Tick += (Func<Task>)gmTickFunc;
+                }
 
                 TimerManager.SetTimer(s_curGamemode.TimerSeconds);
             }
@@ -67,15 +70,13 @@ namespace GamemodesServer
             }
             else
             {
-                long curTimestamp = API.GetGameTimer();
-
                 foreach (Player player in PlayerLoadStateManager.GetLoadedInPlayers())
                 {
                     if (!m_gamemodePlayers.Contains(player))
                     {
-                        _ = PlayerResponseAwaiter.AwaitResponse(player, $"gamemodes:cl_sv_{s_curGamemode.EventName}_start", "gamemodes:sv_cl_startedgamemode");
-
                         m_gamemodePlayers.Add(player);
+
+                        _ = PlayerResponseAwaiter.AwaitResponse(player, $"gamemodes:cl_sv_{s_curGamemode.EventName}_start", "gamemodes:sv_cl_startedgamemode");
                     }
                 }
 
@@ -95,7 +96,10 @@ namespace GamemodesServer
             s_stopGamemode = false;
             m_awaitingGamemodeStop = false;
 
-            Tick -= s_curGamemode.OnTick;
+            foreach (Func<Task> gmTickFunc in s_curGamemode.GmTick.GetInvocationList())
+            {
+                Tick -= gmTickFunc;
+            }
 
             TriggerEvent($"gamemodes:cl_sv_{s_curGamemode.EventName}_stop");
 

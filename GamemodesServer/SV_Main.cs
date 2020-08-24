@@ -8,7 +8,6 @@ namespace GamemodesServer
     public class Main : BaseScript
     {
         private List<Player> m_players = new List<Player>();
-        private static List<GmScript> s_playerListeners = new List<GmScript>();
 
         public Main()
         {

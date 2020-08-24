@@ -19,12 +19,6 @@ namespace GamemodesClient.Gamemodes
 
         private static readonly Vector3 s_ballSpawnPos = new Vector3(1498f, 6600f, 370f);
 
-        private static readonly Vector3 s_redGoalPos1 = new Vector3(1444f, 6623f, 355f);
-        private static readonly Vector3 s_redGoalPos2 = new Vector3(1440f, 6607f, 363f);
-
-        private static readonly Vector3 s_blueGoalPos1 = new Vector3(1557f, 6595f, 355f);
-        private static readonly Vector3 s_blueGoalPos2 = new Vector3(1556f, 6579f, 363f);
-
         private Text m_goalsText = new Text(null, new PointF(640f, 50f), 1.5f, Color.FromArgb(255, 255, 255), Font.Pricedown, Alignment.Center, true, true);
 
         public Scooterball()
@@ -203,18 +197,6 @@ namespace GamemodesClient.Gamemodes
                     blip.Color = TeamManager.TeamType == EPlayerTeamType.TEAM_RED ? BlipColor.Red : BlipColor.Blue;
                     blip.Name = "Ball";
                     API.ShowHeightOnBlip(blip.Handle, false);
-                }
-
-                if (API.NetworkIsHost())
-                {
-                    if (m_ball.Entity.IsInArea(s_redGoalPos1, s_redGoalPos2))
-                    {
-                        TriggerServerEvent("gamemodes:sv_cl_scooterball_bluegoal");
-                    }
-                    else if (m_ball.Entity.IsInArea(s_blueGoalPos1, s_blueGoalPos2))
-                    {
-                        TriggerServerEvent("gamemodes:sv_cl_scooterball_redgoal");
-                    }
                 }
             }
 

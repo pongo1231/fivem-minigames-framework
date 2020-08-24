@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using CitizenFX.Core;
+using System.Threading.Tasks;
 
 namespace GamemodesServer
 {
@@ -22,7 +23,7 @@ namespace GamemodesServer
         {
             if (s_secondsLeft > 0)
             {
-                --s_secondsLeft;
+                s_secondsLeft--;
             }
 
             TriggerClientEvent("gamemodes:cl_sv_updatetimer", s_secondsLeft);

@@ -7,88 +7,51 @@ using System.Threading.Tasks;
 
 namespace GamemodesServer
 {
-    public class PlayerResponseAwaiter : BaseScript
+    public class PlayerResponseAwaiter : GmScript
     {
-        private class PlayerResponseAwait
-        {
-            public PlayerResponseAwait(Player _player, string _serverClientEventName, string _clientServerEventName, params object[] _serverClientEventArgs)
-            {
-                Player = _player;
-                ServerClientEventName = _serverClientEventName;
-                ServerClientEventArgs = _serverClientEventArgs;
-                ClientServerEventName = _clientServerEventName;
-            }
-
-            public Player Player { get; private set; }
-            public string ServerClientEventName { get; private set; }
-            public object[] ServerClientEventArgs { get; private set; }
-            public string ClientServerEventName { get; private set; }
-            public long LastTimeStamp = API.GetGameTimer();
-
-            public delegate void Callback([FromSource]Player _player);
-            public Callback ResponseCallback;
-            public bool HasCompleted = false;
-        }
-
         private static PlayerResponseAwaiter s_instance;
-        private static List<PlayerResponseAwait> s_responseAwaits = new List<PlayerResponseAwait>();
 
         public PlayerResponseAwaiter()
         {
             s_instance = this;
-
-            Tick += OnTick;
-        }
-
-        private async Task OnTick()
-        {
-            long curTimeStamp = API.GetGameTimer();
-
-            foreach (PlayerResponseAwait responseAwait in s_responseAwaits)
-            {
-                if (responseAwait.LastTimeStamp < curTimeStamp - 1000)
-                {
-                    if (!Players.Contains(responseAwait.Player))
-                    {
-                        responseAwait.HasCompleted = true;
-                    }
-                    else
-                    {
-                        responseAwait.LastTimeStamp = curTimeStamp;
-
-                        responseAwait.Player.TriggerEvent(responseAwait.ServerClientEventName, responseAwait.ServerClientEventArgs);
-                    }
-                }
-            }
-
-            await Task.FromResult(0);
         }
 
         public static async Task AwaitResponse(Player _player, string _serverClientEventName, string _clientServerEventName, params object[] _serverClientEventArgs)
         {
-            PlayerResponseAwait responseAwait = new PlayerResponseAwait(_player, _serverClientEventName, _clientServerEventName, _serverClientEventArgs);
+            bool hasCompleted = false;
 
-            responseAwait.ResponseCallback = (Player player) =>
+            Action<Player> callback = new Action<Player>((Player player) =>
             {
                 Debug.WriteLine($"Got response for {_serverClientEventName}!");
 
-                responseAwait.HasCompleted = true;
+                hasCompleted = true;
+            });
 
-                s_instance.EventHandlers[_clientServerEventName] -= responseAwait.ResponseCallback;
-            };
-
-            s_responseAwaits.Add(responseAwait);
-
-            s_instance.EventHandlers[_clientServerEventName] += new Action<Player>(responseAwait.ResponseCallback);
+            s_instance.EventHandlers[_clientServerEventName] += callback;
 
             _player.TriggerEvent(_serverClientEventName, _serverClientEventArgs);
 
-            while (!responseAwait.HasCompleted)
+            long lastTimeStamp = API.GetGameTimer();
+            while (!hasCompleted)
             {
+                long curTimeStamp = API.GetGameTimer();
+
+                if (lastTimeStamp < curTimeStamp - 1000)
+                {
+                    if (!PlayerLoadStateManager.GetLoadedInPlayers().Contains(_player))
+                    {
+                        hasCompleted = true;
+                    }
+
+                    lastTimeStamp = curTimeStamp;
+
+                    _player.TriggerEvent(_serverClientEventName, _serverClientEventArgs);
+                }
+
                 await Delay(0);
             }
 
-            s_responseAwaits.Remove(responseAwait);
+            s_instance.EventHandlers[_clientServerEventName] -= callback;
         }
     }
 }

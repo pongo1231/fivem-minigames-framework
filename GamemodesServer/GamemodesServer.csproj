@@ -60,6 +60,7 @@
     <Compile Include="SV_GmScript.cs" />
     <Compile Include="SV_TeamManager.cs" />
     <Compile Include="SV_TimerManager.cs" />
+    <Compile Include="Utils\SV_MathUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GamemodesShared\GamemodesShared.csproj">

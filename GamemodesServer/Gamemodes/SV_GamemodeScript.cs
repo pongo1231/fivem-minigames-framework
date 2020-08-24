@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace GamemodesServer.Gamemodes
 {
@@ -19,7 +20,7 @@ namespace GamemodesServer.Gamemodes
 
         public abstract Task OnStart();
 
-        public abstract Task OnTick();
+        public Func<Task> GmTick;
 
         public abstract void OnTimerUp();
 
