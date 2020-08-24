@@ -1,10 +1,8 @@
-﻿using CitizenFX.Core;
-
-namespace Shared
+﻿namespace Shared
 {
     public struct GmProp
     {
-        public GmProp(string _propName, Vector3 _propPos, Vector3 _propRot, bool _propCollisions)
+        public GmProp(string _propName, dynamic _propPos, dynamic _propRot, bool _propCollisions)
         {
             PropName = _propName;
             PropPos = _propPos;
@@ -13,8 +11,8 @@ namespace Shared
         }
 
         public string PropName { get; private set; }
-        public Vector3 PropPos { get; private set; }
-        public Vector3 PropRot { get; private set; }
+        public dynamic PropPos { get; private set; }
+        public dynamic PropRot { get; private set; }
         public bool PropCollisions { get; private set; }
     }
 }

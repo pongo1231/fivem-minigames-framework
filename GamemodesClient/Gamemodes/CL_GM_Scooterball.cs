@@ -6,6 +6,7 @@ using GamemodesShared;
 using System;
 using System.Drawing;
 using System.Threading.Tasks;
+using Font = CitizenFX.Core.UI.Font;
 
 namespace GamemodesClient.Gamemodes
 {

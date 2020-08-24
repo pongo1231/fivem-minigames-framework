@@ -1,10 +1,9 @@
 ﻿using CitizenFX.Core;
 using CitizenFX.Core.Native;
-using System;
+using GamemodesShared;
+using Shared;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Shared;
-using GamemodesShared;
 using System.Xml;
 
 namespace GamemodesServer
