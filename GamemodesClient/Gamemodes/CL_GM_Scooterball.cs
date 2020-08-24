@@ -207,22 +207,13 @@ namespace GamemodesClient.Gamemodes
 
                 if (API.NetworkIsHost())
                 {
-                    if (m_ball.Entity.Position.Z < 340f)
-                    {
-                        ResetBall();
-                    }
-
                     if (m_ball.Entity.IsInArea(s_redGoalPos1, s_redGoalPos2))
                     {
                         TriggerServerEvent("gamemodes:sv_cl_scooterball_bluegoal");
-
-                        ResetBall();
                     }
                     else if (m_ball.Entity.IsInArea(s_blueGoalPos1, s_blueGoalPos2))
                     {
                         TriggerServerEvent("gamemodes:sv_cl_scooterball_redgoal");
-
-                        ResetBall();
                     }
                 }
             }
@@ -230,13 +221,12 @@ namespace GamemodesClient.Gamemodes
             await Task.FromResult(0);
         }
 
-        private void ResetBall()
+        [EventHandler("gamemodes:sv_cl_scooterball_resetball")]
+        private void OnResetBall()
         {
-            if (m_ball.Entity != null)
+            if (m_ball.Exists)
             {
                 m_ball.Entity.RequestControl();
-
-                TriggerServerEvent("gamemodes:sv_cl_scooterball_resetball");
 
                 m_ball.Entity.Position = s_ballSpawnPos;
                 m_ball.Entity.Velocity = new Vector3(0f, 0f, -5f);

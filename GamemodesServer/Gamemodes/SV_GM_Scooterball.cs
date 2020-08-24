@@ -30,12 +30,13 @@ namespace GamemodesServer.Gamemodes
         }
 
         [EventHandler("gamemodes:sv_cl_scooterball_bluegoal")]
-        private void OnBlueGoal()
+        private async void OnBlueGoal()
         {
             if (!m_scoredGoal)
             {
-                m_blueGoals++;
                 m_scoredGoal = true;
+
+                m_blueGoals++;
 
                 TriggerClientEvent("gamemodes:cl_sv_scooterball_goalscored", (int)EPlayerTeamType.TEAM_BLUE, m_ball.Position);
 
@@ -43,22 +44,31 @@ namespace GamemodesServer.Gamemodes
                 {
                     Stop();
                 }
+                else
+                {
+                    await ResetBall();
+                }
             }
         }
 
         [EventHandler("gamemodes:sv_cl_scooterball_redgoal")]
-        private void OnRedGoal()
+        private async void OnRedGoal()
         {
             if (!m_scoredGoal)
             {
-                m_redGoals++;
                 m_scoredGoal = true;
+
+                m_redGoals++;
 
                 TriggerClientEvent("gamemodes:cl_sv_scooterball_goalscored", (int)EPlayerTeamType.TEAM_RED, m_ball.Position);
 
                 if (TimerManager.InOvertime)
                 {
                     Stop();
+                }
+                else
+                {
+                    await ResetBall();
                 }
             }
         }
@@ -75,19 +85,16 @@ namespace GamemodesServer.Gamemodes
             _player.TriggerEvent("gamemodes:cl_sv_scooterball_spawnedscooter", scooter.NetworkId);
         }
 
-        [EventHandler("gamemodes:sv_cl_scooterball_resetball")]
-        private async void OnClientResetBall()
-        {
-            await Delay(1000);
-
-            m_scoredGoal = false;
-        }
-
         public override async Task OnTick()
         {
             TriggerClientEvent("gamemodes:cl_sv_scooterball_updatescores", m_blueGoals, m_redGoals);
 
             TriggerClientEvent("gamemodes:cl_sv_scooterball_setball", m_ball.NetworkId);
+
+            if (m_ball.Position.Z < 340f)
+            {
+                await ResetBall();
+            }
 
             await Delay(500);
         }
@@ -102,6 +109,15 @@ namespace GamemodesServer.Gamemodes
             {
                 Stop();
             }
+        }
+
+        private async Task ResetBall()
+        {
+            TriggerClientEvent("gamemodes:sv_cl_scooterball_resetball");
+
+            await Delay(1000);
+
+            m_scoredGoal = false;
         }
     }
 }
