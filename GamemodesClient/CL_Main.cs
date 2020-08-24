@@ -14,24 +14,26 @@ namespace GamemodesClient
         }
 
         [EventHandler("onClientResourceStart")]
-        private void OnClientResourceStart(string _resourceName)
+        private async void OnClientResourceStart(string _resourceName)
         {
             if (API.GetCurrentResourceName() != _resourceName)
             {
                 return;
             }
 
-            _ = ScreenUtils.FadeOut();
+            await ScreenUtils.FadeOut();
+
+            while (API.GetIsLoadingScreenActive())
+            {
+                await Delay(0);
+            }
+
+            TriggerServerEvent("gamemodes:sv_cl_loadedin");
         }
 
         private async Task OnTick()
         {
-            if (!API.GetIsLoadingScreenActive())
-            {
-                TriggerServerEvent("gamemodes:sv_cl_loadedin");
-            }
-
-            await Delay(500);
+            await Task.FromResult(0);
         }
     }
 }
