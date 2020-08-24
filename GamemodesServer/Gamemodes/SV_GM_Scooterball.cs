@@ -22,7 +22,7 @@ namespace GamemodesServer.Gamemodes
 
         public Scooterball() : base("Scooter Ball", "scooterball", 180)
         {
-            
+
         }
 
         public override async Task OnStart()
@@ -62,6 +62,13 @@ namespace GamemodesServer.Gamemodes
 
         private async Task OnTickHandleBall()
         {
+            if (m_ball.Owner == null)
+            {
+                Debug.WriteLine("aaa");
+
+                return;
+            }
+
             if (m_ball.Position.Z < 340f)
             {
                 await ResetBall();
@@ -78,7 +85,7 @@ namespace GamemodesServer.Gamemodes
                 }
             }
 
-            await Task.FromResult(0);
+            await Delay(200);
         }
 
         private async Task ScoreGoal(EPlayerTeamType _teamType)
@@ -102,11 +109,10 @@ namespace GamemodesServer.Gamemodes
                 {
                     Stop();
                 }
-            }
-
-            if (!TimerManager.InOvertime)
-            {
-                await ResetBall();
+                else
+                {
+                    await ResetBall();
+                }
             }
         }
 
@@ -124,6 +130,9 @@ namespace GamemodesServer.Gamemodes
 
         private async Task ResetBall()
         {
+            m_ball.Position = s_ballSpawnPos;
+            m_ball.Velocity = new Vector3(0f, 0f, -5f);
+
             TriggerClientEvent("gamemodes:sv_cl_scooterball_resetball");
 
             await Delay(1000);

@@ -47,7 +47,7 @@ namespace GamemodesServer
         {
             s_mapPlayers.Remove(_player);
 
-            PlayerSpawn playerSpawn = s_playerSpawns.Find(playerSpawn => playerSpawn.SpawnOccupiedBy == _player);
+            PlayerSpawn playerSpawn = s_playerSpawns.Find(_playerSpawn => _playerSpawn.SpawnOccupiedBy == _player);
             if (playerSpawn != null)
             {
                 playerSpawn.SpawnOccupiedBy = null;

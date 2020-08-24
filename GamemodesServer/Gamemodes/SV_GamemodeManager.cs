@@ -1,5 +1,4 @@
 ﻿using CitizenFX.Core;
-using CitizenFX.Core.Native;
 using GamemodesServer.Gamemodes;
 using System;
 using System.Collections.Generic;
@@ -12,7 +11,7 @@ namespace GamemodesServer
         private List<Player> m_gamemodePlayers = new List<Player>();
 
         private static List<GamemodeScript> s_registeredGamemodes = new List<GamemodeScript>();
-        private static GamemodeScript s_curGamemode;
+        private static GamemodeScript s_curGamemode = null;
         private static bool s_stopGamemode = false;
 
         private Random m_random = new Random();
@@ -23,7 +22,7 @@ namespace GamemodesServer
         {
             PlayerDropped += OnPlayerDropped;
 
-            Tick += OnTick;
+            Tick += OnGamemodeHandleTick;
         }
 
         private void OnPlayerDropped(Player _player)
@@ -31,7 +30,7 @@ namespace GamemodesServer
             m_gamemodePlayers.Remove(_player);
         }
 
-        public async Task OnTick()
+        public async Task OnGamemodeHandleTick()
         {
             if (PlayerLoadStateManager.GetLoadedInPlayers().Length == 0)
             {
@@ -57,9 +56,9 @@ namespace GamemodesServer
 
                 await s_curGamemode.OnStart();
 
-                foreach (Delegate gmTickFunc in s_curGamemode.GmTick.GetInvocationList())
+                foreach (Func<Task> tickFunc in s_curGamemode.GmTick.GetInvocationList())
                 {
-                    Tick += (Func<Task>)gmTickFunc;
+                    Tick += tickFunc;
                 }
 
                 TimerManager.SetTimer(s_curGamemode.TimerSeconds);
@@ -96,9 +95,9 @@ namespace GamemodesServer
             s_stopGamemode = false;
             m_awaitingGamemodeStop = false;
 
-            foreach (Func<Task> gmTickFunc in s_curGamemode.GmTick.GetInvocationList())
+            foreach (Func<Task> tickFunc in s_curGamemode.GmTick.GetInvocationList())
             {
-                Tick -= gmTickFunc;
+                Tick -= tickFunc;
             }
 
             TriggerEvent($"gamemodes:cl_sv_{s_curGamemode.EventName}_stop");
