@@ -1,4 +1,4 @@
-fx_version "bodacious"
+fx_version "adamant"
 games { "gta5" }
 
 author "pongo1231"

@@ -18,17 +18,9 @@ namespace GamemodesServer
                 MethodInfo = _methodInfo;
             }
 
-            public async Task Func()
-            {
-                if (TargetFunc != null)
-                {
-                    await TargetFunc();
-                }
-            }
-
             public Type Type { get; private set; }
             public MethodInfo MethodInfo { get; private set; }
-            public Func<Task> TargetFunc;
+            public Func<Task> TickFunc;
         }
 
         private List<Player> m_gamemodePlayers = new List<Player>();
@@ -51,8 +43,6 @@ namespace GamemodesServer
                 .SelectMany(type => type.GetMethods(BindingFlags.Instance | BindingFlags.NonPublic)).Where(method => method.GetCustomAttribute(typeof(GamemodeScript.GamemodeTick)) != null))
             {
                 WrapperTickFunc wrapperTickFunc = new WrapperTickFunc(methodInfo.DeclaringType, methodInfo);
-
-                Tick += wrapperTickFunc.Func;
 
                 m_registeredWrapperTickFuncs.Add(wrapperTickFunc);
             }
@@ -94,7 +84,9 @@ namespace GamemodesServer
                 {
                     Debug.WriteLine($"Registering gamemode tick function {wrapperTickFunc.MethodInfo.Name} for {wrapperTickFunc.Type.Name}");
 
-                    wrapperTickFunc.TargetFunc = (Func<Task>)Delegate.CreateDelegate(typeof(Func<Task>), s_curGamemode, wrapperTickFunc.MethodInfo);
+                    wrapperTickFunc.TickFunc = (Func<Task>)Delegate.CreateDelegate(typeof(Func<Task>), s_curGamemode, wrapperTickFunc.MethodInfo);
+
+                    Tick += wrapperTickFunc.TickFunc;
                 }
 
                 TimerManager.SetTimer(s_curGamemode.TimerSeconds);
@@ -135,7 +127,9 @@ namespace GamemodesServer
             {
                 Debug.WriteLine($"Unregistering gamemode tick function {wrapperTickFunc.MethodInfo.Name} for {wrapperTickFunc.Type.Name}");
 
-                wrapperTickFunc.TargetFunc = null;
+                Tick -= wrapperTickFunc.TickFunc;
+
+                wrapperTickFunc.TickFunc = null;
             }
 
             TriggerEvent($"gamemodes:cl_sv_{s_curGamemode.EventName}_stop");
