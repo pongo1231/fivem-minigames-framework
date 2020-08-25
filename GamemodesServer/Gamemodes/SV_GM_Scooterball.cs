@@ -48,7 +48,7 @@ namespace GamemodesServer.Gamemodes
             _player.TriggerEvent("gamemodes:cl_sv_scooterball_spawnedscooter", scooter.NetworkId);
         }
 
-        [GamemodeTickAttribute]
+        [GamemodeTick]
         private async Task OnTickSendEvents()
         {
             TriggerClientEvent("gamemodes:cl_sv_scooterball_updatescores", m_blueGoals, m_redGoals);
@@ -58,7 +58,7 @@ namespace GamemodesServer.Gamemodes
             await Delay(500);
         }
 
-        [GamemodeTickAttribute]
+        [GamemodeTick]
         private async Task OnTickHandleBall()
         {
             if (m_ball.Position.Z < 340f)
