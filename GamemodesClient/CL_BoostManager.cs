@@ -1,6 +1,7 @@
 ﻿using CitizenFX.Core;
 using CitizenFX.Core.Native;
 using CitizenFX.Core.UI;
+using GamemodesClient.Utils;
 using System;
 using System.Threading.Tasks;
 
@@ -21,7 +22,7 @@ namespace GamemodesClient
         }
 
         [Tick]
-        private async Task OnTick()
+        private async Task OnTickHandleBoost()
         {
             if (!s_boostVehicle.Exists)
             {
@@ -52,6 +53,10 @@ namespace GamemodesClient
 
                 //API.PlaySoundFrontend(-1, "FocusIn", "HintCamSounds", true);
                 API.PlaySoundFromEntity(-1, "CLOTHES_THROWN", s_boostVehicle.Entity.Handle, "RE_DOMESTIC_SOUNDSET", false, 0);
+
+                PtfxUtils.PlayPtfxOnEntity(s_boostVehicle.Entity, "scr_rcbarry2", "muz_clown", true, 0.2f, API.GetEntityBoneIndexByName(s_boostVehicle.Entity.Handle, "wheel_lr"));
+
+                PtfxUtils.PlayPtfxOnEntity(s_boostVehicle.Entity, "scr_rcbarry2", "muz_clown", true, 0.2f, API.GetEntityBoneIndexByName(s_boostVehicle.Entity.Handle, "wheel_rr"));
 
                 Screen.Effects.Start(ScreenEffect.RaceTurbo, 1000);
 

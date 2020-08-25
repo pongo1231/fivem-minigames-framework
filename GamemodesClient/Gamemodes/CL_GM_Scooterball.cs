@@ -158,7 +158,7 @@ namespace GamemodesClient.Gamemodes
             API.NetworkOverrideClockTime(12, 0, 0);
             API.SetWeatherTypeNowPersist("EXTRASUNNY");
 
-            API.SetGravityLevel(1);
+            //API.SetGravityLevel(1);
 
             m_goalsText.Draw();
 
@@ -175,7 +175,7 @@ namespace GamemodesClient.Gamemodes
 
             if (m_scooter.Exists)
             {
-                m_scooter.Entity.Gravity = 7.5f;
+                //m_scooter.Entity.Gravity = 7.5f;
 
                 if (m_scooter.Entity.Driver != Game.PlayerPed)
                 {
@@ -192,7 +192,7 @@ namespace GamemodesClient.Gamemodes
                     m_scooter.Entity.Velocity = vel;
                 }
 
-                if (m_scooter.Entity.Position.Z < 340f || m_scooter.Entity.IsDead || Game.IsControlJustPressed(1, Control.VehicleExit))
+                if (m_scooter.Entity.Position.Z < 340f || m_scooter.Entity.IsDead)
                 {
                     await ScreenUtils.FadeOut();
 
