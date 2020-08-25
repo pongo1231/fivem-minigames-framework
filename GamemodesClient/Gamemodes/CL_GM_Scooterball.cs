@@ -127,9 +127,22 @@ namespace GamemodesClient.Gamemodes
         [EventHandler("gamemodes:cl_sv_scooterball_goalscored")]
         private void OnGoalScored(int _teamType, Vector3 _scorePos)
         {
-            Function.Call(Hash.ADD_EXPLOSION, _scorePos.X, _scorePos.Y, _scorePos.Z, 63, 100f, true, true, 1f, true);
+            Function.Call(Hash.ADD_EXPLOSION, _scorePos.X, _scorePos.Y, _scorePos.Z, 63, 100f, true, true, 2f, true);
+
+            PtfxUtils.PlayPtfxAtPos(_scorePos, "scr_rcbarry2", "scr_clown_appears", false, 3f);
 
             Screen.ShowNotification((EPlayerTeamType)_teamType == EPlayerTeamType.TEAM_RED ? "~r~Red~w~ scored a goal!" : "~b~Blue~w~ scored a goal!");
+
+            if (m_ball.Exists)
+            {
+                m_ball.Entity.IsVisible = false;
+                m_ball.Entity.IsCollisionEnabled = false;
+
+                if (m_ball.Entity.AttachedBlip != null)
+                {
+                    m_ball.Entity.AttachedBlip.Alpha = 0;
+                }
+            }
         }
 
         [Tick]
@@ -193,9 +206,12 @@ namespace GamemodesClient.Gamemodes
 
             if (m_ball.Exists)
             {
-                Vector3 markerPos = m_ball.Entity.Position + new Vector3(0f, 0f, 5f);
-                Color markerColor = TeamManager.TeamType == EPlayerTeamType.TEAM_RED ? Color.FromArgb(255, 0, 0) : Color.FromArgb(0, 0, 255);
-                World.DrawMarker(MarkerType.UpsideDownCone, markerPos, default, default, new Vector3(2f, 2f, 2f), markerColor, true);
+                if (m_ball.Entity.IsVisible)
+                {
+                    Vector3 markerPos = m_ball.Entity.Position + new Vector3(0f, 0f, 5f);
+                    Color markerColor = TeamManager.TeamType == EPlayerTeamType.TEAM_RED ? Color.FromArgb(255, 0, 0) : Color.FromArgb(0, 0, 255);
+                    World.DrawMarker(MarkerType.UpsideDownCone, markerPos, default, default, new Vector3(2f, 2f, 2f), markerColor, true);
+                }
 
                 if (m_ball.Entity.AttachedBlip == null)
                 {
@@ -218,6 +234,13 @@ namespace GamemodesClient.Gamemodes
 
                 m_ball.Entity.Position = s_ballSpawnPos;
                 m_ball.Entity.Velocity = new Vector3(0f, 0f, -5f);
+                m_ball.Entity.IsVisible = true;
+                m_ball.Entity.IsCollisionEnabled = true;
+
+                if (m_ball.Entity.AttachedBlip != null)
+                {
+                    m_ball.Entity.AttachedBlip.Alpha = 255;
+                }
 
                 m_ball.Entity.FadeIn();
             }

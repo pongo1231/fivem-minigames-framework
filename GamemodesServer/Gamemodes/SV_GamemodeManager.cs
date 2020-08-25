@@ -1,12 +1,11 @@
 ﻿using CitizenFX.Core;
-using GamemodesServer.Gamemodes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace GamemodesServer
+namespace GamemodesServer.Gamemodes
 {
     public class GamemodeManager : GmScript
     {

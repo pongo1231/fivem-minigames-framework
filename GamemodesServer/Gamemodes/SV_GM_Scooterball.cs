@@ -1,4 +1,5 @@
 ﻿using CitizenFX.Core;
+using CitizenFX.Core.Native;
 using GamemodesServer.Utils;
 using GamemodesShared;
 using System.Threading.Tasks;
@@ -103,6 +104,8 @@ namespace GamemodesServer.Gamemodes
                 }
                 else
                 {
+                    await Delay(3000);
+
                     await ResetBall();
                 }
             }
