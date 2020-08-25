@@ -19,6 +19,8 @@ namespace GamemodesServer
         {
             bool hasCompleted = false;
 
+            int timeoutTries = 3;
+
             Action<Player> callback = new Action<Player>((Player player) =>
             {
                 Debug.WriteLine($"Got response from client for {_serverClientEventName}!");
@@ -40,6 +42,12 @@ namespace GamemodesServer
                     if (!PlayerLoadStateManager.GetLoadedInPlayers().Contains(_player))
                     {
                         hasCompleted = true;
+                    }
+                    else if (--timeoutTries == 0)
+                    {
+                        _player.Drop("Timed out during event handling");
+
+                        return;
                     }
 
                     lastTimeStamp = curTimeStamp;

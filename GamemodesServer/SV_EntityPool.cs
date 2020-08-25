@@ -36,7 +36,14 @@ namespace GamemodesServer
         {
             foreach (Entity entity in s_entities)
             {
-                BaseScript.TriggerClientEvent("gamemodes:cl_sv_deleteentity", entity.NetworkId);
+                try
+                {
+                    BaseScript.TriggerClientEvent("gamemodes:cl_sv_deleteentity", entity.NetworkId);
+                }
+                catch (System.InvalidOperationException)
+                {
+                    Debug.WriteLine("Couldn't find and delete entity!");
+                }
             }
 
             s_entities.Clear();

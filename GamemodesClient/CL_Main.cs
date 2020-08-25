@@ -21,12 +21,14 @@ namespace GamemodesClient
                 return;
             }
 
-            await ScreenUtils.FadeOut();
-
-            while (API.GetIsLoadingScreenActive())
+            while (API.GetIsLoadingScreenActive() || Game.PlayerPed == null || !Game.PlayerPed.Exists())
             {
                 await Delay(0);
             }
+
+            _ = ScreenUtils.FadeOut();
+
+            await Delay(2000);
 
             TriggerServerEvent("gamemodes:sv_cl_loadedin");
         }

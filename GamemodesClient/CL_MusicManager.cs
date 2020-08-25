@@ -17,13 +17,13 @@ namespace GamemodesClient
         [Tick]
         private async Task OnTick()
         {
-            if (TimerManager.SecondsLeft == 32)
+            if (TimerManager.SecondsLeft == 30)
             {
-                Play("AW_COUNTDOWN_30S");
+                Play("FM_COUNTDOWN_30S");
             }
             else if (TimerManager.SecondsLeft == 1)
             {
-                Play("AW_COUNTDOWN_30S_KILL");
+                Play("FM_COUNTDOWN_30S_KILL");
             }
 
             await Task.FromResult(0);

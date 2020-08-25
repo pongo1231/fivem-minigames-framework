@@ -45,8 +45,8 @@ namespace GamemodesClient.Gamemodes
             API.ClearTimecycleModifier();
             API.ClearExtraTimecycleModifier();
 
-            API.SetTimecycleModifier("WeaponUpgrade");
-            //API.SetExtraTimecycleModifier("MP_Arena_theme_saccharine");
+            //API.SetTimecycleModifier("WeaponUpgrade");
+            API.SetTimecycleModifier("MP_Arena_theme_atlantis");
             API.PushTimecycleModifier();
 
             TriggerServerEvent("gamemodes:sv_cl_startedgamemode");
@@ -56,6 +56,8 @@ namespace GamemodesClient.Gamemodes
         private async void OnStop()
         {
             m_running = false;
+
+            _ = ScreenUtils.FadeOut();
 
             Game.PlayerPed.IsInvincible = false;
             Game.PlayerPed.CanBeKnockedOffBike = true;
@@ -153,8 +155,10 @@ namespace GamemodesClient.Gamemodes
                 return;
             }
 
-            API.NetworkOverrideClockTime(0, 0, 0);
-            API.SetWeatherTypeNowPersist("XMAS");
+            API.NetworkOverrideClockTime(12, 0, 0);
+            API.SetWeatherTypeNowPersist("EXTRASUNNY");
+
+            API.SetGravityLevel(1);
 
             m_goalsText.Draw();
 
@@ -171,6 +175,8 @@ namespace GamemodesClient.Gamemodes
 
             if (m_scooter.Exists)
             {
+                m_scooter.Entity.Gravity = 7.5f;
+
                 if (m_scooter.Entity.Driver != Game.PlayerPed)
                 {
                     Game.PlayerPed.SetIntoVehicle(m_scooter.Entity, VehicleSeat.Driver);

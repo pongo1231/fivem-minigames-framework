@@ -104,7 +104,7 @@ namespace GamemodesServer.Gamemodes
                     {
                         m_gamemodePlayers.Add(player);
 
-                        _ = PlayerResponseAwaiter.AwaitResponse(player, $"gamemodes:cl_sv_{s_curGamemode.EventName}_start", "gamemodes:sv_cl_startedgamemode");
+                        await PlayerResponseAwaiter.AwaitResponse(player, $"gamemodes:cl_sv_{s_curGamemode.EventName}_start", "gamemodes:sv_cl_startedgamemode");
                     }
                 }
 
@@ -133,7 +133,7 @@ namespace GamemodesServer.Gamemodes
                 wrapperTickFunc.TickFunc = null;
             }
 
-            TriggerEvent($"gamemodes:cl_sv_{s_curGamemode.EventName}_stop");
+            TriggerClientEvent($"gamemodes:cl_sv_{s_curGamemode.EventName}_stop");
 
             TeamManager.DisableTeams();
 

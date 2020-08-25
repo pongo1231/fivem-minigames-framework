@@ -23,6 +23,7 @@ namespace GamemodesServer.Gamemodes
 
         public Scooterball() : base("Scooter Ball", "scooterball", 180)
         {
+
         }
 
         public override async Task OnStart()
