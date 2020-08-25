@@ -10,7 +10,7 @@ namespace GamemodesClient
     {
         public Main()
         {
-            Tick += OnTick;
+
         }
 
         [EventHandler("onClientResourceStart")]
@@ -31,6 +31,7 @@ namespace GamemodesClient
             TriggerServerEvent("gamemodes:sv_cl_loadedin");
         }
 
+        [Tick]
         private async Task OnTick()
         {
             await Task.FromResult(0);

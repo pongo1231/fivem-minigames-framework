@@ -10,9 +10,10 @@ namespace GamemodesClient
 
         public HudManager()
         {
-            Tick += OnTick;
+
         }
 
+        [Tick]
         private async Task OnTick()
         {
             if (DisableRadar)

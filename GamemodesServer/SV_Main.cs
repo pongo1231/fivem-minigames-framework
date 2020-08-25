@@ -11,8 +11,6 @@ namespace GamemodesServer
 
         public Main()
         {
-            Tick += OnTick;
-
             OnServerResourceStart();
         }
 
@@ -29,6 +27,7 @@ namespace GamemodesServer
 
         }
 
+        [Tick]
         private async Task OnTick()
         {
             foreach (Player player in PlayerLoadStateManager.GetLoadedInPlayers())

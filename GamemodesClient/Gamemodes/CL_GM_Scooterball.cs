@@ -24,7 +24,7 @@ namespace GamemodesClient.Gamemodes
 
         public Scooterball()
         {
-            Tick += OnTick;
+
         }
 
         [EventHandler("gamemodes:cl_sv_scooterball_start")]
@@ -132,6 +132,7 @@ namespace GamemodesClient.Gamemodes
             Screen.ShowNotification((EPlayerTeamType)_teamType == EPlayerTeamType.TEAM_RED ? "~r~Red~w~ scored a goal!" : "~b~Blue~w~ scored a goal!");
         }
 
+        [Tick]
         private async Task OnTick()
         {
             if (!m_running)

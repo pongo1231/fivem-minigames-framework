@@ -26,8 +26,6 @@ namespace GamemodesServer
         public TeamManager()
         {
             PlayerDropped += OnPlayerDropped;
-
-            Tick += OnTick;
         }
 
         private void OnPlayerDropped(Player _player)
@@ -35,6 +33,7 @@ namespace GamemodesServer
             s_teamPlayers.RemoveAll(teamPlayer => teamPlayer.Player == _player);
         }
 
+        [Tick]
         private async Task OnTick()
         {
             if (!s_enableTeams)

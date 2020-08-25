@@ -17,9 +17,10 @@ namespace GamemodesClient
 
         public BoostManager()
         {
-            Tick += OnTick;
+
         }
 
+        [Tick]
         private async Task OnTick()
         {
             if (!s_boostVehicle.Exists)

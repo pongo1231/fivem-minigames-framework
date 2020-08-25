@@ -2,12 +2,35 @@
 using GamemodesServer.Gamemodes;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace GamemodesServer
 {
     public class GamemodeManager : GmScript
     {
+        private class WrapperTickFunc
+        {
+            public WrapperTickFunc(Type _type, MethodInfo _methodInfo)
+            {
+                Type = _type;
+                MethodInfo = _methodInfo;
+            }
+
+            public async Task Func()
+            {
+                if (TargetFunc != null)
+                {
+                    await TargetFunc();
+                }
+            }
+
+            public Type Type { get; private set; }
+            public MethodInfo MethodInfo { get; private set; }
+            public Func<Task> TargetFunc;
+        }
+
         private List<Player> m_gamemodePlayers = new List<Player>();
 
         private static List<GamemodeScript> s_registeredGamemodes = new List<GamemodeScript>();
@@ -16,13 +39,23 @@ namespace GamemodesServer
 
         private Random m_random = new Random();
 
+        private List<WrapperTickFunc> m_registeredWrapperTickFuncs = new List<WrapperTickFunc>();
+
         private bool m_awaitingGamemodeStop = false;
 
         public GamemodeManager()
         {
             PlayerDropped += OnPlayerDropped;
+            
+            foreach (MethodInfo methodInfo in Assembly.GetExecutingAssembly().GetTypes()
+                .SelectMany(type => type.GetMethods(BindingFlags.Instance | BindingFlags.NonPublic)).Where(method => method.GetCustomAttribute(typeof(GamemodeScript.GamemodeTick)) != null))
+            {
+                WrapperTickFunc wrapperTickFunc = new WrapperTickFunc(methodInfo.DeclaringType, methodInfo);
 
-            Tick += OnGamemodeHandleTick;
+                Tick += wrapperTickFunc.Func;
+
+                m_registeredWrapperTickFuncs.Add(wrapperTickFunc);
+            }
         }
 
         private void OnPlayerDropped(Player _player)
@@ -30,6 +63,7 @@ namespace GamemodesServer
             m_gamemodePlayers.Remove(_player);
         }
 
+        [Tick]
         public async Task OnGamemodeHandleTick()
         {
             if (PlayerLoadStateManager.GetLoadedInPlayers().Length == 0)
@@ -56,9 +90,11 @@ namespace GamemodesServer
 
                 await s_curGamemode.OnStart();
 
-                foreach (Func<Task> tickFunc in s_curGamemode.GmTick.GetInvocationList())
+                foreach (WrapperTickFunc wrapperTickFunc in m_registeredWrapperTickFuncs.Where(_wrapperTickFunc => _wrapperTickFunc.Type == s_curGamemode.GetType()))
                 {
-                    Tick += tickFunc;
+                    Debug.WriteLine($"Registering gamemode tick function {wrapperTickFunc.MethodInfo.Name} for {wrapperTickFunc.Type.Name}");
+
+                    wrapperTickFunc.TargetFunc = (Func<Task>)Delegate.CreateDelegate(typeof(Func<Task>), s_curGamemode, wrapperTickFunc.MethodInfo);
                 }
 
                 TimerManager.SetTimer(s_curGamemode.TimerSeconds);
@@ -95,9 +131,11 @@ namespace GamemodesServer
             s_stopGamemode = false;
             m_awaitingGamemodeStop = false;
 
-            foreach (Func<Task> tickFunc in s_curGamemode.GmTick.GetInvocationList())
+            foreach (WrapperTickFunc wrapperTickFunc in m_registeredWrapperTickFuncs.Where(_wrapperTickFunc => _wrapperTickFunc.Type == s_curGamemode.GetType()))
             {
-                Tick -= tickFunc;
+                Debug.WriteLine($"Unregistering gamemode tick function {wrapperTickFunc.MethodInfo.Name} for {wrapperTickFunc.Type.Name}");
+
+                wrapperTickFunc.TargetFunc = null;
             }
 
             TriggerEvent($"gamemodes:cl_sv_{s_curGamemode.EventName}_stop");

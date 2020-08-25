@@ -16,9 +16,10 @@ namespace GamemodesServer
 
         public TimerManager()
         {
-            Tick += OnTick;
+
         }
 
+        [Tick]
         private async Task OnTick()
         {
             if (s_secondsLeft > 0)

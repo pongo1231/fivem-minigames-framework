@@ -15,7 +15,7 @@ namespace GamemodesClient
 
         public TimerManager()
         {
-            Tick += OnTick;
+
         }
 
         [EventHandler("gamemodes:cl_sv_updatetimer")]
@@ -46,6 +46,7 @@ namespace GamemodesClient
             }
         }
 
+        [Tick]
         private async Task OnTick()
         {
             m_text.Draw();

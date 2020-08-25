@@ -5,6 +5,12 @@ namespace GamemodesServer.Gamemodes
 {
     public abstract class GamemodeScript : GmScript
     {
+        [AttributeUsage(AttributeTargets.Method)]
+        public class GamemodeTick : Attribute
+        {
+
+        }
+
         public GamemodeScript(string _name, string _eventName, int _timerSeconds)
         {
             Name = _name;
@@ -19,8 +25,6 @@ namespace GamemodesServer.Gamemodes
         public int TimerSeconds { get; private set; }
 
         public abstract Task OnStart();
-
-        public Func<Task> GmTick;
 
         public abstract void OnTimerUp();
 

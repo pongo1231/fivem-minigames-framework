@@ -39,8 +39,6 @@ namespace GamemodesServer
         public MapLoader()
         {
             PlayerDropped += OnPlayerDropped;
-
-            Tick += OnTick;
         }
 
         private void OnPlayerDropped(Player _player)
@@ -131,6 +129,7 @@ namespace GamemodesServer
             }
         }
 
+        [Tick]
         private async Task OnTick()
         {
             if (s_props.Count == 0 || s_playerSpawns.Count == 0)

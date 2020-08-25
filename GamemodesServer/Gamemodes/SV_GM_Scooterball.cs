@@ -20,23 +20,20 @@ namespace GamemodesServer.Gamemodes
         private static readonly Vector3 s_blueGoalPos1 = new Vector3(1557f, 6595f, 355f);
         private static readonly Vector3 s_blueGoalPos2 = new Vector3(1556f, 6579f, 363f);
 
-        public Scooterball() : base("Scooter Ball", "scooterball", 180)
+        public Scooterball() : base("Scooter Ball", "scooterball", 10)
         {
-
         }
 
         public override async Task OnStart()
         {
             m_redGoals = 0;
             m_blueGoals = 0;
+            m_scoredGoal = false;
 
             await MapLoader.LoadMap("soccer_map_3.xml");
 
             m_ball = await EntityPool.CreateProp("stt_prop_stunt_soccer_lball", s_ballSpawnPos, default, true);
             m_ball.Velocity = new Vector3(0f, 0f, -5f);
-
-            GmTick += OnTickSendEvents;
-            GmTick += OnTickHandleBall;
         }
 
         [EventHandler("gamemodes:sv_cl_scooterball_requestscooter")]
@@ -51,6 +48,7 @@ namespace GamemodesServer.Gamemodes
             _player.TriggerEvent("gamemodes:cl_sv_scooterball_spawnedscooter", scooter.NetworkId);
         }
 
+        [GamemodeTick]
         private async Task OnTickSendEvents()
         {
             TriggerClientEvent("gamemodes:cl_sv_scooterball_updatescores", m_blueGoals, m_redGoals);
@@ -60,6 +58,7 @@ namespace GamemodesServer.Gamemodes
             await Delay(500);
         }
 
+        [GamemodeTick]
         private async Task OnTickHandleBall()
         {
             if (m_ball.Position.Z < 340f)
@@ -78,7 +77,7 @@ namespace GamemodesServer.Gamemodes
                 }
             }
 
-            await Delay(200);
+            await Task.FromResult(0);
         }
 
         private async Task ScoreGoal(EPlayerTeamType _teamType)

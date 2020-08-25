@@ -11,9 +11,10 @@ namespace GamemodesClient
 
         public MusicManager()
         {
-            Tick += OnTick;
+
         }
 
+        [Tick]
         private async Task OnTick()
         {
             if (TimerManager.SecondsLeft == 32)
