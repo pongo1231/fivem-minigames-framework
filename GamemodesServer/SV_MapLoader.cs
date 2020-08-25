@@ -38,9 +38,10 @@ namespace GamemodesServer
 
         public MapLoader()
         {
-            PlayerDropped += OnPlayerDropped;
+
         }
 
+        [PlayerDropped]
         private void OnPlayerDropped(Player _player)
         {
             s_mapPlayers.Remove(_player);

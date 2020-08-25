@@ -3,14 +3,14 @@ using System.Threading.Tasks;
 
 namespace GamemodesServer.Gamemodes
 {
+    [AttributeUsage(AttributeTargets.Method)]
+    public class GamemodeTickAttribute : Attribute
+    {
+
+    }
+
     public abstract class GamemodeScript : GmScript
     {
-        [AttributeUsage(AttributeTargets.Method)]
-        public class GamemodeTick : Attribute
-        {
-
-        }
-
         public GamemodeScript(string _name, string _eventName, int _timerSeconds)
         {
             Name = _name;

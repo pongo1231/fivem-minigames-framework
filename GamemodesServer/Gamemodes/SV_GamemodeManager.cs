@@ -15,11 +15,11 @@ namespace GamemodesServer
             public WrapperTickFunc(Type _type, MethodInfo _methodInfo)
             {
                 Type = _type;
-                MethodInfo = _methodInfo;
+                Method = _methodInfo;
             }
 
             public Type Type { get; private set; }
-            public MethodInfo MethodInfo { get; private set; }
+            public MethodInfo Method { get; private set; }
             public Func<Task> TickFunc;
         }
 
@@ -37,10 +37,9 @@ namespace GamemodesServer
 
         public GamemodeManager()
         {
-            PlayerDropped += OnPlayerDropped;
-            
             foreach (MethodInfo methodInfo in Assembly.GetExecutingAssembly().GetTypes()
-                .SelectMany(type => type.GetMethods(BindingFlags.Instance | BindingFlags.NonPublic)).Where(method => method.GetCustomAttribute(typeof(GamemodeScript.GamemodeTick)) != null))
+                .SelectMany(type => type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance))
+                .Where(method => method.GetCustomAttribute(typeof(GamemodeTickAttribute)) != null))
             {
                 WrapperTickFunc wrapperTickFunc = new WrapperTickFunc(methodInfo.DeclaringType, methodInfo);
 
@@ -48,6 +47,7 @@ namespace GamemodesServer
             }
         }
 
+        [PlayerDropped]
         private void OnPlayerDropped(Player _player)
         {
             m_gamemodePlayers.Remove(_player);
@@ -82,9 +82,11 @@ namespace GamemodesServer
 
                 foreach (WrapperTickFunc wrapperTickFunc in m_registeredWrapperTickFuncs.Where(_wrapperTickFunc => _wrapperTickFunc.Type == s_curGamemode.GetType()))
                 {
-                    Debug.WriteLine($"Registering gamemode tick function {wrapperTickFunc.MethodInfo.Name} for {wrapperTickFunc.Type.Name}");
+                    Debug.WriteLine($"Registering gamemode tick function {wrapperTickFunc.Type.Name}.{wrapperTickFunc.Method.Name}");
 
-                    wrapperTickFunc.TickFunc = (Func<Task>)Delegate.CreateDelegate(typeof(Func<Task>), s_curGamemode, wrapperTickFunc.MethodInfo);
+                    wrapperTickFunc.TickFunc = wrapperTickFunc.Method.IsStatic
+                        ? (Func<Task>)Delegate.CreateDelegate(typeof(Func<Task>), wrapperTickFunc.Method)
+                        : (Func<Task>)Delegate.CreateDelegate(typeof(Func<Task>), s_curGamemode, wrapperTickFunc.Method);
 
                     Tick += wrapperTickFunc.TickFunc;
                 }
@@ -125,7 +127,7 @@ namespace GamemodesServer
 
             foreach (WrapperTickFunc wrapperTickFunc in m_registeredWrapperTickFuncs.Where(_wrapperTickFunc => _wrapperTickFunc.Type == s_curGamemode.GetType()))
             {
-                Debug.WriteLine($"Unregistering gamemode tick function {wrapperTickFunc.MethodInfo.Name} for {wrapperTickFunc.Type.Name}");
+                Debug.WriteLine($"Unregistering gamemode tick function {wrapperTickFunc.Type.Name}.{wrapperTickFunc.Method.Name}");
 
                 Tick -= wrapperTickFunc.TickFunc;
 

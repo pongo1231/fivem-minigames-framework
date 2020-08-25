@@ -21,7 +21,7 @@ namespace GamemodesServer
 
             Action<Player> callback = new Action<Player>((Player player) =>
             {
-                Debug.WriteLine($"Got response for {_serverClientEventName}!");
+                Debug.WriteLine($"Got response from client for {_serverClientEventName}!");
 
                 hasCompleted = true;
             });

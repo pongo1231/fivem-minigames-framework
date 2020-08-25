@@ -25,9 +25,10 @@ namespace GamemodesServer
 
         public TeamManager()
         {
-            PlayerDropped += OnPlayerDropped;
+
         }
 
+        [PlayerDropped]
         private void OnPlayerDropped(Player _player)
         {
             s_teamPlayers.RemoveAll(teamPlayer => teamPlayer.Player == _player);

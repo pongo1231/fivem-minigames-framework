@@ -1,4 +1,5 @@
 ﻿using CitizenFX.Core;
+using System;
 using System.Collections.Generic;
 
 namespace GamemodesServer
@@ -9,9 +10,10 @@ namespace GamemodesServer
 
         public PlayerLoadStateManager()
         {
-            PlayerDropped += OnPlayerDropped;
+
         }
 
+        [PlayerDropped]
         private void OnPlayerDropped(Player _player)
         {
             s_loadedPlayers.Remove(_player);
@@ -23,7 +25,17 @@ namespace GamemodesServer
             if (!s_loadedPlayers.Contains(_player))
             {
                 s_loadedPlayers.Add(_player);
+
+                NewPlayer?.Invoke(_player);
             }
+        }
+
+        [EventHandler("playerDropped")]
+        private void OnPlayerDropped([FromSource] Player _player, string _reason)
+        {
+            s_loadedPlayers.Remove(_player);
+
+            PlayerDropped?.Invoke(_player);
         }
 
         public static bool HasLoadedIn(Player _player)
