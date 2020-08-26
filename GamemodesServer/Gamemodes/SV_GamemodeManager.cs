@@ -28,11 +28,16 @@ namespace GamemodesServer.Gamemodes
         private static GamemodeScript s_curGamemode = null;
         private static bool s_stopGamemode = false;
 
+        private bool m_fullyLoadedGamemode = false;
+
         private Random m_random = new Random();
 
         private List<WrapperTickFunc> m_registeredWrapperTickFuncs = new List<WrapperTickFunc>();
 
         private bool m_awaitingGamemodeStop = false;
+
+        private bool m_prestartCountdownRunning = false;
+        private int m_prestartCountdown = 5;
 
         public GamemodeManager()
         {
@@ -53,7 +58,7 @@ namespace GamemodesServer.Gamemodes
         }
 
         [Tick]
-        public async Task OnGamemodeHandleTick()
+        public async Task OnTickGamemodeHandle()
         {
             if (PlayerLoadStateManager.GetLoadedInPlayers().Length == 0)
             {
@@ -77,7 +82,7 @@ namespace GamemodesServer.Gamemodes
 
                 s_curGamemode = s_registeredGamemodes[m_random.Next(0, s_registeredGamemodes.Count)];
 
-                await s_curGamemode.OnStart();
+                await s_curGamemode.OnPreStart();
 
                 foreach (WrapperTickFunc wrapperTickFunc in m_registeredWrapperTickFuncs.Where(_wrapperTickFunc => _wrapperTickFunc.Type == s_curGamemode.GetType()))
                 {
@@ -90,7 +95,10 @@ namespace GamemodesServer.Gamemodes
                     Tick += wrapperTickFunc.TickFunc;
                 }
 
-                TimerManager.SetTimer(s_curGamemode.TimerSeconds);
+                m_fullyLoadedGamemode = false;
+
+                m_prestartCountdownRunning = true;
+                m_prestartCountdown = 6;
             }
             else if (s_stopGamemode)
             {
@@ -104,11 +112,23 @@ namespace GamemodesServer.Gamemodes
                     {
                         m_gamemodePlayers.Add(player);
 
-                        await PlayerResponseAwaiter.AwaitResponse(player, $"gamemodes:cl_sv_{s_curGamemode.EventName}_start", "gamemodes:sv_cl_startedgamemode");
+                        await PlayerResponseAwaiter.AwaitResponse(player, $"gamemodes:cl_sv_{s_curGamemode.EventName}_prestart", "gamemodes:sv_cl_prestartedgamemode");
+
+                        if (!m_prestartCountdownRunning)
+                        {
+                            await PlayerResponseAwaiter.AwaitResponse(player, $"gamemodes:cl_sv_{s_curGamemode.EventName}_start", "gamemodes:sv_cl_startedgamemode");
+                        }
                     }
                 }
 
-                if (TimerManager.HasTimerRunOut() && !m_awaitingGamemodeStop)
+                if (!m_fullyLoadedGamemode)
+                {
+                    await Delay(2000);
+
+                    m_fullyLoadedGamemode = true;
+                }
+
+                if (TimerManager.HasRunOut && !m_prestartCountdownRunning && !m_awaitingGamemodeStop)
                 {
                     m_awaitingGamemodeStop = true;
 
@@ -117,6 +137,30 @@ namespace GamemodesServer.Gamemodes
             }
 
             await Task.FromResult(0);
+        }
+
+        [Tick]
+        private async Task OnTickCountdown()
+        {
+            if (m_prestartCountdownRunning && m_fullyLoadedGamemode)
+            {
+                if (m_prestartCountdown-- == 0)
+                {
+                    await s_curGamemode.OnStart();
+
+                    await PlayerResponseAwaiter.AwaitResponse($"gamemodes:cl_sv_{s_curGamemode.EventName}_start", "gamemodes:sv_cl_startedgamemode");
+
+                    m_prestartCountdownRunning = false;
+
+                    TimerManager.SetTimer(s_curGamemode.TimerSeconds);
+                }
+                else
+                {
+                    TriggerClientEvent("gamemodes:cl_sv_setcountdowntimer", m_prestartCountdown);
+                }
+
+                await Delay(1000);
+            }
         }
 
         private async Task _StopGamemode()
@@ -137,7 +181,9 @@ namespace GamemodesServer.Gamemodes
 
             TimerManager.StopTimer();
 
-            TriggerClientEvent($"gamemodes:cl_sv_{s_curGamemode.EventName}_prestop");
+            await PlayerResponseAwaiter.AwaitResponse($"gamemodes:cl_sv_{s_curGamemode.EventName}_prestop", "gamemodes:sv_cl_prestoppedgamemode");
+
+            await Delay(1000);
 
             TriggerClientEvent("gamemodes:cl_sv_showwinnercam");
 
@@ -145,7 +191,7 @@ namespace GamemodesServer.Gamemodes
 
             TriggerClientEvent("gamemodes:cl_sv_hidewinnercam");
 
-            TriggerClientEvent($"gamemodes:cl_sv_{s_curGamemode.EventName}_stop");
+            await PlayerResponseAwaiter.AwaitResponse($"gamemodes:cl_sv_{s_curGamemode.EventName}_stop", "gamemodes:sv_cl_stoppedgamemode");
 
             EntityPool.ClearEntities();
 

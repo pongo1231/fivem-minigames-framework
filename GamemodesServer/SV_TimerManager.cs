@@ -13,6 +13,13 @@ namespace GamemodesServer
                 return s_secondsLeft == -1;
             }
         }
+        public static bool HasRunOut
+        {
+            get
+            {
+                return s_secondsLeft <= 0;
+            }
+        }
 
         [Tick]
         private async Task OnTick()
@@ -40,11 +47,6 @@ namespace GamemodesServer
         public static void StopTimer()
         {
             s_secondsLeft = 0;
-        }
-
-        public static bool HasTimerRunOut()
-        {
-            return s_secondsLeft <= 0;
         }
     }
 }

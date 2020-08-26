@@ -24,6 +24,8 @@ namespace GamemodesServer.Gamemodes
         public string EventName { get; private set; }
         public int TimerSeconds { get; private set; }
 
+        public abstract Task OnPreStart();
+
         public abstract Task OnStart();
 
         public abstract void OnTimerUp();

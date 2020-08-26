@@ -1,6 +1,7 @@
 ﻿using CitizenFX.Core;
 using CitizenFX.Core.Native;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,7 +16,7 @@ namespace GamemodesServer
             s_instance = this;
         }
 
-        public static async Task AwaitResponse(Player _player, string _serverClientEventName, string _clientServerEventName, params object[] _serverClientEventArgs)
+        private async Task _AwaitResponse(Player _player, string _serverClientEventName, string _clientServerEventName, params object[] _serverClientEventArgs)
         {
             bool hasCompleted = false;
 
@@ -45,6 +46,8 @@ namespace GamemodesServer
                     }
                     else if (--timeoutTries == 0)
                     {
+                        Debug.WriteLine($"Dropped {_player.Name} for not responding to {_serverClientEventName}!");
+
                         _player.Drop("Timed out during event handling");
 
                         return;
@@ -59,6 +62,26 @@ namespace GamemodesServer
             }
 
             s_instance.EventHandlers[_clientServerEventName] -= callback;
+        }
+
+        public static async Task AwaitResponse(Player _player, string _serverClientEventName, string _clientServerEventName, params object[] _serverClientEventArgs)
+        {
+            await s_instance._AwaitResponse(_player, _serverClientEventName, _clientServerEventName, _serverClientEventArgs);
+        }
+
+        public static async Task AwaitResponse(string _serverClientEventName, string _clientServerEventName, params object[] _serverClientEventArgs)
+        {
+            List<Task> responseAwaits = new List<Task>();
+
+            foreach (Player player in PlayerLoadStateManager.GetLoadedInPlayers())
+            {
+                responseAwaits.Add(AwaitResponse(player, _serverClientEventName, _clientServerEventName, _serverClientEventArgs));
+            }
+
+            while (responseAwaits.Where(responseAwait => !responseAwait.IsCompleted).Count() > 0)
+            {
+                await Delay(0);
+            }
         }
     }
 }

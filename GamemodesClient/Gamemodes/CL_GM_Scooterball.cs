@@ -12,6 +12,7 @@ namespace GamemodesClient.Gamemodes
 {
     public class Scooterball : GamemodeScript
     {
+        private bool m_prestartRunning = false;
         private bool m_isRunning = false;
 
         private GmNetEntity<Vehicle> m_scooter;
@@ -22,26 +23,36 @@ namespace GamemodesClient.Gamemodes
 
         private Text m_goalsText = new Text(null, new PointF(640f, 50f), 1.5f, Color.FromArgb(255, 255, 255), Font.Pricedown, Alignment.Center, true, true);
 
-        [EventHandler("gamemodes:cl_sv_scooterball_start")]
-        private void OnStart()
+        [EventHandler("gamemodes:cl_sv_scooterball_prestart")]
+        private void OnPreStart()
         {
+            m_prestartRunning = true;
             m_isRunning = true;
 
             m_scooter = default;
             m_ball = default;
 
+            API.SetPlayerControl(Game.Player.Handle, false, 1 << 8);
+
             Game.PlayerPed.IsInvincible = true;
 
             TriggerServerEvent("gamemodes:sv_cl_scooterball_requestscooter", SpawnManager.SpawnPos, SpawnManager.SpawnRot.X);
 
-            MusicManager.Play();
-
-            API.ClearTimecycleModifier();
-            API.ClearExtraTimecycleModifier();
-
             //API.SetTimecycleModifier("WeaponUpgrade");
             API.SetTimecycleModifier("MP_Arena_theme_atlantis");
             API.PushTimecycleModifier();
+
+            TriggerServerEvent("gamemodes:sv_cl_prestartedgamemode");
+        }
+
+        [EventHandler("gamemodes:cl_sv_scooterball_start")]
+        private void OnStart()
+        {
+            m_prestartRunning = false;
+
+            API.SetPlayerControl(Game.Player.Handle, true, 1 << 8);
+
+            MusicManager.Play();
 
             TriggerServerEvent("gamemodes:sv_cl_startedgamemode");
         }
@@ -56,6 +67,8 @@ namespace GamemodesClient.Gamemodes
             MusicManager.Stop();
 
             Game.PlayerPed.IsInvincible = false;
+
+            TriggerServerEvent("gamemodes:sv_cl_prestoppedgamemode");
         }
 
         [EventHandler("gamemodes:cl_sv_scooterball_stop")]
@@ -65,6 +78,8 @@ namespace GamemodesClient.Gamemodes
 
             API.ClearTimecycleModifier();
             API.ClearExtraTimecycleModifier();
+
+            TriggerServerEvent("gamemodes:sv_cl_stoppedgamemode");
         }
 
         [EventHandler("gamemodes:cl_sv_scooterball_spawnedscooter")]
@@ -151,15 +166,18 @@ namespace GamemodesClient.Gamemodes
 
             //API.SetGravityLevel(1);
 
-            m_goalsText.Draw();
+            if (!m_prestartRunning)
+            {
+                m_goalsText.Draw();
 
-            if (TeamManager.TeamType == EPlayerTeamType.TEAM_RED)
-            {
-                Screen.ShowSubtitle("Shoot the ~r~Ball~w~ into the ~b~Blue Goal.");
-            }
-            else if (TeamManager.TeamType == EPlayerTeamType.TEAM_BLUE)
-            {
-                Screen.ShowSubtitle("Shoot the ~b~Ball~w~ into the ~r~Red Goal.");
+                if (TeamManager.TeamType == EPlayerTeamType.TEAM_RED)
+                {
+                    Screen.ShowSubtitle("Shoot the ~r~Ball~w~ into the ~b~Blue Goal.", 500);
+                }
+                else if (TeamManager.TeamType == EPlayerTeamType.TEAM_BLUE)
+                {
+                    Screen.ShowSubtitle("Shoot the ~b~Ball~w~ into the ~r~Red Goal.", 500);
+                }
             }
 
             Game.DisableControlThisFrame(1, Control.VehicleCinCam);
@@ -203,6 +221,8 @@ namespace GamemodesClient.Gamemodes
 
             if (m_ball.Exists)
             {
+                m_ball.Entity.IsPositionFrozen = m_prestartRunning;
+
                 if (m_ball.Entity.IsVisible)
                 {
                     Vector3 markerPos = m_ball.Entity.Position + new Vector3(0f, 0f, 5f);

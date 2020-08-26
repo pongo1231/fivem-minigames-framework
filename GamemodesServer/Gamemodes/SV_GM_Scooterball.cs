@@ -25,7 +25,7 @@ namespace GamemodesServer.Gamemodes
 
         }
 
-        public override async Task OnStart()
+        public override async Task OnPreStart()
         {
             m_redGoals = 0;
             m_blueGoals = 0;
@@ -34,7 +34,13 @@ namespace GamemodesServer.Gamemodes
             await MapLoader.LoadMap("soccer_map_3.xml");
 
             m_ball = await EntityPool.CreateProp("stt_prop_stunt_soccer_lball", s_ballSpawnPos, default, true);
+        }
+
+        public override async Task OnStart()
+        {
             m_ball.Velocity = new Vector3(0f, 0f, -5f);
+
+            await Task.FromResult(0);
         }
 
         [EventHandler("gamemodes:sv_cl_scooterball_requestscooter")]
