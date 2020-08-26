@@ -98,14 +98,14 @@ namespace GamemodesServer.Gamemodes
 
                 TriggerClientEvent("gamemodes:cl_sv_scooterball_goalscored", (int)_teamType, m_ball.Position);
 
+                await Delay(3000);
+
                 if (TimerManager.InOvertime)
                 {
                     Stop();
                 }
                 else
                 {
-                    await Delay(3000);
-
                     await ResetBall();
                 }
             }
