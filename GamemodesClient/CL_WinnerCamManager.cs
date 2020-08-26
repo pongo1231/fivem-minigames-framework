@@ -10,6 +10,8 @@ namespace GamemodesClient
     {
         private bool m_showWinnerCam = false;
 
+        private Scaleform m_winnerScaleform;
+
         [EventHandler("gamemodes:cl_sv_showwinnercam")]
         private void OnShowWinnerCam()
         {
@@ -19,6 +21,9 @@ namespace GamemodesClient
             API.AnimpostfxPlay("MP_Celeb_Win", 0, true);
 
             Screen.Hud.IsRadarVisible = false;
+
+            m_winnerScaleform = new Scaleform("MP_CELEBRATION");
+            m_winnerScaleform.CallFunction("ADD_MISSION_RESULT_TO_WALL", "SUMMARY", "Match Over", "Trolololol", "lol?", true, true, true, 255, 0);
 
             Game.Pause(true);
         }
@@ -34,6 +39,9 @@ namespace GamemodesClient
 
             Screen.Hud.IsRadarVisible = true;
 
+            m_winnerScaleform.Dispose();
+            m_winnerScaleform = null;
+
             Game.Pause(false);
 
             _ = ScreenUtils.FadeOut();
@@ -42,9 +50,9 @@ namespace GamemodesClient
         [Tick]
         private async Task OnTick()
         {
-            if (m_showWinnerCam)
+            if (m_showWinnerCam && m_winnerScaleform != null)
             {
-
+                m_winnerScaleform.Render2D();
             }
 
             await Task.FromResult(0);
