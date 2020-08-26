@@ -13,11 +13,6 @@ namespace GamemodesClient
 
         public static int SecondsLeft { get; private set; }
 
-        public TimerManager()
-        {
-
-        }
-
         [EventHandler("gamemodes:cl_sv_updatetimer")]
         private void UpdateTimer(int _secondsLeft)
         {

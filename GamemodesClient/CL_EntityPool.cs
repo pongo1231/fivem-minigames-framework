@@ -18,13 +18,11 @@ namespace GamemodesClient
                 await BaseScript.Delay(0);
             }
 
-            GmNetEntity<Prop> prop = new GmNetEntity<Prop>(new Prop(API.CreateObject(_model.Hash, _pos.X, _pos.Y, _pos.Z, _networked, false, _dynamic)));
+            GmNetEntity<Prop> prop = new GmNetEntity<Prop>(new Prop(API.CreateObject(_model.Hash, _pos.X, _pos.Y, _pos.Z, _networked, true, _dynamic)));
 
             if (_networked)
             {
                 prop.Entity.RequestControl();
-
-                //API.SetNetworkIdCanMigrate(prop.NetworkId, false);
             }
 
             prop.Entity.PositionNoOffset = _pos;
@@ -42,13 +40,11 @@ namespace GamemodesClient
                 await BaseScript.Delay(0);
             }
 
-            GmNetEntity<Vehicle> vehicle = new GmNetEntity<Vehicle>(new Vehicle(API.CreateVehicle((uint)_model.Hash, _pos.X, _pos.Y, _pos.Z, _heading, _networked, false)));
+            GmNetEntity<Vehicle> vehicle = new GmNetEntity<Vehicle>(new Vehicle(API.CreateVehicle((uint)_model.Hash, _pos.X, _pos.Y, _pos.Z, _heading, _networked, true)));
 
             if (_networked)
             {
                 vehicle.Entity.RequestControl();
-
-                //API.SetNetworkIdCanMigrate(prop.NetworkId, false);
             }
 
             vehicle.Entity.PositionNoOffset = _pos;

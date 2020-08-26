@@ -23,11 +23,6 @@ namespace GamemodesServer
         private static bool s_enableTeams = false;
         public static bool TeamsLoaded { get; private set; } = false;
 
-        public TeamManager()
-        {
-
-        }
-
         [PlayerDropped]
         private void OnPlayerDropped(Player _player)
         {

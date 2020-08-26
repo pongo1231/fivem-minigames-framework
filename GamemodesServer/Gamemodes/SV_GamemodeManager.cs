@@ -59,7 +59,7 @@ namespace GamemodesServer.Gamemodes
             {
                 if (s_curGamemode != null)
                 {
-                    _StopGamemode();
+                    await _StopGamemode();
                 }
 
                 return;
@@ -94,7 +94,7 @@ namespace GamemodesServer.Gamemodes
             }
             else if (s_stopGamemode)
             {
-                _StopGamemode();
+                await _StopGamemode();
             }
             else
             {
@@ -119,7 +119,7 @@ namespace GamemodesServer.Gamemodes
             await Task.FromResult(0);
         }
 
-        private void _StopGamemode()
+        private async Task _StopGamemode()
         {
             s_stopGamemode = false;
             m_awaitingGamemodeStop = false;
@@ -133,11 +133,19 @@ namespace GamemodesServer.Gamemodes
                 wrapperTickFunc.TickFunc = null;
             }
 
-            TriggerClientEvent($"gamemodes:cl_sv_{s_curGamemode.EventName}_stop");
-
             TeamManager.DisableTeams();
 
             TimerManager.StopTimer();
+
+            TriggerClientEvent($"gamemodes:cl_sv_{s_curGamemode.EventName}_prestop");
+
+            TriggerClientEvent("gamemodes:cl_sv_showwinnercam");
+
+            await Delay(10000);
+
+            TriggerClientEvent("gamemodes:cl_sv_hidewinnercam");
+
+            TriggerClientEvent($"gamemodes:cl_sv_{s_curGamemode.EventName}_stop");
 
             EntityPool.ClearEntities();
 

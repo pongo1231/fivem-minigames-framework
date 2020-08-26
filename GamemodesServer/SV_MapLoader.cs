@@ -36,11 +36,6 @@ namespace GamemodesServer
         private static List<Player> s_mapPlayers = new List<Player>();
         public static bool MapLoaded { get; private set; } = false;
 
-        public MapLoader()
-        {
-
-        }
-
         [PlayerDropped]
         private void OnPlayerDropped(Player _player)
         {

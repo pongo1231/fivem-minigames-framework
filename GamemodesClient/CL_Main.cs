@@ -8,11 +8,6 @@ namespace GamemodesClient
 {
     public class Main : BaseScript
     {
-        public Main()
-        {
-
-        }
-
         [EventHandler("onClientResourceStart")]
         private async void OnClientResourceStart(string _resourceName)
         {

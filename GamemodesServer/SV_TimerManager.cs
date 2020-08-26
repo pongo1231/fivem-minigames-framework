@@ -14,11 +14,6 @@ namespace GamemodesServer
             }
         }
 
-        public TimerManager()
-        {
-
-        }
-
         [Tick]
         private async Task OnTick()
         {

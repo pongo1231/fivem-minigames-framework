@@ -8,11 +8,6 @@ namespace GamemodesServer
     {
         private static List<Player> s_loadedPlayers = new List<Player>();
 
-        public PlayerLoadStateManager()
-        {
-
-        }
-
         [PlayerDropped]
         private void OnPlayerDropped(Player _player)
         {

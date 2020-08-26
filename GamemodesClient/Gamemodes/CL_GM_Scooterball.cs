@@ -12,7 +12,7 @@ namespace GamemodesClient.Gamemodes
 {
     public class Scooterball : GamemodeScript
     {
-        private bool m_running = false;
+        private bool m_isRunning = false;
 
         private GmNetEntity<Vehicle> m_scooter;
 
@@ -22,21 +22,15 @@ namespace GamemodesClient.Gamemodes
 
         private Text m_goalsText = new Text(null, new PointF(640f, 50f), 1.5f, Color.FromArgb(255, 255, 255), Font.Pricedown, Alignment.Center, true, true);
 
-        public Scooterball()
-        {
-
-        }
-
         [EventHandler("gamemodes:cl_sv_scooterball_start")]
         private void OnStart()
         {
-            m_running = true;
+            m_isRunning = true;
 
             m_scooter = default;
             m_ball = default;
 
             Game.PlayerPed.IsInvincible = true;
-            Game.PlayerPed.CanBeKnockedOffBike = false;
 
             TriggerServerEvent("gamemodes:sv_cl_scooterball_requestscooter", SpawnManager.SpawnPos, SpawnManager.SpawnRot.X);
 
@@ -52,28 +46,25 @@ namespace GamemodesClient.Gamemodes
             TriggerServerEvent("gamemodes:sv_cl_startedgamemode");
         }
 
-        [EventHandler("gamemodes:cl_sv_scooterball_stop")]
-        private async void OnStop()
+        [EventHandler("gamemodes:cl_sv_scooterball_prestop")]
+        private void OnPreStop()
         {
-            m_running = false;
-
-            _ = ScreenUtils.FadeOut();
-
-            Game.PlayerPed.IsInvincible = false;
-            Game.PlayerPed.CanBeKnockedOffBike = true;
+            m_isRunning = false;
 
             BoostManager.DisableBoosting();
 
             MusicManager.Stop();
 
+            Game.PlayerPed.IsInvincible = false;
+        }
+
+        [EventHandler("gamemodes:cl_sv_scooterball_stop")]
+        private void OnStop()
+        {
+            //_ = ScreenUtils.FadeOut();
+
             API.ClearTimecycleModifier();
             API.ClearExtraTimecycleModifier();
-
-            Game.PlayerPed.Task.LeaveVehicle(LeaveVehicleFlags.WarpOut);
-
-            await Delay(200);
-
-            m_scooter.Entity?.Delete();
         }
 
         [EventHandler("gamemodes:cl_sv_scooterball_spawnedscooter")]
@@ -150,7 +141,7 @@ namespace GamemodesClient.Gamemodes
         [Tick]
         private async Task OnTick()
         {
-            if (!m_running)
+            if (!m_isRunning)
             {
                 return;
             }

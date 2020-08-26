@@ -9,11 +9,6 @@ namespace GamemodesClient
     {
         private static string s_curMusicEvent;
 
-        public MusicManager()
-        {
-
-        }
-
         [Tick]
         private async Task OnTick()
         {

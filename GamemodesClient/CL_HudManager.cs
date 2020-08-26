@@ -8,11 +8,6 @@ namespace GamemodesClient
     {
         public static bool DisableRadar { private get; set; } = false;
 
-        public HudManager()
-        {
-
-        }
-
         [Tick]
         private async Task OnTick()
         {

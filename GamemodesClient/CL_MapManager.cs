@@ -6,11 +6,6 @@ namespace GamemodesClient
 {
     public class MapManager : BaseScript
     {
-        public MapManager()
-        {
-
-        }
-
         [EventHandler("gamemodes:cl_sv_spawnmap")]
         private async void OnSpawnMap(List<dynamic> _props)
         {

@@ -16,11 +16,6 @@ namespace GamemodesClient
         private bool m_usingBoost = false;
         private bool m_boostPlayedSound = true;
 
-        public BoostManager()
-        {
-
-        }
-
         [Tick]
         private async Task OnTickHandleBoost()
         {

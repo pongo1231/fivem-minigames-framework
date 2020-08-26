@@ -22,7 +22,7 @@ namespace GamemodesServer
 
         public static async Task<Prop> CreateProp(string _model, Vector3 _pos, Vector3 _rot, bool _dynamic)
         {
-            Prop prop = new Prop(API.CreateObjectNoOffset((uint)API.GetHashKey(_model), _pos.X, _pos.Y, _pos.Z, true, false, _dynamic));
+            Prop prop = new Prop(API.CreateObjectNoOffset((uint)API.GetHashKey(_model), _pos.X, _pos.Y, _pos.Z, true, true, _dynamic));
             prop.Rotation = _rot;
 
             s_entities.Add(prop);
