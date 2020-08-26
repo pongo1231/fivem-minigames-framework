@@ -20,7 +20,7 @@ namespace GamemodesServer.Gamemodes
         private static readonly Vector3 s_blueGoalPos1 = new Vector3(1557f, 6595f, 355f);
         private static readonly Vector3 s_blueGoalPos2 = new Vector3(1556f, 6579f, 363f);
 
-        public Scooterball() : base("Scooter Ball", "scooterball", 40)
+        public Scooterball() : base("Scooter Ball", "scooterball", 180)
         {
 
         }
