@@ -1,5 +1,6 @@
 ﻿using CitizenFX.Core;
 using CitizenFX.Core.Native;
+using CitizenFX.Core.UI;
 using GamemodesClient.Utils;
 using System;
 using System.Threading.Tasks;
@@ -22,6 +23,14 @@ namespace GamemodesClient
             }
 
             _ = ScreenUtils.FadeOut();
+
+            Game.Pause(false);
+
+            API.TransitionFromBlurred(0f);
+
+            Screen.Effects.Stop();
+
+            Screen.Hud.IsRadarVisible = true;
 
             await Delay(2000);
 

@@ -56,6 +56,8 @@ namespace GamemodesClient.Gamemodes
 
             MusicManager.Play();
 
+            Screen.Effects.Start(ScreenEffect.MpCelebWinOut);
+
             TriggerServerEvent("gamemodes:sv_cl_startedgamemode");
         }
 
