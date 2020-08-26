@@ -50,6 +50,8 @@ namespace GamemodesClient.Gamemodes
         {
             m_prestartRunning = false;
 
+            BoostManager.BoostEnabled = true;
+
             API.SetPlayerControl(Game.Player.Handle, true, 1 << 8);
 
             MusicManager.Play();
@@ -62,7 +64,7 @@ namespace GamemodesClient.Gamemodes
         {
             m_isRunning = false;
 
-            BoostManager.DisableBoosting();
+            BoostManager.BoostEnabled = false;
 
             MusicManager.Stop();
 
@@ -113,7 +115,7 @@ namespace GamemodesClient.Gamemodes
 
             m_scooter.Entity.FadeIn();
 
-            BoostManager.EnableBoosting(m_scooter);
+            BoostManager.BoostVehicle = m_scooter;
 
             _ = ScreenUtils.FadeIn();
         }
@@ -191,31 +193,34 @@ namespace GamemodesClient.Gamemodes
                     Game.PlayerPed.SetIntoVehicle(m_scooter.Entity, VehicleSeat.Driver);
                 }
 
-                Game.DisableControlThisFrame(1, Control.VehicleHandbrake);
-                if (Game.IsControlJustPressed(1, Control.Jump) && !m_scooter.Entity.IsInAir)
+                if (!m_prestartRunning)
                 {
-                    Vector3 vel = m_scooter.Entity.Velocity;
+                    Game.DisableControlThisFrame(1, Control.VehicleHandbrake);
+                    if (Game.IsControlJustPressed(1, Control.Jump) && !m_scooter.Entity.IsInAir)
+                    {
+                        Vector3 vel = m_scooter.Entity.Velocity;
 
-                    vel.Z = 7f;
+                        vel.Z = 7f;
 
-                    m_scooter.Entity.Velocity = vel;
-                }
+                        m_scooter.Entity.Velocity = vel;
+                    }
 
-                if (m_scooter.Entity.Position.Z < 340f || m_scooter.Entity.IsDead)
-                {
-                    await ScreenUtils.FadeOut();
+                    if (m_scooter.Entity.Position.Z < 340f || m_scooter.Entity.IsDead)
+                    {
+                        await ScreenUtils.FadeOut();
 
-                    m_scooter.Entity.RequestControl();
+                        m_scooter.Entity.RequestControl();
 
-                    m_scooter.Entity.Position = SpawnManager.SpawnPos;
-                    m_scooter.Entity.Rotation = default;
-                    m_scooter.Entity.Heading = SpawnManager.SpawnRot.X;
-                    m_scooter.Entity.Velocity = default;
-                    m_scooter.Entity.Repair();
+                        m_scooter.Entity.Position = SpawnManager.SpawnPos;
+                        m_scooter.Entity.Rotation = default;
+                        m_scooter.Entity.Heading = SpawnManager.SpawnRot.X;
+                        m_scooter.Entity.Velocity = default;
+                        m_scooter.Entity.Repair();
 
-                    m_scooter.Entity.FadeIn();
+                        m_scooter.Entity.FadeIn();
 
-                    await ScreenUtils.FadeIn();
+                        await ScreenUtils.FadeIn();
+                    }
                 }
             }
 

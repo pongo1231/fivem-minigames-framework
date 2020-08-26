@@ -9,7 +9,8 @@ namespace GamemodesClient
 {
     public class BoostManager : BaseScript
     {
-        private static GmNetEntity<Vehicle> s_boostVehicle;
+        public static GmNetEntity<Vehicle> BoostVehicle;
+        public static bool BoostEnabled = false;
 
         private float m_boostFuel = 1f;
         private long m_boostFuelLastTimeStamp;
@@ -19,7 +20,7 @@ namespace GamemodesClient
         [Tick]
         private async Task OnTickHandleBoost()
         {
-            if (!s_boostVehicle.Exists)
+            if (!BoostVehicle.Exists || !BoostEnabled)
             {
                 return;
             }
@@ -42,16 +43,16 @@ namespace GamemodesClient
 
             if (m_usingBoost)
             {
-                s_boostVehicle.Entity.ApplyForceRelative(new Vector3(0f, 0.4f, 0f));
+                BoostVehicle.Entity.ApplyForceRelative(new Vector3(0f, 0.4f, 0f));
 
                 m_boostFuel = Math.Max(m_boostFuel - boostDelta * 0.0006f, 0f);
 
                 //API.PlaySoundFrontend(-1, "FocusIn", "HintCamSounds", true);
-                API.PlaySoundFromEntity(-1, "CLOTHES_THROWN", s_boostVehicle.Entity.Handle, "RE_DOMESTIC_SOUNDSET", false, 0);
+                API.PlaySoundFromEntity(-1, "CLOTHES_THROWN", BoostVehicle.Entity.Handle, "RE_DOMESTIC_SOUNDSET", false, 0);
 
-                PtfxUtils.PlayPtfxOnEntity(s_boostVehicle.Entity, "scr_rcbarry2", "muz_clown", true, 0.2f, API.GetEntityBoneIndexByName(s_boostVehicle.Entity.Handle, "wheel_lr"));
+                PtfxUtils.PlayPtfxOnEntity(BoostVehicle.Entity, "scr_rcbarry2", "muz_clown", true, 0.2f, API.GetEntityBoneIndexByName(BoostVehicle.Entity.Handle, "wheel_lr"));
 
-                PtfxUtils.PlayPtfxOnEntity(s_boostVehicle.Entity, "scr_rcbarry2", "muz_clown", true, 0.2f, API.GetEntityBoneIndexByName(s_boostVehicle.Entity.Handle, "wheel_rr"));
+                PtfxUtils.PlayPtfxOnEntity(BoostVehicle.Entity, "scr_rcbarry2", "muz_clown", true, 0.2f, API.GetEntityBoneIndexByName(BoostVehicle.Entity.Handle, "wheel_rr"));
 
                 Screen.Effects.Start(ScreenEffect.RaceTurbo, 1000);
 
@@ -75,16 +76,6 @@ namespace GamemodesClient
             }
 
             await Task.FromResult(0);
-        }
-
-        public static void EnableBoosting(GmNetEntity<Vehicle> _vehicle)
-        {
-            s_boostVehicle = _vehicle;
-        }
-
-        public static void DisableBoosting()
-        {
-            s_boostVehicle = default;
         }
     }
 }
