@@ -197,8 +197,6 @@ namespace GamemodesClient.Gamemodes
 
             if (m_ball.Exists)
             {
-                m_ball.Entity.IsPositionFrozen = IsPreStartRunning;
-
                 if (m_ball.Entity.IsVisible)
                 {
                     Vector3 markerPos = m_ball.Entity.Position + new Vector3(0f, 0f, 5f);

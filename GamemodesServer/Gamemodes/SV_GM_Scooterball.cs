@@ -34,10 +34,12 @@ namespace GamemodesServer.Gamemodes
             await MapLoader.LoadMap("soccer_map_3.xml");
 
             m_ball = await EntityPool.CreateProp("stt_prop_stunt_soccer_lball", s_ballSpawnPos, default, true);
+            m_ball.IsPositionFrozen = true;
         }
 
         public override async Task OnStart()
         {
+            m_ball.IsPositionFrozen = false;
             m_ball.Velocity = new Vector3(0f, 0f, -5f);
 
             await Task.FromResult(0);

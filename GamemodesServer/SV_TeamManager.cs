@@ -30,7 +30,7 @@ namespace GamemodesServer
         }
 
         [Tick]
-        private async Task OnTick()
+        private async Task OnTickHandleTeams()
         {
             if (!s_enableTeams)
             {
@@ -64,6 +64,21 @@ namespace GamemodesServer
             TeamsLoaded = true;
 
             await Task.FromResult(0);
+        }
+
+        [Tick]
+        private async Task OnTickBroadcastTeamStates()
+        {
+            List<SHTeamPlayer> sharedTeamPlayers = new List<SHTeamPlayer>();
+
+            foreach (TeamPlayer teamPlayer in s_teamPlayers)
+            {
+                sharedTeamPlayers.Add(new SHTeamPlayer(int.Parse(teamPlayer.Player.Handle), (int)teamPlayer.TeamType));
+            }
+
+            TriggerClientEvent("gamemodes:cl_sv_syncteams", sharedTeamPlayers);
+
+            await Delay(500);
         }
 
         public static EPlayerTeamType GetPlayerTeam(Player _player)

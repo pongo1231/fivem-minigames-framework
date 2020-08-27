@@ -48,6 +48,7 @@
     <Compile Include="SH_GmProp.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SH_Team.cs" />
+    <Compile Include="SH_TeamPlayer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

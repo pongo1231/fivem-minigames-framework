@@ -54,6 +54,7 @@
     <Compile Include="CL_MapManager.cs" />
     <Compile Include="CL_MusicManager.cs" />
     <Compile Include="CL_PlayerControlManager.cs" />
+    <Compile Include="CL_PlayerOverheadTextManager.cs" />
     <Compile Include="CL_PrestartCountdownManager.cs" />
     <Compile Include="CL_SpawnManager.cs" />
     <Compile Include="CL_TeamManager.cs" />
