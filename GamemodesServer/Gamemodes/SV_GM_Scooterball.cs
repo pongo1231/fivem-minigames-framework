@@ -25,7 +25,8 @@ namespace GamemodesServer.Gamemodes
 
         }
 
-        public override async Task OnPreStart()
+        [GamemodePreStart]
+        public new async Task OnPreStart()
         {
             m_redGoals = 0;
             m_blueGoals = 0;
@@ -35,9 +36,12 @@ namespace GamemodesServer.Gamemodes
 
             m_ball = await EntityPool.CreateProp("stt_prop_stunt_soccer_lball", s_ballSpawnPos, default, true);
             m_ball.IsPositionFrozen = true;
+
+            await Task.FromResult(0);
         }
 
-        public override async Task OnStart()
+        [GamemodeStart]
+        public new async Task OnStart()
         {
             m_ball.IsPositionFrozen = false;
             m_ball.Velocity = new Vector3(0f, 0f, -5f);
@@ -45,18 +49,23 @@ namespace GamemodesServer.Gamemodes
             await Task.FromResult(0);
         }
 
-        public override async Task OnPreStop()
+        [GamemodeTimerUp]
+        public new async Task OnTimerUp()
         {
+            if (m_redGoals == m_blueGoals)
+            {
+                TimerManager.SetOvertime();
+            }
+            else
+            {
+                Stop();
+            }
+
             await Task.FromResult(0);
         }
 
-        public override async Task OnStop()
-        {
-            await Task.FromResult(0);
-        }
-
-        [EventHandler("gamemodes:sv_cl_scooterball_requestscooter")]
-        private async void OnClientRequestScooter([FromSource] Player _player, Vector3 _pos, float _heading)
+        [GamemodeEventHandler("gamemodes:sv_cl_scooterball_requestscooter")]
+        private async void OnClientRequestScooter([FromSource]Player _player, Vector3 _pos, float _heading)
         {
             Vehicle scooter = await EntityPool.CreateVehicle("rcbandito", _pos, _heading);
 
@@ -126,18 +135,6 @@ namespace GamemodesServer.Gamemodes
                 {
                     await ResetBall();
                 }
-            }
-        }
-
-        public override void OnTimerUp()
-        {
-            if (m_redGoals == m_blueGoals)
-            {
-                TimerManager.SetOvertime();
-            }
-            else
-            {
-                Stop();
             }
         }
 

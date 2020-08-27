@@ -40,7 +40,6 @@ namespace GamemodesClient.Gamemodes
 
     public abstract class GamemodeScript : BaseScript
     {
-        protected bool IsGamemodeRunning { get; private set; } = false;
         protected bool IsGamemodePreStartRunning { get; private set; } = false;
 
         private string m_helpText;
@@ -56,19 +55,19 @@ namespace GamemodesClient.Gamemodes
         {
             m_helpText = _helpText;
 
-            Func<MethodInfo, Func<Task>> createDelegate = (MethodInfo _methodInfo) =>
-            {
-                return _methodInfo.IsStatic
-                    ? (Func<Task>)Delegate.CreateDelegate(typeof(Func<Task>), _methodInfo)
-                    : (Func<Task>)Delegate.CreateDelegate(typeof(Func<Task>), this, _methodInfo);
-            };
-
             EventHandlers[$"gamemodes:cl_sv_{_eventName}_prestart"] += new Action(OnPreStart);
             EventHandlers[$"gamemodes:cl_sv_{_eventName}_start"] += new Action(OnStart);
             EventHandlers[$"gamemodes:cl_sv_{_eventName}_prestop"] += new Action(OnPreStop);
             EventHandlers[$"gamemodes:cl_sv_{_eventName}_stop"] += new Action(OnStop);
 
             m_onTickFuncs.Add(OnTickHelpText);
+
+            Func<MethodInfo, Func<Task>> createDelegate = (MethodInfo _methodInfo) =>
+            {
+                return _methodInfo.IsStatic
+                    ? (Func<Task>)Delegate.CreateDelegate(typeof(Func<Task>), _methodInfo)
+                    : (Func<Task>)Delegate.CreateDelegate(typeof(Func<Task>), this, _methodInfo);
+            };
 
             foreach (MethodInfo methodInfo in GetType().GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance))
             {
@@ -107,21 +106,20 @@ namespace GamemodesClient.Gamemodes
 
         private async void OnPreStart()
         {
-            IsGamemodeRunning = true;
             IsGamemodePreStartRunning = true;
 
             PlayerControlManager.HasControl = false;
 
             PlayerOverheadTextManager.ShowOverheadText = false;
 
-            foreach (Func<Task> onTickFunc in m_onTickFuncs)
-            {
-                Tick += onTickFunc;
-            }
-
             if (m_onPreStart != null)
             {
                 await m_onPreStart();
+            }
+
+            foreach (Func<Task> onTickFunc in m_onTickFuncs)
+            {
+                Tick += onTickFunc;
             }
 
             TriggerServerEvent("gamemodes:sv_cl_prestartedgamemode");
@@ -149,16 +147,14 @@ namespace GamemodesClient.Gamemodes
 
         private async void OnPreStop()
         {
-            IsGamemodeRunning = false;
+            PlayerOverheadTextManager.ShowOverheadText = false;
+
+            MusicManager.Stop();
 
             foreach (Func<Task> onTickFunc in m_onTickFuncs)
             {
                 Tick -= onTickFunc;
             }
-
-            PlayerOverheadTextManager.ShowOverheadText = false;
-
-            MusicManager.Stop();
 
             if (m_onPreStop != null)
             {
