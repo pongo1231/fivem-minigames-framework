@@ -10,9 +10,10 @@ namespace GamemodesServer
     {
         private static List<Entity> s_entities = new List<Entity>();
 
-        public static async Task<Vehicle> CreateVehicle(string _model, Vector3 _pos, float _heading)
+        public static async Task<Vehicle> CreateVehicle(string _model, Vector3 _pos, Vector3 _rot)
         {
-            Vehicle vehicle = new Vehicle(API.CreateVehicle((uint)API.GetHashKey(_model), _pos.X, _pos.Y, _pos.Z, _heading, true, true));
+            Vehicle vehicle = new Vehicle(API.CreateVehicle((uint)API.GetHashKey(_model), _pos.X, _pos.Y, _pos.Z, 0f, true, true));
+            vehicle.Rotation = _rot;
 
             s_entities.Add(vehicle);
 

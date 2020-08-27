@@ -33,7 +33,7 @@ namespace GamemodesClient.Gamemodes
 
             Game.PlayerPed.IsInvincible = true;
 
-            TriggerServerEvent("gamemodes:sv_cl_scooterball_requestscooter", SpawnManager.SpawnPos, SpawnManager.SpawnRot.X);
+            TriggerServerEvent("gamemodes:sv_cl_scooterball_requestscooter", SpawnManager.SpawnPos, SpawnManager.SpawnRot);
 
             //API.SetTimecycleModifier("WeaponUpgrade");
             API.SetTimecycleModifier("MP_Arena_theme_atlantis");
@@ -178,19 +178,7 @@ namespace GamemodesClient.Gamemodes
 
                     if (m_scooter.Entity.Position.Z < 340f || m_scooter.Entity.IsDead)
                     {
-                        await ScreenUtils.FadeOut();
-
-                        m_scooter.Entity.RequestControl();
-
-                        m_scooter.Entity.Position = SpawnManager.SpawnPos;
-                        m_scooter.Entity.Rotation = default;
-                        m_scooter.Entity.Heading = SpawnManager.SpawnRot.X;
-                        m_scooter.Entity.Velocity = default;
-                        m_scooter.Entity.Repair();
-
-                        m_scooter.Entity.FadeIn();
-
-                        await ScreenUtils.FadeIn();
+                        await SpawnManager.Respawn();
                     }
                 }
             }

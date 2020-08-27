@@ -1,6 +1,8 @@
 ﻿using CitizenFX.Core;
+using CitizenFX.Core.Native;
 using GamemodesServer.Utils;
 using GamemodesShared;
+using System;
 using System.Threading.Tasks;
 
 namespace GamemodesServer.Gamemodes
@@ -32,7 +34,7 @@ namespace GamemodesServer.Gamemodes
             m_blueGoals = 0;
             m_scoredGoal = false;
 
-            await MapLoader.LoadMap("soccer_map_3.xml");
+            await MapLoader.LoadMap("soccer_map_4.xml");
 
             m_ball = await EntityPool.CreateProp("stt_prop_stunt_soccer_lball", s_ballSpawnPos, default, true);
             m_ball.IsPositionFrozen = true;
@@ -65,15 +67,22 @@ namespace GamemodesServer.Gamemodes
         }
 
         [GamemodeEventHandler("gamemodes:sv_cl_scooterball_requestscooter")]
-        private async void OnClientRequestScooter([FromSource]Player _player, Vector3 _pos, float _heading)
+        private async void OnClientRequestScooter([FromSource]Player _player, Vector3 _pos, Vector3 _rot)
         {
-            Vehicle scooter = await EntityPool.CreateVehicle("rcbandito", _pos, _heading);
+            try
+            {
+                Vehicle scooter = await EntityPool.CreateVehicle("rcbandito", _pos, _rot);
 
-            _player.Character.Position = scooter.Position;
+                _player.Character.Position = scooter.Position;
 
-            await Delay(200);
+                await Delay(200);
 
-            _player.TriggerEvent("gamemodes:cl_sv_scooterball_spawnedscooter", scooter.NetworkId);
+                _player.TriggerEvent("gamemodes:cl_sv_scooterball_spawnedscooter", scooter.NetworkId);
+            }
+            catch (Exception _e)
+            {
+                Debug.WriteLine($"{_e}");
+            }
         }
 
         [GamemodeTick]

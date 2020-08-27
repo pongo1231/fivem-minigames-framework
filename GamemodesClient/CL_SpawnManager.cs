@@ -1,5 +1,8 @@
 ﻿using CitizenFX.Core;
+using CitizenFX.Core.Native;
+using GamemodesClient.Utils;
 using System;
+using System.Threading.Tasks;
 
 namespace GamemodesClient.Gamemodes
 {
@@ -12,12 +15,46 @@ namespace GamemodesClient.Gamemodes
         private void OnSetSpawn(Vector3 _spawnPos, Vector3 _spawnRot)
         {
             SpawnPos = _spawnPos;
-            SpawnRot = _spawnPos;
-
-            Game.PlayerPed.Position = _spawnPos;
-            Game.PlayerPed.Rotation = _spawnRot;
+            SpawnRot = _spawnRot;
 
             TriggerServerEvent("gamemodes:sv_cl_gotspawn");
+        }
+
+        public static async Task Respawn()
+        {
+            await ScreenUtils.FadeOut();
+
+            Vehicle vehicle = Game.PlayerPed.CurrentVehicle;
+
+            Entity target = Game.PlayerPed;
+
+            if (target != null)
+            {
+                target = vehicle;
+            }
+
+            target.RequestControl();
+
+            if (SpawnPos != default)
+            {
+                target.Position = SpawnPos;
+            }
+
+            if (SpawnRot != default)
+            {
+                target.Rotation = SpawnRot;
+            }
+
+            target.Velocity = default;
+
+            if (API.GetEntityType(target.Handle) == 2)
+            {
+                ((Vehicle)target).Repair();
+            }
+
+            target.FadeIn();
+
+            await ScreenUtils.FadeIn();
         }
     }
 }
