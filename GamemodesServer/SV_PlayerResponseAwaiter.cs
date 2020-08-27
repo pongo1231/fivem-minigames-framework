@@ -29,7 +29,7 @@ namespace GamemodesServer
                 hasCompleted = true;
             };
 
-            s_instance.EventHandlers[_clientServerEventName] += callback;
+            EventHandlers[_clientServerEventName] += callback;
 
             _player.TriggerEvent(_serverClientEventName, _serverClientEventArgs);
 
@@ -61,7 +61,7 @@ namespace GamemodesServer
                 await Delay(0);
             }
 
-            s_instance.EventHandlers[_clientServerEventName] -= callback;
+            EventHandlers[_clientServerEventName] -= callback;
         }
 
         public static async Task AwaitResponse(Player _player, string _serverClientEventName, string _clientServerEventName, params object[] _serverClientEventArgs)

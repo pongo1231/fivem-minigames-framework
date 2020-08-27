@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GamemodesShared;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -69,9 +70,10 @@ namespace GamemodesServer.Gamemodes
             }
         }
 
-        public string Name { get; private set; }
-        public string EventName { get; private set; }
-        public int TimerSeconds { get; private set; }
+        public string Name { get; protected set; } = "???";
+        public string Description { get; protected set; } = "???";
+        public string EventName { get; protected set; } = "null";
+        public int TimerSeconds { get; protected set; } = 180;
 
         protected bool IsGamemodePreStartRunning { get; private set; } = false;
 
@@ -84,12 +86,8 @@ namespace GamemodesServer.Gamemodes
         private List<GamemodeEventHandler> m_eventHandlers = new List<GamemodeEventHandler>();
         private List<Func<Task>> m_onTickFuncs = new List<Func<Task>>();
 
-        public GamemodeScript(string _name, string _eventName, int _timerSeconds)
+        public GamemodeScript()
         {
-            Name = _name;
-            EventName = _eventName;
-            TimerSeconds = _timerSeconds;
-
             Func<MethodInfo, Func<Task>> createDelegate = (MethodInfo _methodInfo) =>
             {
                 return _methodInfo.IsStatic
@@ -218,6 +216,8 @@ namespace GamemodesServer.Gamemodes
                 await m_onTimerUp();
             }
         }
+
+        public abstract EPlayerTeamType GetWinnerTeam();
 
         protected void Stop()
         {

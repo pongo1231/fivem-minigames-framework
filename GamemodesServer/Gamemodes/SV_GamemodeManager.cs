@@ -1,4 +1,5 @@
 ﻿using CitizenFX.Core;
+using GamemodesShared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -85,7 +86,11 @@ namespace GamemodesServer.Gamemodes
 
                 if (!m_fullyLoadedGamemode)
                 {
-                    await Delay(2000);
+                    TriggerClientEvent("gamemodes:cl_sv_showprestartcam", s_curGamemode.Name, s_curGamemode.Description);
+
+                    await Delay(8000);
+
+                    TriggerClientEvent("gamemodes:cl_sv_hideprestartcam");
 
                     m_fullyLoadedGamemode = true;
                 }
@@ -140,7 +145,9 @@ namespace GamemodesServer.Gamemodes
 
             await Delay(1000);
 
-            TriggerClientEvent("gamemodes:cl_sv_showwinnercam");
+            EPlayerTeamType winnerTeam = s_curGamemode.GetWinnerTeam();
+
+            TriggerClientEvent("gamemodes:cl_sv_showwinnercam", (int)winnerTeam);
 
             await Delay(10000);
 

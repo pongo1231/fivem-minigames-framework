@@ -1,5 +1,4 @@
 ﻿using CitizenFX.Core;
-using CitizenFX.Core.Native;
 using GamemodesServer.Utils;
 using GamemodesShared;
 using System;
@@ -25,9 +24,12 @@ namespace GamemodesServer.Gamemodes
         private static readonly Vector3 s_blueGoalPos1 = new Vector3(1557f, 6595f, 355f);
         private static readonly Vector3 s_blueGoalPos2 = new Vector3(1556f, 6579f, 363f);
 
-        public Scooterball() : base("Scooter Ball", "scooterball", 180)
+        public Scooterball()
         {
-
+            Name = "Bandito Ball";
+            Description = "Propel balls towards the enemies' goal!";
+            EventName = "scooterball";
+            TimerSeconds = 180;
         }
 
         [GamemodePreStart]
@@ -69,6 +71,11 @@ namespace GamemodesServer.Gamemodes
             }
 
             await Task.FromResult(0);
+        }
+
+        public override EPlayerTeamType GetWinnerTeam()
+        {
+            return m_redGoals > m_blueGoals ? EPlayerTeamType.TEAM_RED : EPlayerTeamType.TEAM_BLUE;
         }
 
         [GamemodeEventHandler("gamemodes:sv_cl_scooterball_requestscooter")]
