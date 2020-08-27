@@ -3,6 +3,7 @@ using CitizenFX.Core.Native;
 using GamemodesServer.Utils;
 using GamemodesShared;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace GamemodesServer.Gamemodes
@@ -12,6 +13,8 @@ namespace GamemodesServer.Gamemodes
         private int m_blueGoals;
         private int m_redGoals;
         private bool m_scoredGoal = false;
+
+        private List<Player> m_scooterPlayers = new List<Player>();
 
         private Prop m_ball;
         private static readonly Vector3 s_ballSpawnPos = new Vector3(1498f, 6600f, 370f);
@@ -33,6 +36,8 @@ namespace GamemodesServer.Gamemodes
             m_redGoals = 0;
             m_blueGoals = 0;
             m_scoredGoal = false;
+
+            m_scooterPlayers.Clear();
 
             await MapLoader.LoadMap("soccer_map_4.xml");
 
@@ -71,13 +76,18 @@ namespace GamemodesServer.Gamemodes
         {
             try
             {
-                Vehicle scooter = await EntityPool.CreateVehicle("rcbandito", _pos, _rot);
+                if (!m_scooterPlayers.Contains(_player))
+                {
+                    m_scooterPlayers.Add(_player);
 
-                _player.Character.Position = scooter.Position;
+                    Vehicle scooter = await EntityPool.CreateVehicle("rcbandito", _pos, _rot);
 
-                await Delay(200);
+                    _player.Character.Position = scooter.Position;
 
-                _player.TriggerEvent("gamemodes:cl_sv_scooterball_spawnedscooter", scooter.NetworkId);
+                    await Delay(200);
+
+                    _player.TriggerEvent("gamemodes:cl_sv_scooterball_spawnedscooter", scooter.NetworkId);
+                }
             }
             catch (Exception _e)
             {
