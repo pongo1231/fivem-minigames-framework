@@ -106,6 +106,8 @@ namespace GamemodesClient.Gamemodes
 
             PlayerControlManager.HasControl = false;
 
+            PlayerOverheadTextManager.ShowOverheadText = false;
+
             foreach (Func<Task> onTickFunc in m_onTickFuncs)
             {
                 Tick += onTickFunc;
@@ -124,6 +126,8 @@ namespace GamemodesClient.Gamemodes
             IsPreStartRunning = false;
 
             PlayerControlManager.HasControl = true;
+
+            PlayerOverheadTextManager.ShowOverheadText = true;
 
             MusicManager.Play();
 
@@ -145,6 +149,8 @@ namespace GamemodesClient.Gamemodes
             {
                 Tick -= onTickFunc;
             }
+
+            PlayerOverheadTextManager.ShowOverheadText = false;
 
             MusicManager.Stop();
 

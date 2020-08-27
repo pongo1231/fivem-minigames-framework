@@ -9,6 +9,8 @@ namespace GamemodesClient
 {
     public class PlayerOverheadTextManager : BaseScript
     {
+        public static bool ShowOverheadText = true;
+
         private class OverheadPlayer
         {
             public OverheadPlayer(Player _player)
@@ -49,6 +51,8 @@ namespace GamemodesClient
                     {
                         overheadPlayer.OverheadHandle = API.CreateFakeMpGamerTag(player.Character.Handle, player.Name, false, false, null, 0);
                     }
+                    
+                    API.SetMpGamerTagVisibility(overheadPlayer.OverheadHandle, 0, ShowOverheadText);
 
                     SHTeamPlayer teamPlayer = TeamManager.TeamPlayers.Find(_teamPlayer => _teamPlayer.PlayerNetId == player.ServerId);
 
