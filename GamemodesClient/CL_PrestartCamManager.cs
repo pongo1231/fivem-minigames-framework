@@ -30,7 +30,7 @@ namespace GamemodesClient
 
             m_prestartScaleform.CallFunction("ADD_OBJECTIVE_TO_WALL", "SUMMARY", $"~y~{_gamemodeName}", $"~g~{_gamemodeDescription}", true);
 
-            m_prestartScaleform.CallFunction("SET_PAUSE_DURATION", 5f);
+            m_prestartScaleform.CallFunction("SET_PAUSE_DURATION", 12f);
 
             m_prestartScaleform.CallFunction("SHOW_STAT_WALL", "SUMMARY");
         }

@@ -88,7 +88,7 @@ namespace GamemodesServer.Gamemodes
                 {
                     TriggerClientEvent("gamemodes:cl_sv_showprestartcam", s_curGamemode.Name, s_curGamemode.Description);
 
-                    await Delay(8000);
+                    await Delay(15000);
 
                     TriggerClientEvent("gamemodes:cl_sv_hideprestartcam");
 
