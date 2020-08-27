@@ -1,4 +1,5 @@
 ﻿using CitizenFX.Core;
+using CitizenFX.Core.Native;
 using System;
 using System.Collections.Generic;
 
@@ -29,7 +30,14 @@ namespace GamemodesClient
         [EventHandler("gamemodes:cl_sv_deleteentity")]
         private void OnServerDeleteEntity(int _netId)
         {
-            new GmNetEntity<Prop>(_netId, true).Entity?.Delete();
+            GmNetEntity<Entity> netEntity = new GmNetEntity<Entity>(_netId, true);
+
+            if (netEntity.Exists)
+            {
+                API.SetEntityAsMissionEntity(netEntity.Entity.Handle, false, false);
+
+                netEntity.Entity.Delete();
+            }
         }
     }
 }
