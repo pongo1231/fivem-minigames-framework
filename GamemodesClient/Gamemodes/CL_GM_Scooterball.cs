@@ -20,7 +20,7 @@ namespace GamemodesClient.Gamemodes
 
         private Text m_goalsText = new Text(null, new PointF(640f, 50f), 1.5f, Color.FromArgb(255, 255, 255), Font.Pricedown, Alignment.Center, true, true);
 
-        public Scooterball() : base("scooterball")
+        public Scooterball() : base("scooterball", "~INPUT_VEH_ROCKET_BOOST~  -  Boost\n~INPUT_JUMP~  -  Jump")
         {
 
         }
@@ -139,7 +139,7 @@ namespace GamemodesClient.Gamemodes
 
             //API.SetGravityLevel(1);
 
-            if (!IsPreStartRunning)
+            if (!IsGamemodePreStartRunning)
             {
                 m_goalsText.Draw();
 
@@ -164,7 +164,7 @@ namespace GamemodesClient.Gamemodes
                     Game.PlayerPed.SetIntoVehicle(m_scooter.Entity, VehicleSeat.Driver);
                 }
 
-                if (!IsPreStartRunning)
+                if (!IsGamemodePreStartRunning)
                 {
                     Game.DisableControlThisFrame(1, Control.VehicleHandbrake);
                     if (Game.IsControlJustPressed(1, Control.Jump) && !m_scooter.Entity.IsInAir)

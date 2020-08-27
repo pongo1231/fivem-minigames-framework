@@ -56,7 +56,7 @@ namespace GamemodesServer.Gamemodes
         }
 
         [EventHandler("gamemodes:sv_cl_scooterball_requestscooter")]
-        private async void OnClientRequestScooter([FromSource]Player _player, Vector3 _pos, float _heading)
+        private async void OnClientRequestScooter([FromSource] Player _player, Vector3 _pos, float _heading)
         {
             Vehicle scooter = await EntityPool.CreateVehicle("rcbandito", _pos, _heading);
 

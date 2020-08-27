@@ -23,7 +23,7 @@ namespace GamemodesClient
             Screen.Hud.IsRadarVisible = false;
 
             m_winnerScaleform = new Scaleform("MP_CELEBRATION");
-            m_winnerScaleform.CallFunction("ADD_MISSION_RESULT_TO_WALL", "SUMMARY", "Match Over", "Trolololol", "lol?", true, true, true, 255, 0);
+            //m_winnerScaleform.CallFunction("ADD_OBJECTIVE_TO_WALL", "SUMMARY", "Match Over", "Trolololol", true);
 
             Game.Pause(true);
         }

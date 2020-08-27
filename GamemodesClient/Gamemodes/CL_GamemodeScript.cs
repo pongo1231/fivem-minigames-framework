@@ -41,7 +41,9 @@ namespace GamemodesClient.Gamemodes
     public abstract class GamemodeScript : BaseScript
     {
         protected bool IsGamemodeRunning { get; private set; } = false;
-        protected bool IsPreStartRunning { get; private set; } = false;
+        protected bool IsGamemodePreStartRunning { get; private set; } = false;
+
+        private string m_helpText;
 
         private Func<Task> m_onPreStart;
         private Func<Task> m_onStart;
@@ -50,8 +52,10 @@ namespace GamemodesClient.Gamemodes
 
         private List<Func<Task>> m_onTickFuncs = new List<Func<Task>>();
 
-        public GamemodeScript(string _eventName)
+        public GamemodeScript(string _eventName, string _helpText)
         {
+            m_helpText = _helpText;
+
             Func<MethodInfo, Func<Task>> createDelegate = (MethodInfo _methodInfo) =>
             {
                 return _methodInfo.IsStatic
@@ -63,6 +67,8 @@ namespace GamemodesClient.Gamemodes
             EventHandlers[$"gamemodes:cl_sv_{_eventName}_start"] += new Action(OnStart);
             EventHandlers[$"gamemodes:cl_sv_{_eventName}_prestop"] += new Action(OnPreStop);
             EventHandlers[$"gamemodes:cl_sv_{_eventName}_stop"] += new Action(OnStop);
+
+            m_onTickFuncs.Add(OnTickHelpText);
 
             foreach (MethodInfo methodInfo in GetType().GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance))
             {
@@ -102,7 +108,7 @@ namespace GamemodesClient.Gamemodes
         private async void OnPreStart()
         {
             IsGamemodeRunning = true;
-            IsPreStartRunning = true;
+            IsGamemodePreStartRunning = true;
 
             PlayerControlManager.HasControl = false;
 
@@ -123,7 +129,7 @@ namespace GamemodesClient.Gamemodes
 
         private async void OnStart()
         {
-            IsPreStartRunning = false;
+            IsGamemodePreStartRunning = false;
 
             PlayerControlManager.HasControl = true;
 
@@ -173,6 +179,16 @@ namespace GamemodesClient.Gamemodes
             }
 
             TriggerServerEvent("gamemodes:sv_cl_stoppedgamemode");
+        }
+
+        private async Task OnTickHelpText()
+        {
+            if (!IsGamemodePreStartRunning && m_helpText != null)
+            {
+                Screen.DisplayHelpTextThisFrame(m_helpText);
+            }
+
+            await Task.FromResult(0);
         }
     }
 }
