@@ -22,12 +22,12 @@ namespace GamemodesServer
 
             int timeoutTries = 3;
 
-            Action<Player> callback = new Action<Player>((Player player) =>
+            Action<Player> callback = (Player player) =>
             {
                 Debug.WriteLine($"Got response from client for {_serverClientEventName}!");
 
                 hasCompleted = true;
-            });
+            };
 
             s_instance.EventHandlers[_clientServerEventName] += callback;
 

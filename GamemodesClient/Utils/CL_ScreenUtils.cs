@@ -17,5 +17,10 @@ namespace GamemodesClient.Utils
             Screen.Fading.FadeOut(200);
             await BaseScript.Delay(200);
         }
+
+        public static void ShowSubtitle(string _text)
+        {
+            Screen.ShowSubtitle(_text, 500);
+        }
     }
 }
