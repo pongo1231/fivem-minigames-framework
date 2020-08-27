@@ -20,7 +20,7 @@ namespace GamemodesServer.Gamemodes
         private static readonly Vector3 s_blueGoalPos1 = new Vector3(1557f, 6595f, 355f);
         private static readonly Vector3 s_blueGoalPos2 = new Vector3(1556f, 6579f, 363f);
 
-        public Scooterball() : base("Scooter Ball", "scooterball", 180)
+        public Scooterball() : base("Scooter Ball", "scooterball", 10)
         {
 
         }
@@ -40,6 +40,16 @@ namespace GamemodesServer.Gamemodes
         {
             m_ball.Velocity = new Vector3(0f, 0f, -5f);
 
+            await Task.FromResult(0);
+        }
+
+        public override async Task OnPreStop()
+        {
+            await Task.FromResult(0);
+        }
+
+        public override async Task OnStop()
+        {
             await Task.FromResult(0);
         }
 

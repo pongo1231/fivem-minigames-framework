@@ -181,6 +181,8 @@ namespace GamemodesServer.Gamemodes
 
             TimerManager.StopTimer();
 
+            await s_curGamemode.OnPreStop();
+
             await PlayerResponseAwaiter.AwaitResponse($"gamemodes:cl_sv_{s_curGamemode.EventName}_prestop", "gamemodes:sv_cl_prestoppedgamemode");
 
             await Delay(1000);
@@ -190,6 +192,8 @@ namespace GamemodesServer.Gamemodes
             await Delay(10000);
 
             TriggerClientEvent("gamemodes:cl_sv_hidewinnercam");
+
+            await s_curGamemode.OnStop();
 
             await PlayerResponseAwaiter.AwaitResponse($"gamemodes:cl_sv_{s_curGamemode.EventName}_stop", "gamemodes:sv_cl_stoppedgamemode");
 

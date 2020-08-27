@@ -17,7 +17,7 @@ namespace GamemodesClient
                 return;
             }
 
-            while (API.GetIsLoadingScreenActive() || Game.PlayerPed == null || !Game.PlayerPed.Exists())
+            while (API.GetIsLoadingScreenActive() || !Game.PlayerPed.Exists())
             {
                 await Delay(0);
             }

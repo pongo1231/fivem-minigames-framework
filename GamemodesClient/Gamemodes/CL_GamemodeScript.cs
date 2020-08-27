@@ -59,39 +59,36 @@ namespace GamemodesClient.Gamemodes
                     : (Func<Task>)Delegate.CreateDelegate(typeof(Func<Task>), this, _methodInfo);
             };
 
+            EventHandlers[$"gamemodes:cl_sv_{_eventName}_prestart"] += new Action(OnPreStart);
+            EventHandlers[$"gamemodes:cl_sv_{_eventName}_start"] += new Action(OnStart);
+            EventHandlers[$"gamemodes:cl_sv_{_eventName}_prestop"] += new Action(OnPreStop);
+            EventHandlers[$"gamemodes:cl_sv_{_eventName}_stop"] += new Action(OnStop);
+
             foreach (MethodInfo methodInfo in GetType().GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance))
             {
                 if (methodInfo.GetCustomAttribute(typeof(GamemodePreStartAttribute)) != null)
                 {
-                    Debug.WriteLine($"Registering OnPreStart for gamemode {methodInfo.DeclaringType.Name}");
+                    Debug.WriteLine($"Registering custom OnPreStart for gamemode {methodInfo.DeclaringType.Name}");
 
                     m_onPreStart = createDelegate(methodInfo);
-
-                    EventHandlers[$"gamemodes:cl_sv_{_eventName}_prestart"] += new Action(OnPreStart);
                 }
                 else if (methodInfo.GetCustomAttribute(typeof(GamemodeStartAttribute)) != null)
                 {
-                    Debug.WriteLine($"Registering OnStart for gamemode {methodInfo.DeclaringType.Name}");
+                    Debug.WriteLine($"Registering custom OnStart for gamemode {methodInfo.DeclaringType.Name}");
 
                     m_onStart = createDelegate(methodInfo);
-
-                    EventHandlers[$"gamemodes:cl_sv_{_eventName}_start"] += new Action(OnStart);
                 }
                 else if (methodInfo.GetCustomAttribute(typeof(GamemodePreStopAttribute)) != null)
                 {
-                    Debug.WriteLine($"Registering OnPreStop for gamemode {methodInfo.DeclaringType.Name}");
+                    Debug.WriteLine($"Registering custom OnPreStop for gamemode {methodInfo.DeclaringType.Name}");
 
                     m_onPreStop = createDelegate(methodInfo);
-
-                    EventHandlers[$"gamemodes:cl_sv_{_eventName}_prestop"] += new Action(OnPreStop);
                 }
                 else if (methodInfo.GetCustomAttribute(typeof(GamemodeStopAttribute)) != null)
                 {
-                    Debug.WriteLine($"Registering OnStop for gamemode {methodInfo.DeclaringType.Name}");
+                    Debug.WriteLine($"Registering custom OnStop for gamemode {methodInfo.DeclaringType.Name}");
 
                     m_onStop = createDelegate(methodInfo);
-
-                    EventHandlers[$"gamemodes:cl_sv_{_eventName}_stop"] += new Action(OnStop);
                 }
                 else if (methodInfo.GetCustomAttribute(typeof(GamemodeTickAttribute)) != null)
                 {
@@ -107,14 +104,17 @@ namespace GamemodesClient.Gamemodes
             IsGamemodeRunning = true;
             IsPreStartRunning = true;
 
-            API.SetPlayerControl(Game.Player.Handle, false, 1 << 8);
+            PlayerControlManager.HasControl = false;
 
             foreach (Func<Task> onTickFunc in m_onTickFuncs)
             {
                 Tick += onTickFunc;
             }
 
-            await m_onPreStart?.Invoke();
+            if (m_onPreStart != null)
+            {
+                await m_onPreStart();
+            }
 
             TriggerServerEvent("gamemodes:sv_cl_prestartedgamemode");
         }
@@ -123,13 +123,16 @@ namespace GamemodesClient.Gamemodes
         {
             IsPreStartRunning = false;
 
-            API.SetPlayerControl(Game.Player.Handle, true, 0);
+            PlayerControlManager.HasControl = true;
 
             MusicManager.Play();
 
             Screen.Effects.Start(ScreenEffect.MpCelebWinOut);
 
-            await m_onStart?.Invoke();
+            if (m_onStart != null)
+            {
+                await m_onStart();
+            }
 
             TriggerServerEvent("gamemodes:sv_cl_startedgamemode");
         }
@@ -145,7 +148,10 @@ namespace GamemodesClient.Gamemodes
 
             MusicManager.Stop();
 
-            await m_onPreStop?.Invoke();
+            if (m_onPreStop != null)
+            {
+                await m_onPreStop();
+            }
 
             TriggerServerEvent("gamemodes:sv_cl_prestoppedgamemode");
         }
@@ -155,7 +161,10 @@ namespace GamemodesClient.Gamemodes
             API.ClearTimecycleModifier();
             API.ClearExtraTimecycleModifier();
 
-            await m_onStop?.Invoke();
+            if (m_onStop != null)
+            {
+                await m_onStop();
+            }
 
             TriggerServerEvent("gamemodes:sv_cl_stoppedgamemode");
         }

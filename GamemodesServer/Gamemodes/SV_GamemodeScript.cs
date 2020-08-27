@@ -28,6 +28,10 @@ namespace GamemodesServer.Gamemodes
 
         public abstract Task OnStart();
 
+        public abstract Task OnPreStop();
+
+        public abstract Task OnStop();
+
         public abstract void OnTimerUp();
 
         protected void Stop()
