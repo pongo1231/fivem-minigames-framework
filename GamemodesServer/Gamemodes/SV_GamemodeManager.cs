@@ -157,6 +157,8 @@ namespace GamemodesServer.Gamemodes
 
             await PlayerResponseAwaiter.AwaitResponse($"gamemodes:cl_sv_{s_curGamemode.EventName}_stop", "gamemodes:sv_cl_stoppedgamemode");
 
+            await Delay(15000);
+
             EntityPool.ClearEntities();
 
             s_curGamemode = null;
