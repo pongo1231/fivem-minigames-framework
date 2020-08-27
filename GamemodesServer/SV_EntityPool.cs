@@ -1,5 +1,6 @@
 ﻿using CitizenFX.Core;
 using CitizenFX.Core.Native;
+using GamemodesServer.Utils;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -17,6 +18,11 @@ namespace GamemodesServer
 
             await BaseScript.Delay(750);
 
+            while (!vehicle.Exists())
+            {
+                await BaseScript.Delay(0);
+            }
+
             return vehicle;
         }
 
@@ -29,6 +35,11 @@ namespace GamemodesServer
 
             await BaseScript.Delay(750);
 
+            while (!prop.Exists())
+            {
+                await BaseScript.Delay(0);
+            }
+
             return prop;
         }
 
@@ -36,13 +47,9 @@ namespace GamemodesServer
         {
             foreach (Entity entity in s_entities)
             {
-                try
+                if (entity.Exists())
                 {
-                    BaseScript.TriggerClientEvent("gamemodes:cl_sv_deleteentity", entity.NetworkId);
-                }
-                catch (System.InvalidOperationException)
-                {
-                    Debug.WriteLine("Couldn't find and delete entity!");
+                    entity.Delete();
                 }
             }
 

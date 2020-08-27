@@ -26,18 +26,5 @@ namespace GamemodesClient
         {
             EntityPool.ClearEntities();
         }
-
-        [EventHandler("gamemodes:cl_sv_deleteentity")]
-        private void OnServerDeleteEntity(int _netId)
-        {
-            GmNetEntity<Entity> netEntity = new GmNetEntity<Entity>(_netId, true);
-
-            if (netEntity.Exists)
-            {
-                API.SetEntityAsMissionEntity(netEntity.Entity.Handle, false, false);
-
-                netEntity.Entity.Delete();
-            }
-        }
     }
 }
