@@ -12,6 +12,8 @@ namespace GamemodesServer
 
         public static async Task<Vehicle> CreateVehicle(string _model, Vector3 _pos, Vector3 _rot)
         {
+            EntityPoolGuard.AllowThrough = true;
+
             Vehicle vehicle = new Vehicle(API.CreateVehicle((uint)API.GetHashKey(_model), _pos.X, _pos.Y, _pos.Z, 0f, true, true));
             vehicle.Rotation = _rot;
 
@@ -24,11 +26,15 @@ namespace GamemodesServer
                 await BaseScript.Delay(0);
             }
 
+            EntityPoolGuard.AllowThrough = false;
+
             return vehicle;
         }
 
         public static async Task<Prop> CreateProp(string _model, Vector3 _pos, Vector3 _rot, bool _dynamic)
         {
+            EntityPoolGuard.AllowThrough = true;
+
             Prop prop = new Prop(API.CreateObjectNoOffset((uint)API.GetHashKey(_model), _pos.X, _pos.Y, _pos.Z, true, true, _dynamic));
             prop.Rotation = _rot;
 
@@ -40,6 +46,8 @@ namespace GamemodesServer
             {
                 await BaseScript.Delay(0);
             }
+
+            EntityPoolGuard.AllowThrough = false;
 
             return prop;
         }
