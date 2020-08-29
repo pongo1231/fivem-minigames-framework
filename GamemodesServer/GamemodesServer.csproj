@@ -49,9 +49,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Gamemodes\Scooterball\SV_GM_Scooterball_Map.cs" />
+    <Compile Include="Gamemodes\Scooterball\SV_GM_Scooterball_Map_1.cs" />
+    <Compile Include="Gamemodes\SV_GamemodeBaseScript.cs" />
     <Compile Include="Gamemodes\SV_GamemodeScript.cs" />
     <Compile Include="Gamemodes\SV_GamemodeManager.cs" />
-    <Compile Include="Gamemodes\SV_GM_Scooterball.cs" />
+    <Compile Include="Gamemodes\Scooterball\SV_GM_Scooterball.cs" />
+    <Compile Include="Gamemodes\SV_GamemodeMap.cs" />
     <Compile Include="SV_EntityPool.cs" />
     <Compile Include="SV_PlayerLoadStateManager.cs" />
     <Compile Include="SV_PlayerResponseAwaiter.cs" />
@@ -62,6 +66,7 @@
     <Compile Include="SV_TeamManager.cs" />
     <Compile Include="SV_TimerManager.cs" />
     <Compile Include="Utils\SV_EntityUtils.cs" />
+    <Compile Include="Utils\SV_Log.cs" />
     <Compile Include="Utils\SV_MathUtils.cs" />
   </ItemGroup>
   <ItemGroup>

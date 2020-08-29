@@ -1,4 +1,5 @@
-﻿using GamemodesShared;
+﻿using GamemodesServer.Utils;
+using GamemodesShared;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -56,7 +57,7 @@ namespace GamemodesServer.Gamemodes
 
     }
 
-    public abstract class GamemodeScript : GmScript
+    public abstract class GamemodeScript<MapType> : GamemodeBaseScript where MapType : GamemodeMap
     {
         private struct GamemodeEventHandler
         {
@@ -70,12 +71,8 @@ namespace GamemodesServer.Gamemodes
             }
         }
 
-        public string Name { get; protected set; } = "???";
-        public string Description { get; protected set; } = "???";
-        public string EventName { get; protected set; } = "null";
-        public int TimerSeconds { get; protected set; } = 180;
-
         protected bool IsGamemodePreStartRunning { get; private set; } = false;
+        protected MapType CurrentMap { get; private set; }
 
         private Func<Task> m_onPreStart;
         private Func<Task> m_onStart;
@@ -85,6 +82,8 @@ namespace GamemodesServer.Gamemodes
 
         private List<GamemodeEventHandler> m_eventHandlers = new List<GamemodeEventHandler>();
         private List<Func<Task>> m_onTickFuncs = new List<Func<Task>>();
+
+        private List<MapType> m_gamemodeMaps = new List<MapType>();
 
         public GamemodeScript()
         {
@@ -99,37 +98,37 @@ namespace GamemodesServer.Gamemodes
             {
                 if (methodInfo.GetCustomAttribute(typeof(GamemodePreStartAttribute)) != null)
                 {
-                    Debug.WriteLine($"Registering custom OnPreStart for gamemode {methodInfo.DeclaringType.Name}");
+                    Log.WriteLine($"Registering custom OnPreStart for gamemode {methodInfo.DeclaringType.Name}");
 
                     m_onPreStart = createDelegate(methodInfo);
                 }
                 else if (methodInfo.GetCustomAttribute(typeof(GamemodeStartAttribute)) != null)
                 {
-                    Debug.WriteLine($"Registering custom OnStart for gamemode {methodInfo.DeclaringType.Name}");
+                    Log.WriteLine($"Registering custom OnStart for gamemode {methodInfo.DeclaringType.Name}");
 
                     m_onStart = createDelegate(methodInfo);
                 }
                 else if (methodInfo.GetCustomAttribute(typeof(GamemodePreStopAttribute)) != null)
                 {
-                    Debug.WriteLine($"Registering custom OnPreStop for gamemode {methodInfo.DeclaringType.Name}");
+                    Log.WriteLine($"Registering custom OnPreStop for gamemode {methodInfo.DeclaringType.Name}");
 
                     m_onPreStop = createDelegate(methodInfo);
                 }
                 else if (methodInfo.GetCustomAttribute(typeof(GamemodeStopAttribute)) != null)
                 {
-                    Debug.WriteLine($"Registering custom OnStop for gamemode {methodInfo.DeclaringType.Name}");
+                    Log.WriteLine($"Registering custom OnStop for gamemode {methodInfo.DeclaringType.Name}");
 
                     m_onStop = createDelegate(methodInfo);
                 }
                 else if (methodInfo.GetCustomAttribute(typeof(GamemodeTimerUpAttribute)) != null)
                 {
-                    Debug.WriteLine($"Registering custom OnTimerUp for gamemode {methodInfo.DeclaringType.Name}");
+                    Log.WriteLine($"Registering custom OnTimerUp for gamemode {methodInfo.DeclaringType.Name}");
 
                     m_onTimerUp = createDelegate(methodInfo);
                 }
                 else if (methodInfo.GetCustomAttribute(typeof(GamemodeEventHandlerAttribute)) != null)
                 {
-                    Debug.WriteLine($"Registering EventHandler for gamemode {methodInfo.DeclaringType.Name}");
+                    Log.WriteLine($"Registering EventHandler for gamemode {methodInfo.DeclaringType.Name}");
 
                     string eventName = ((GamemodeEventHandlerAttribute)methodInfo.GetCustomAttribute(typeof(GamemodeEventHandlerAttribute))).EventName;
 
@@ -144,18 +143,34 @@ namespace GamemodesServer.Gamemodes
                 }
                 else if (methodInfo.GetCustomAttribute(typeof(GamemodeTickAttribute)) != null)
                 {
-                    Debug.WriteLine($"Registering OnTick for gamemode {methodInfo.DeclaringType.Name}");
+                    Log.WriteLine($"Registering OnTick for gamemode {methodInfo.DeclaringType.Name}");
 
                     m_onTickFuncs.Add(createDelegate(methodInfo));
                 }
             }
 
+            foreach (Type type in Assembly.GetExecutingAssembly().GetTypes().Where(_type => _type.IsClass && !_type.IsAbstract && _type.IsSubclassOf(typeof(MapType))))
+            {
+                Log.WriteLine($"Registering map {type.Name} for gamemode {GetType().Name}");
+
+                m_gamemodeMaps.Add((MapType)Activator.CreateInstance(type));
+            }
+
+            if (m_gamemodeMaps.Count == 0)
+            {
+                Log.WriteLine($"!!! GAMEMODE {GetType().Name} HAS NO MAPS REGISTERED !!!");
+            }
+
             GamemodeManager.RegisterGamemode(this);
         }
 
-        public async Task OnPreStart()
+        public override async Task PreStart()
         {
             IsGamemodePreStartRunning = true;
+
+            CurrentMap = m_gamemodeMaps[new Random().Next(0, m_gamemodeMaps.Count)];
+
+            await CurrentMap.Load();
 
             if (m_onPreStart != null)
             {
@@ -173,7 +188,7 @@ namespace GamemodesServer.Gamemodes
             }
         }
 
-        public async Task OnStart()
+        public override async Task Start()
         {
             IsGamemodePreStartRunning = false;
 
@@ -183,7 +198,7 @@ namespace GamemodesServer.Gamemodes
             }
         }
 
-        public async Task OnPreStop()
+        public override async Task PreStop()
         {
             foreach (GamemodeEventHandler eventHandler in m_eventHandlers)
             {
@@ -201,15 +216,19 @@ namespace GamemodesServer.Gamemodes
             }
         }
 
-        public async Task OnStop()
+        public override async Task Stop()
         {
+            await CurrentMap.Unload();
+
+            EntityPool.ClearEntities();
+
             if (m_onStop != null)
             {
                 await m_onStop();
             }
         }
 
-        public async void OnTimerUp()
+        public override async void TimerUp()
         {
             if (m_onTimerUp != null)
             {
@@ -217,9 +236,9 @@ namespace GamemodesServer.Gamemodes
             }
         }
 
-        public abstract EPlayerTeamType GetWinnerTeam();
+        public override abstract EPlayerTeamType GetWinnerTeam();
 
-        protected void Stop()
+        protected void StopGamemode()
         {
             GamemodeManager.StopGamemode();
         }

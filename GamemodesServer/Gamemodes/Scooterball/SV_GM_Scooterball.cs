@@ -5,9 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace GamemodesServer.Gamemodes
+namespace GamemodesServer.Gamemodes.Scooterball
 {
-    public class Scooterball : GamemodeScript
+    public class Scooterball : GamemodeScript<Scooterball_Map>
     {
         private int m_blueGoals;
         private int m_redGoals;
@@ -16,13 +16,6 @@ namespace GamemodesServer.Gamemodes
         private List<Player> m_scooterPlayers = new List<Player>();
 
         private Prop m_ball;
-        private static readonly Vector3 s_ballSpawnPos = new Vector3(1498f, 6600f, 370f);
-
-        private static readonly Vector3 s_redGoalPos1 = new Vector3(1444f, 6623f, 355f);
-        private static readonly Vector3 s_redGoalPos2 = new Vector3(1440f, 6607f, 363f);
-
-        private static readonly Vector3 s_blueGoalPos1 = new Vector3(1557f, 6595f, 355f);
-        private static readonly Vector3 s_blueGoalPos2 = new Vector3(1556f, 6579f, 363f);
 
         public Scooterball()
         {
@@ -33,7 +26,7 @@ namespace GamemodesServer.Gamemodes
         }
 
         [GamemodePreStart]
-        public new async Task OnPreStart()
+        public async Task OnPreStart()
         {
             m_redGoals = 0;
             m_blueGoals = 0;
@@ -41,16 +34,14 @@ namespace GamemodesServer.Gamemodes
 
             m_scooterPlayers.Clear();
 
-            await MapLoader.LoadMap("soccer_map_4.xml");
-
-            m_ball = await EntityPool.CreateProp("stt_prop_stunt_soccer_lball", s_ballSpawnPos, default, true);
+            m_ball = await EntityPool.CreateProp("stt_prop_stunt_soccer_lball", CurrentMap.BallSpawnPos, default, true);
             m_ball.IsPositionFrozen = true;
 
             await Task.FromResult(0);
         }
 
         [GamemodeStart]
-        public new async Task OnStart()
+        public async Task OnStart()
         {
             m_ball.IsPositionFrozen = false;
             m_ball.Velocity = new Vector3(0f, 0f, -5f);
@@ -59,7 +50,7 @@ namespace GamemodesServer.Gamemodes
         }
 
         [GamemodeTimerUp]
-        public new async Task OnTimerUp()
+        public async Task OnTimerUp()
         {
             if (m_redGoals == m_blueGoals)
             {
@@ -67,7 +58,7 @@ namespace GamemodesServer.Gamemodes
             }
             else
             {
-                Stop();
+                StopGamemode();
             }
 
             await Task.FromResult(0);
@@ -121,11 +112,11 @@ namespace GamemodesServer.Gamemodes
             }
             else
             {
-                if (m_ball.Position.IsInArea(s_blueGoalPos1, s_blueGoalPos2))
+                if (m_ball.Position.IsInArea(CurrentMap.BlueGoalPos1, CurrentMap.BlueGoalPos2))
                 {
                     await ScoreGoal(EPlayerTeamType.TEAM_RED);
                 }
-                else if (m_ball.Position.IsInArea(s_redGoalPos1, s_redGoalPos2))
+                else if (m_ball.Position.IsInArea(CurrentMap.RedGoalPos1, CurrentMap.RedGoalPos2))
                 {
                     await ScoreGoal(EPlayerTeamType.TEAM_BLUE);
                 }
@@ -155,7 +146,7 @@ namespace GamemodesServer.Gamemodes
 
                 if (TimerManager.InOvertime)
                 {
-                    Stop();
+                    StopGamemode();
                 }
                 else
                 {
@@ -166,7 +157,7 @@ namespace GamemodesServer.Gamemodes
 
         private async Task ResetBall()
         {
-            m_ball.Position = s_ballSpawnPos;
+            m_ball.Position = CurrentMap.BallSpawnPos;
             m_ball.Velocity = new Vector3(0f, 0f, -5f);
 
             TriggerClientEvent("gamemodes:sv_cl_scooterball_resetball");

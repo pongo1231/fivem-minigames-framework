@@ -22,6 +22,8 @@ namespace GamemodesClient
                 await Delay(0);
             }
 
+            await Delay(2000);
+
             _ = ScreenUtils.FadeOut();
 
             Game.Pause(false);
@@ -32,7 +34,7 @@ namespace GamemodesClient
 
             Screen.Hud.IsRadarVisible = true;
 
-            await Delay(2000);
+            Game.PlayerPed.IsInvincible = true;
 
             TriggerServerEvent("gamemodes:sv_cl_loadedin");
         }

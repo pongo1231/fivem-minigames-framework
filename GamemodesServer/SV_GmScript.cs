@@ -1,4 +1,5 @@
 ﻿using CitizenFX.Core;
+using GamemodesServer.Utils;
 using System;
 using System.Linq;
 using System.Reflection;
@@ -31,7 +32,7 @@ namespace GamemodesServer
 
             foreach (MethodInfo method in methods.Where(method => method.GetCustomAttribute(typeof(NewPlayerAttribute)) != null))
             {
-                Debug.WriteLine($"Registering NewPlayer handler {method.DeclaringType.Name}.{method.Name}");
+                Log.WriteLine($"Registering NewPlayer handler {method.DeclaringType.Name}.{method.Name}");
 
                 if (method.IsStatic)
                 {
@@ -45,7 +46,7 @@ namespace GamemodesServer
 
             foreach (MethodInfo method in methods.Where(method => method.GetCustomAttribute(typeof(PlayerDroppedAttribute)) != null))
             {
-                Debug.WriteLine($"Registering PlayerDropped handler {method.DeclaringType.Name}.{method.Name}");
+                Log.WriteLine($"Registering PlayerDropped handler {method.DeclaringType.Name}.{method.Name}");
 
                 if (method.IsStatic)
                 {

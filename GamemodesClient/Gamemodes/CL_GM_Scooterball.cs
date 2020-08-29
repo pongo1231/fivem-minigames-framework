@@ -31,8 +31,6 @@ namespace GamemodesClient.Gamemodes
             m_scooter = default;
             m_ball = default;
 
-            Game.PlayerPed.IsInvincible = true;
-
             TriggerServerEvent("gamemodes:sv_cl_scooterball_requestscooter", SpawnManager.SpawnPos, SpawnManager.SpawnRot);
 
             //API.SetTimecycleModifier("WeaponUpgrade");
@@ -54,8 +52,6 @@ namespace GamemodesClient.Gamemodes
         private async Task OnPreStop()
         {
             BoostManager.BoostEnabled = false;
-
-            Game.PlayerPed.IsInvincible = false;
 
             await Task.FromResult(0);
         }
