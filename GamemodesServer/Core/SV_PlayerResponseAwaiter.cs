@@ -20,7 +20,7 @@ namespace GamemodesServer.Core
         {
             bool hasCompleted = false;
 
-            int timeoutTries = 3;
+            int timeoutTries = 5;
 
             Action<Player> callback = (player) =>
             {
@@ -38,7 +38,7 @@ namespace GamemodesServer.Core
             {
                 long curTimeStamp = API.GetGameTimer();
 
-                if (lastTimeStamp < curTimeStamp - 1000)
+                if (lastTimeStamp < curTimeStamp - 2000)
                 {
                     if (!PlayerLoadStateManager.GetLoadedInPlayers().Contains(_player))
                     {

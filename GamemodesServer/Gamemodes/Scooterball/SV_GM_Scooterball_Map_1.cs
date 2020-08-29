@@ -3,7 +3,7 @@ using System;
 
 namespace GamemodesServer.Gamemodes.Scooterball
 {
-    public class Scooterball_Map_1 : Scooterball_Map
+    /*public class Scooterball_Map_1 : Scooterball_Map
     {
         public Scooterball_Map_1()
         {
@@ -24,5 +24,5 @@ namespace GamemodesServer.Gamemodes.Scooterball
             BlueGoalPos1 = new Vector3(1557f, 6595f, 355f);
             BlueGoalPos2 = new Vector3(1556f, 6579f, 363f);
         }
-    }
+    }*/
 }
