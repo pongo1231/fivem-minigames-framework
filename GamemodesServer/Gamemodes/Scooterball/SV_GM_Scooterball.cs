@@ -112,6 +112,7 @@ namespace GamemodesServer.Gamemodes.Scooterball
             if (!m_ball.Exists())
             {
                 m_ball = await EntityPool.CreateProp("stt_prop_stunt_soccer_lball", CurrentMap.BallSpawnPos, default, true);
+                m_ball.Velocity = new Vector3(0f, 0f, -5f);
 
                 return;
             }
