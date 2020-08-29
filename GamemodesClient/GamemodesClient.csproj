@@ -47,6 +47,7 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CL_AmbientManager.cs" />
     <Compile Include="CL_BoostManager.cs" />
     <Compile Include="CL_EntityPool.cs" />
     <Compile Include="CL_Main.cs" />

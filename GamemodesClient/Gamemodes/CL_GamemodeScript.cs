@@ -108,8 +108,6 @@ namespace GamemodesClient.Gamemodes
         {
             IsGamemodePreStartRunning = true;
 
-            Game.PlayerPed.IsInvincible = true;
-
             PlayerControlManager.HasControl = false;
 
             PlayerOverheadTextManager.ShowOverheadText = false;
