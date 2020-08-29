@@ -58,6 +58,7 @@
     <Compile Include="Gamemodes\SV_GamemodeMap.cs" />
     <Compile Include="SV_EntityPool.cs" />
     <Compile Include="SV_EntityPoolGuard.cs" />
+    <Compile Include="SV_NastyEventsGuard.cs" />
     <Compile Include="SV_PlayerLoadStateManager.cs" />
     <Compile Include="SV_PlayerResponseAwaiter.cs" />
     <Compile Include="SV_Main.cs" />

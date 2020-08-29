@@ -13,8 +13,6 @@ namespace GamemodesServer
         {
             if (!AllowThrough)
             {
-                Log.WriteLine($"Dropping entity {_handle}");
-
                 API.CancelEvent();
             }
         }
