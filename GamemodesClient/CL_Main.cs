@@ -34,8 +34,6 @@ namespace GamemodesClient
 
             Screen.Hud.IsRadarVisible = true;
 
-            Game.PlayerPed.IsInvincible = true;
-
             TriggerServerEvent("gamemodes:sv_cl_loadedin");
         }
 
