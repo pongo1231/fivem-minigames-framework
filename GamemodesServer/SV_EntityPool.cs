@@ -19,7 +19,7 @@ namespace GamemodesServer
 
             s_entities.Add(vehicle);
 
-            await BaseScript.Delay(750);
+            await BaseScript.Delay(2000);
 
             while (!vehicle.Exists())
             {
@@ -40,7 +40,7 @@ namespace GamemodesServer
 
             s_entities.Add(prop);
 
-            await BaseScript.Delay(750);
+            await BaseScript.Delay(2000);
 
             while (!prop.Exists())
             {

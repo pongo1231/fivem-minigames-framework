@@ -1,4 +1,5 @@
 ﻿using CitizenFX.Core;
+using GamemodesServer.Utils;
 using GamemodesShared;
 using System;
 using System.Collections.Generic;
@@ -36,6 +37,8 @@ namespace GamemodesServer.Gamemodes
             {
                 if (s_curGamemode != null)
                 {
+                    Log.WriteLine("Stopping gamemode as everyone left.");
+
                     await _StopGamemode();
                 }
 

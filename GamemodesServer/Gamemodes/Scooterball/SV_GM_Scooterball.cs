@@ -78,11 +78,11 @@ namespace GamemodesServer.Gamemodes.Scooterball
                 {
                     m_scooterPlayers.Add(_player);
 
+                    _player.Character.Position = _pos;
+
+                    await Delay(1000);
+
                     Vehicle scooter = await EntityPool.CreateVehicle("rcbandito", _pos, _rot);
-
-                    _player.Character.Position = scooter.Position;
-
-                    await Delay(200);
 
                     _player.TriggerEvent("gamemodes:cl_sv_scooterball_spawnedscooter", scooter.NetworkId);
                 }
@@ -98,7 +98,10 @@ namespace GamemodesServer.Gamemodes.Scooterball
         {
             TriggerClientEvent("gamemodes:cl_sv_scooterball_updatescores", m_blueGoals, m_redGoals);
 
-            TriggerClientEvent("gamemodes:cl_sv_scooterball_setball", m_ball.NetworkId);
+            if (m_ball.Exists())
+            {
+                TriggerClientEvent("gamemodes:cl_sv_scooterball_setball", m_ball.NetworkId);
+            }
 
             await Delay(500);
         }
@@ -106,6 +109,13 @@ namespace GamemodesServer.Gamemodes.Scooterball
         [GamemodeTick]
         private async Task OnTickHandleBall()
         {
+            if (!m_ball.Exists())
+            {
+                m_ball = await EntityPool.CreateProp("stt_prop_stunt_soccer_lball", CurrentMap.BallSpawnPos, default, true);
+
+                return;
+            }
+
             if (m_ball.Position.Z < 340f)
             {
                 await ResetBall();
