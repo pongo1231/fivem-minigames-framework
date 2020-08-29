@@ -20,7 +20,7 @@ namespace GamemodesServer.Core
         {
             bool hasCompleted = false;
 
-            int timeoutTries = 5;
+            int timeoutTries = 3;
 
             Action<Player> callback = (player) =>
             {
