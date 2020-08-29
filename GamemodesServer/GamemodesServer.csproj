@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\SV_TimeWeatherManager.cs" />
     <Compile Include="Gamemodes\Scooterball\SV_GM_Scooterball_Map.cs" />
     <Compile Include="Gamemodes\Scooterball\SV_GM_Scooterball_Map_1.cs" />
     <Compile Include="Core\Gamemode\SV_GamemodeBaseScript.cs" />
@@ -64,6 +65,7 @@
     <Compile Include="Core\SV_PlayerResponseAwaiter.cs" />
     <Compile Include="Core\SV_Main.cs" />
     <Compile Include="Core\SV_MapLoader.cs" />
+    <Compile Include="Gamemodes\Scooterball\SV_GM_Scooterball_Map_2.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Core\SV_GmScript.cs" />
     <Compile Include="Core\SV_TeamManager.cs" />
@@ -71,6 +73,7 @@
     <Compile Include="Utils\SV_EntityUtils.cs" />
     <Compile Include="Utils\SV_Log.cs" />
     <Compile Include="Utils\SV_MathUtils.cs" />
+    <Compile Include="Core\SV_TimecycModManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GamemodesShared\GamemodesShared.csproj">

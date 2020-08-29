@@ -1,4 +1,5 @@
 ﻿using CitizenFX.Core;
+using CitizenFX.Core.Native;
 using GamemodesServer.Utils;
 using GamemodesShared;
 using System;
@@ -15,7 +16,7 @@ namespace GamemodesServer.Core.Gamemode
         private static GamemodeBaseScript s_curGamemode = null;
         private static bool s_stopGamemode = false;
 
-        private bool m_fullyLoadedGamemode = false;
+        private bool m_initializedGamemodeClients = false;
 
         private Random m_random = new Random();
 
@@ -55,11 +56,26 @@ namespace GamemodesServer.Core.Gamemode
                     await Delay(0);
                 }
 
-                s_curGamemode = s_registeredGamemodes[m_random.Next(0, s_registeredGamemodes.Count)];
+                string forcedGamemodeName = API.GetConvar("gamemodes_forced_gamemode", string.Empty);
+                GamemodeBaseScript forcedGamemode = s_registeredGamemodes.Find(_gamemode => _gamemode.EventName == forcedGamemodeName);
+
+                if (forcedGamemode != null)
+                {
+                    s_curGamemode = forcedGamemode;
+                }
+                else
+                {
+                    if (forcedGamemodeName != string.Empty)
+                    {
+                        Log.WriteLine($"Couldn't find forced gamemode {forcedGamemodeName}!");
+                    }
+
+                    s_curGamemode = s_registeredGamemodes[m_random.Next(0, s_registeredGamemodes.Count)];
+                }
 
                 await s_curGamemode.PreStart();
 
-                m_fullyLoadedGamemode = false;
+                m_initializedGamemodeClients = false;
 
                 m_prestartCountdownRunning = true;
                 m_prestartCountdown = 6;
@@ -85,7 +101,7 @@ namespace GamemodesServer.Core.Gamemode
                     }
                 }
 
-                if (!m_fullyLoadedGamemode)
+                if (!m_initializedGamemodeClients)
                 {
                     TriggerClientEvent("gamemodes:cl_sv_showprestartcam", s_curGamemode.Name, s_curGamemode.Description);
 
@@ -93,7 +109,7 @@ namespace GamemodesServer.Core.Gamemode
 
                     TriggerClientEvent("gamemodes:cl_sv_hideprestartcam");
 
-                    m_fullyLoadedGamemode = true;
+                    m_initializedGamemodeClients = true;
                 }
 
                 if (TimerManager.HasRunOut && !m_prestartCountdownRunning && !m_awaitingGamemodeStop)
@@ -110,7 +126,7 @@ namespace GamemodesServer.Core.Gamemode
         [Tick]
         private async Task OnTickCountdown()
         {
-            if (m_prestartCountdownRunning && m_fullyLoadedGamemode)
+            if (m_prestartCountdownRunning && m_initializedGamemodeClients)
             {
                 if (m_prestartCountdown-- == 0)
                 {
@@ -146,7 +162,7 @@ namespace GamemodesServer.Core.Gamemode
 
             await Delay(1000);
 
-            EPlayerTeamType winnerTeam = s_curGamemode.GetWinnerTeam();
+            ETeamType winnerTeam = s_curGamemode.GetWinnerTeam();
 
             TriggerClientEvent("gamemodes:cl_sv_showwinnercam", (int)winnerTeam);
 

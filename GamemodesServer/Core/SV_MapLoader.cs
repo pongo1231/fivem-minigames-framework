@@ -11,7 +11,7 @@ namespace GamemodesServer.Core
     {
         private class PlayerSpawn
         {
-            public PlayerSpawn(Vector3 _spawnPos, Vector3 _spawnRot, EPlayerTeamType _spawnTeamType)
+            public PlayerSpawn(Vector3 _spawnPos, Vector3 _spawnRot, ETeamType _spawnTeamType)
             {
                 SpawnPos = _spawnPos;
                 SpawnRot = _spawnRot;
@@ -20,7 +20,7 @@ namespace GamemodesServer.Core
 
             public Vector3 SpawnPos { get; private set; }
             public Vector3 SpawnRot { get; private set; }
-            public EPlayerTeamType SpawnTeamType { get; private set; } = EPlayerTeamType.TEAM_UNK;
+            public ETeamType SpawnTeamType { get; private set; } = ETeamType.TEAM_UNK;
             public Player SpawnOccupiedBy;
         }
 
@@ -30,7 +30,7 @@ namespace GamemodesServer.Core
             Spawn = 1
         }
 
-        private static List<GmProp> s_props = new List<GmProp>();
+        private static List<SHGmProp> s_props = new List<SHGmProp>();
         private static List<PlayerSpawn> s_playerSpawns = new List<PlayerSpawn>();
         private static List<Player> s_mapPlayers = new List<Player>();
         public static bool MapLoaded { get; private set; } = false;
@@ -91,21 +91,21 @@ namespace GamemodesServer.Core
 
                         bool propCollisions = !bool.Parse(placement["IsCollisionProof"].InnerText);
 
-                        s_props.Add(new GmProp(propName, new Vector3(propX, propY, propZ), new Vector3(propPitch, propRoll, propYaw), propCollisions));
+                        s_props.Add(new SHGmProp(propName, new Vector3(propX, propY, propZ), new Vector3(propPitch, propRoll, propYaw), propCollisions));
 
                         break;
 
                     case EPlacementType.Spawn:
                         string relGroupHash = placement["PedProperties"]["RelationshipGroup"].InnerText;
-                        EPlayerTeamType teamType = EPlayerTeamType.TEAM_UNK;
+                        ETeamType teamType = ETeamType.TEAM_UNK;
 
                         if (relGroupHash == "0xb4e845e1")
                         {
-                            teamType = EPlayerTeamType.TEAM_RED;
+                            teamType = ETeamType.TEAM_RED;
                         }
                         else if (relGroupHash == "0x217b058e")
                         {
-                            teamType = EPlayerTeamType.TEAM_BLUE;
+                            teamType = ETeamType.TEAM_BLUE;
                         }
 
                         XmlElement spawnPosRot = placement["PositionRotation"];

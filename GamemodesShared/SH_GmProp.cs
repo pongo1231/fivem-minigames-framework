@@ -1,8 +1,8 @@
 ﻿namespace GamemodesShared
 {
-    public struct GmProp
+    public struct SHGmProp
     {
-        public GmProp(string _propName, dynamic _propPos, dynamic _propRot, bool _propCollisions)
+        public SHGmProp(string _propName, dynamic _propPos, dynamic _propRot, bool _propCollisions)
         {
             PropName = _propName;
             PropPos = _propPos;

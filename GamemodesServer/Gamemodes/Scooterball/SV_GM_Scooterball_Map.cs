@@ -7,6 +7,8 @@ namespace GamemodesServer.Gamemodes.Scooterball
     {
         public Vector3 BallSpawnPos { get; protected set; }
 
+        public float FallOffHeight { get; protected set; }
+
         public Vector3 RedGoalPos1 { get; protected set; }
         public Vector3 RedGoalPos2 { get; protected set; }
 

@@ -6,14 +6,14 @@ namespace GamemodesClient.Core
 {
     public class TeamManager : BaseScript
     {
-        public static EPlayerTeamType TeamType { get; private set; }
+        public static ETeamType TeamType { get; private set; }
 
         public static List<SHTeamPlayer> TeamPlayers { get; private set; } = new List<SHTeamPlayer>();
 
         [EventHandler("gamemodes:cl_sv_setteam")]
         private void OnSetTeam(int _teamType)
         {
-            TeamType = (EPlayerTeamType)_teamType;
+            TeamType = (ETeamType)_teamType;
 
             TriggerServerEvent("gamemodes:cl_sv_gotteam");
         }

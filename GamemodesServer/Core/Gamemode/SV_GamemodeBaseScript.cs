@@ -20,6 +20,6 @@ namespace GamemodesServer.Core.Gamemode
 
         public abstract void TimerUp();
 
-        public abstract EPlayerTeamType GetWinnerTeam();
+        public abstract ETeamType GetWinnerTeam();
     }
 }

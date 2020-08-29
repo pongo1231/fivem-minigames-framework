@@ -57,13 +57,13 @@ namespace GamemodesClient.Core
 
                     if (teamPlayer != null)
                     {
-                        EPlayerTeamType teamType = (EPlayerTeamType)teamPlayer.PlayerTeamType;
+                        ETeamType teamType = (ETeamType)teamPlayer.PlayerTeamType;
 
-                        if (teamType == EPlayerTeamType.TEAM_RED)
+                        if (teamType == ETeamType.TEAM_RED)
                         {
                             API.SetMpGamerTagColour(overheadPlayer.OverheadHandle, 0, 6);
                         }
-                        else if (teamType == EPlayerTeamType.TEAM_BLUE)
+                        else if (teamType == ETeamType.TEAM_BLUE)
                         {
                             API.SetMpGamerTagColour(overheadPlayer.OverheadHandle, 0, 202);
                         }

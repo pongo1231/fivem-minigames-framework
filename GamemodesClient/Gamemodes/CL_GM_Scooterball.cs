@@ -2,6 +2,7 @@
 using CitizenFX.Core.Native;
 using CitizenFX.Core.UI;
 using GamemodesClient.Core;
+using GamemodesClient.Core.Gamemode;
 using GamemodesClient.Utils;
 using GamemodesShared;
 using System;
@@ -21,6 +22,8 @@ namespace GamemodesClient.Gamemodes
 
         private Text m_goalsText = new Text(null, new PointF(640f, 50f), 1.5f, Color.FromArgb(255, 255, 255), Font.Pricedown, Alignment.Center, true, true);
 
+        private float m_fallOffHeight = float.MaxValue;
+
         public Scooterball() : base("scooterball", "~INPUT_VEH_ROCKET_BOOST~  -  Boost\n~INPUT_JUMP~  -  Jump")
         {
 
@@ -32,11 +35,9 @@ namespace GamemodesClient.Gamemodes
             m_scooter = default;
             m_ball = default;
 
-            TriggerServerEvent("gamemodes:sv_cl_scooterball_requestscooter", SpawnManager.SpawnPos, SpawnManager.SpawnRot);
+            m_fallOffHeight = float.MaxValue;
 
-            //API.SetTimecycleModifier("WeaponUpgrade");
-            API.SetTimecycleModifier("MP_Arena_theme_atlantis");
-            API.PushTimecycleModifier();
+            TriggerServerEvent("gamemodes:sv_cl_scooterball_requestscooter", SpawnManager.SpawnPos, SpawnManager.SpawnRot);
 
             await Task.FromResult(0);
         }
@@ -75,12 +76,12 @@ namespace GamemodesClient.Gamemodes
             m_scooter.Entity.EngineTorqueMultiplier = 5f;
             m_scooter.Entity.IsEngineRunning = true;
 
-            if (TeamManager.TeamType == EPlayerTeamType.TEAM_RED)
+            if (TeamManager.TeamType == ETeamType.TEAM_RED)
             {
                 m_scooter.Entity.Mods.CustomPrimaryColor = Color.FromArgb(255, 0, 0);
                 m_scooter.Entity.Mods.CustomSecondaryColor = Color.FromArgb(255, 0, 0);
             }
-            else if (TeamManager.TeamType == EPlayerTeamType.TEAM_BLUE)
+            else if (TeamManager.TeamType == ETeamType.TEAM_BLUE)
             {
                 m_scooter.Entity.Mods.CustomPrimaryColor = Color.FromArgb(0, 0, 255);
                 m_scooter.Entity.Mods.CustomSecondaryColor = Color.FromArgb(0, 0, 255);
@@ -114,7 +115,7 @@ namespace GamemodesClient.Gamemodes
 
             PtfxUtils.PlayPtfxAtPos(_scorePos, "scr_rcbarry2", "scr_clown_appears", false, 3f);
 
-            Screen.ShowNotification((EPlayerTeamType)_teamType == EPlayerTeamType.TEAM_RED ? "~r~Red~w~ scored a goal!" : "~b~Blue~w~ scored a goal!");
+            Screen.ShowNotification((ETeamType)_teamType == ETeamType.TEAM_RED ? "~r~Red~w~ scored a goal!" : "~b~Blue~w~ scored a goal!");
 
             if (m_ball.Exists)
             {
@@ -128,23 +129,26 @@ namespace GamemodesClient.Gamemodes
             }
         }
 
+        [EventHandler("gamemodes:cl_sv_scooterball_setfalloffheight")]
+        private void OnSetFallOffHeight(float _fallOffHeight)
+        {
+            m_fallOffHeight = _fallOffHeight;
+        }
+
         [GamemodeTick]
         private async Task OnTick()
         {
-            API.NetworkOverrideClockTime(12, 0, 0);
-            API.SetWeatherTypeNowPersist("EXTRASUNNY");
-
             //API.SetGravityLevel(1);
 
             if (!IsGamemodePreStartRunning)
             {
                 m_goalsText.Draw();
 
-                if (TeamManager.TeamType == EPlayerTeamType.TEAM_RED)
+                if (TeamManager.TeamType == ETeamType.TEAM_RED)
                 {
                     ScreenUtils.ShowSubtitle("Shoot the ~r~Ball~w~ into the ~b~Blue Goal.");
                 }
-                else if (TeamManager.TeamType == EPlayerTeamType.TEAM_BLUE)
+                else if (TeamManager.TeamType == ETeamType.TEAM_BLUE)
                 {
                     ScreenUtils.ShowSubtitle("Shoot the ~b~Ball~w~ into the ~r~Red Goal.");
                 }
@@ -173,7 +177,7 @@ namespace GamemodesClient.Gamemodes
                         m_scooter.Entity.Velocity = vel;
                     }
 
-                    if (m_scooter.Entity.Position.Z < 340f || m_scooter.Entity.IsDead)
+                    if (m_scooter.Entity.Position.Z < m_fallOffHeight || m_scooter.Entity.IsDead)
                     {
                         await SpawnManager.Respawn();
                     }
@@ -185,14 +189,14 @@ namespace GamemodesClient.Gamemodes
                 if (m_ball.Entity.IsVisible)
                 {
                     Vector3 markerPos = m_ball.Entity.Position + new Vector3(0f, 0f, 5f);
-                    Color markerColor = TeamManager.TeamType == EPlayerTeamType.TEAM_RED ? Color.FromArgb(255, 0, 0) : Color.FromArgb(0, 0, 255);
+                    Color markerColor = TeamManager.TeamType == ETeamType.TEAM_RED ? Color.FromArgb(255, 0, 0) : Color.FromArgb(0, 0, 255);
                     World.DrawMarker(MarkerType.UpsideDownCone, markerPos, default, default, new Vector3(2f, 2f, 2f), markerColor, true);
                 }
 
                 if (m_ball.Entity.AttachedBlip == null)
                 {
                     Blip blip = m_ball.Entity.AttachBlip();
-                    blip.Color = TeamManager.TeamType == EPlayerTeamType.TEAM_RED ? BlipColor.Red : BlipColor.Blue;
+                    blip.Color = TeamManager.TeamType == ETeamType.TEAM_RED ? BlipColor.Red : BlipColor.Blue;
                     blip.Name = "Ball";
                     API.ShowHeightOnBlip(blip.Handle, false);
                 }

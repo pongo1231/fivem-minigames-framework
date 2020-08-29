@@ -9,14 +9,14 @@ namespace GamemodesServer.Core
     {
         private class TeamPlayer
         {
-            public TeamPlayer(Player _player, EPlayerTeamType _teamType)
+            public TeamPlayer(Player _player, ETeamType _teamType)
             {
                 Player = _player;
                 TeamType = _teamType;
             }
 
             public Player Player { get; private set; }
-            public EPlayerTeamType TeamType { get; private set; } = EPlayerTeamType.TEAM_UNK;
+            public ETeamType TeamType { get; private set; } = ETeamType.TEAM_UNK;
         }
 
         private static List<TeamPlayer> s_teamPlayers = new List<TeamPlayer>();
@@ -41,18 +41,18 @@ namespace GamemodesServer.Core
             {
                 if (s_teamPlayers.Find(teamPlayer => teamPlayer.Player == player) == null)
                 {
-                    EPlayerTeamType teamType = EPlayerTeamType.TEAM_UNK;
+                    ETeamType teamType = ETeamType.TEAM_UNK;
 
-                    int team1Count = s_teamPlayers.FindAll(teamPlayer => teamPlayer.TeamType == EPlayerTeamType.TEAM_RED).Count;
-                    int team2Count = s_teamPlayers.FindAll(teamPlayer => teamPlayer.TeamType == EPlayerTeamType.TEAM_BLUE).Count;
+                    int team1Count = s_teamPlayers.FindAll(teamPlayer => teamPlayer.TeamType == ETeamType.TEAM_RED).Count;
+                    int team2Count = s_teamPlayers.FindAll(teamPlayer => teamPlayer.TeamType == ETeamType.TEAM_BLUE).Count;
 
                     if (team1Count < team2Count)
                     {
-                        teamType = EPlayerTeamType.TEAM_RED;
+                        teamType = ETeamType.TEAM_RED;
                     }
                     else
                     {
-                        teamType = EPlayerTeamType.TEAM_BLUE;
+                        teamType = ETeamType.TEAM_BLUE;
                     }
 
                     s_teamPlayers.Add(new TeamPlayer(player, teamType));
@@ -81,11 +81,11 @@ namespace GamemodesServer.Core
             await Delay(500);
         }
 
-        public static EPlayerTeamType GetPlayerTeam(Player _player)
+        public static ETeamType GetPlayerTeam(Player _player)
         {
             TeamPlayer teamPlayer = s_teamPlayers.Find(_teamPlayer => _teamPlayer.Player == _player);
 
-            return teamPlayer == null ? EPlayerTeamType.TEAM_UNK : teamPlayer.TeamType;
+            return teamPlayer == null ? ETeamType.TEAM_UNK : teamPlayer.TeamType;
         }
 
         public static void EnableTeams()

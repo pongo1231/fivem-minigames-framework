@@ -35,7 +35,7 @@ namespace GamemodesClient.Core
             m_winnerScaleform.CallFunction("CREATE_STAT_WALL", "SUMMARY", "HUD_COLOUR_FRIENDLY", 255);
 
             m_winnerScaleform.CallFunction("ADD_WINNER_TO_WALL", "SUMMARY", "CELEB_MATCH", "", "", 0, false,
-                (EPlayerTeamType)_winnerTeam == EPlayerTeamType.TEAM_RED ? "~r~Team Red~w~ won!" : "~b~Team Blue~w~ won!", true);
+                (ETeamType)_winnerTeam == ETeamType.TEAM_RED ? "~r~Team Red~w~ won!" : "~b~Team Blue~w~ won!", true);
 
             m_winnerScaleform.CallFunction("ADD_BACKGROUND_TO_WALL", "SUMMARY", 255, 0);
 

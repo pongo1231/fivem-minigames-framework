@@ -1,10 +1,11 @@
 ﻿namespace GamemodesShared
 {
-    public enum EPlayerTeamType
+    public enum ETeamType
     {
         TEAM_UNK,
         TEAM_RED,
         TEAM_BLUE,
+        TEAM_FFA,
         TEAM_SPEC
     }
 }

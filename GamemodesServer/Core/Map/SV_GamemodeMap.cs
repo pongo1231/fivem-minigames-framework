@@ -20,6 +20,10 @@ namespace GamemodesServer.Core.Map
     public abstract class GamemodeMap
     {
         protected string MapFileName { get; set; }
+        protected string TimecycMod { get; set; }
+        protected string TimecycModExtra { get; set; }
+        protected TimeSpan Time { get; set; } = new TimeSpan(12, 0, 0);
+        protected string Weather { get; set; } = "EXTRASUNNY";
 
         private Func<Task> m_onLoad;
         private Func<Task> m_onUnload;
@@ -54,8 +58,13 @@ namespace GamemodesServer.Core.Map
         {
             if (MapFileName != null)
             {
-                await MapLoader.LoadMap(MapFileName);
+                await MapLoader.LoadMap($"maps/{MapFileName}");
             }
+
+            TimecycModManager.SetTimecycModifiers(TimecycMod, TimecycModExtra);
+
+            TimeWeatherManager.SetTime(Time.Hours, Time.Minutes, Time.Seconds);
+            TimeWeatherManager.SetWeather(Weather);
 
             if (m_onLoad != null)
             {
@@ -66,6 +75,8 @@ namespace GamemodesServer.Core.Map
         public async Task Unload()
         {
             MapLoader.ClearMap();
+
+            TimecycModManager.ClearTimecycModifiers();
 
             if (m_onUnload != null)
             {

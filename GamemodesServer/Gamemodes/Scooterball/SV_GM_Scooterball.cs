@@ -66,9 +66,9 @@ namespace GamemodesServer.Gamemodes.Scooterball
             await Task.FromResult(0);
         }
 
-        public override EPlayerTeamType GetWinnerTeam()
+        public override ETeamType GetWinnerTeam()
         {
-            return m_redGoals > m_blueGoals ? EPlayerTeamType.TEAM_RED : EPlayerTeamType.TEAM_BLUE;
+            return m_redGoals > m_blueGoals ? ETeamType.TEAM_RED : ETeamType.TEAM_BLUE;
         }
 
         [GamemodeEventHandler("gamemodes:sv_cl_scooterball_requestscooter")]
@@ -91,13 +91,15 @@ namespace GamemodesServer.Gamemodes.Scooterball
             }
             catch (Exception _e)
             {
-                Debug.WriteLine($"{_e}");
+                Log.WriteLine($"{_e}");
             }
         }
 
         [GamemodeTick]
         private async Task OnTickSendEvents()
         {
+            TriggerClientEvent("gamemodes:cl_sv_scooterball_setfalloffheight", CurrentMap.FallOffHeight);
+
             TriggerClientEvent("gamemodes:cl_sv_scooterball_updatescores", m_blueGoals, m_redGoals);
 
             if (m_ball.Exists())
@@ -119,7 +121,7 @@ namespace GamemodesServer.Gamemodes.Scooterball
                 return;
             }
 
-            if (m_ball.Position.Z < 340f)
+            if (m_ball.Position.Z < CurrentMap.FallOffHeight)
             {
                 await ResetBall();
             }
@@ -127,28 +129,28 @@ namespace GamemodesServer.Gamemodes.Scooterball
             {
                 if (m_ball.Position.IsInArea(CurrentMap.BlueGoalPos1, CurrentMap.BlueGoalPos2))
                 {
-                    await ScoreGoal(EPlayerTeamType.TEAM_RED);
+                    await ScoreGoal(ETeamType.TEAM_RED);
                 }
                 else if (m_ball.Position.IsInArea(CurrentMap.RedGoalPos1, CurrentMap.RedGoalPos2))
                 {
-                    await ScoreGoal(EPlayerTeamType.TEAM_BLUE);
+                    await ScoreGoal(ETeamType.TEAM_BLUE);
                 }
             }
 
             await Task.FromResult(0);
         }
 
-        private async Task ScoreGoal(EPlayerTeamType _teamType)
+        private async Task ScoreGoal(ETeamType _teamType)
         {
             if (!m_scoredGoal)
             {
                 m_scoredGoal = true;
 
-                if (_teamType == EPlayerTeamType.TEAM_RED)
+                if (_teamType == ETeamType.TEAM_RED)
                 {
                     m_redGoals++;
                 }
-                else if (_teamType == EPlayerTeamType.TEAM_BLUE)
+                else if (_teamType == ETeamType.TEAM_BLUE)
                 {
                     m_blueGoals++;
                 }

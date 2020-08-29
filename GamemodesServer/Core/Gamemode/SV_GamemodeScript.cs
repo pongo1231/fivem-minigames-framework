@@ -1,4 +1,5 @@
-﻿using GamemodesServer.Core.Map;
+﻿using CitizenFX.Core.Native;
+using GamemodesServer.Core.Map;
 using GamemodesServer.Utils;
 using GamemodesShared;
 using System;
@@ -236,7 +237,7 @@ namespace GamemodesServer.Core.Gamemode
             }
         }
 
-        public override abstract EPlayerTeamType GetWinnerTeam();
+        public override abstract ETeamType GetWinnerTeam();
 
         protected void StopGamemode()
         {

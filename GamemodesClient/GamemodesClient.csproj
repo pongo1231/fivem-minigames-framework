@@ -60,9 +60,11 @@
     <Compile Include="Core\CL_PrestartCountdownManager.cs" />
     <Compile Include="Core\CL_SpawnManager.cs" />
     <Compile Include="Core\CL_TeamManager.cs" />
+    <Compile Include="Core\CL_TimecycModManager.cs" />
     <Compile Include="Core\CL_TimerManager.cs" />
+    <Compile Include="Core\CL_TimeWeatherManager.cs" />
     <Compile Include="Core\CL_WinnerCamManager.cs" />
-    <Compile Include="Gamemodes\CL_GamemodeScript.cs" />
+    <Compile Include="Core\Gamemode\CL_GamemodeScript.cs" />
     <Compile Include="Gamemodes\CL_GM_Scooterball.cs" />
     <Compile Include="Core\CL_GmNetEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

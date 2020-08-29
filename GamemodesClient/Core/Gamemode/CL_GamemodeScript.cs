@@ -1,13 +1,12 @@
 ﻿using CitizenFX.Core;
 using CitizenFX.Core.Native;
 using CitizenFX.Core.UI;
-using GamemodesClient.Core;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace GamemodesClient.Gamemodes
+namespace GamemodesClient.Core.Gamemode
 {
     [AttributeUsage(AttributeTargets.Method)]
     public class GamemodePreStartAttribute : Attribute
@@ -63,7 +62,7 @@ namespace GamemodesClient.Gamemodes
 
             m_onTickFuncs.Add(OnTickHelpText);
 
-            Func<MethodInfo, Func<Task>> createDelegate = (MethodInfo _methodInfo) =>
+            Func<MethodInfo, Func<Task>> createDelegate = (_methodInfo) =>
             {
                 return _methodInfo.IsStatic
                     ? (Func<Task>)Delegate.CreateDelegate(typeof(Func<Task>), _methodInfo)
