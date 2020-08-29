@@ -1,4 +1,4 @@
-﻿namespace Shared
+﻿namespace GamemodesShared
 {
     public struct GmProp
     {

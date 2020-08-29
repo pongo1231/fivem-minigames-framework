@@ -1,4 +1,6 @@
 ﻿using CitizenFX.Core;
+using GamemodesServer.Core;
+using GamemodesServer.Core.Gamemode;
 using GamemodesServer.Utils;
 using GamemodesShared;
 using System;
