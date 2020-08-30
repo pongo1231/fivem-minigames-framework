@@ -174,7 +174,7 @@ namespace GamemodesServer.Core.Gamemode
 
             await PlayerResponseAwaiter.AwaitResponse($"gamemodes:cl_sv_{s_curGamemode.EventName}_stop", "gamemodes:sv_cl_stoppedgamemode");
 
-            await Delay(15000);
+            await Delay(5000);
 
             s_curGamemode = null;
         }
