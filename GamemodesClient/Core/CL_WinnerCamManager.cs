@@ -7,69 +7,111 @@ using System.Threading.Tasks;
 
 namespace GamemodesClient.Core
 {
+    /// <summary>
+    /// Winner cam manager class
+    /// </summary>
     public class WinnerCamManager : BaseScript
     {
+        /// <summary>
+        /// Whether to show winner cam
+        /// </summary>
         private bool m_showWinnerCam = false;
 
+        /// <summary>
+        /// Scaleform for winner cam
+        /// </summary>
         private Scaleform m_winnerScaleform;
 
+        /// <summary>
+        /// Show winner cam event by server
+        /// </summary>
+        /// <param name="_winnerTeam">Winner team</param>
         [EventHandler("gamemodes:cl_sv_showwinnercam")]
         private async void OnShowWinnerCam(int _winnerTeam)
         {
+            // Show winner cam
             m_showWinnerCam = true;
 
+            // Transition to blurred
             API.TransitionToBlurred(100f);
+
+            // Play anim postfx
             API.AnimpostfxPlay("MP_Celeb_Win", 0, true);
 
+            // Hide radar
             Screen.Hud.IsRadarVisible = false;
 
+            // Pause game
             Game.Pause(true);
 
+            // Initialize MP_CELEBRATION scaleform
             m_winnerScaleform = new Scaleform("MP_CELEBRATION");
 
+            // Wait for scaleform to load
             while (!m_winnerScaleform.IsLoaded)
             {
                 await Delay(0);
             }
 
+            // Create MP_CELEBRATION stat wall
             m_winnerScaleform.CallFunction("CREATE_STAT_WALL", "SUMMARY", "HUD_COLOUR_FRIENDLY", 255);
 
+            // Add winner text to stat wall
             m_winnerScaleform.CallFunction("ADD_WINNER_TO_WALL", "SUMMARY", "CELEB_MATCH", "", "", 0, false,
                 (ETeamType)_winnerTeam == ETeamType.TEAM_RED ? "~r~Team Red~w~ won!" : "~b~Team Blue~w~ won!", true);
 
+            // Add background to stat wall
             m_winnerScaleform.CallFunction("ADD_BACKGROUND_TO_WALL", "SUMMARY", 255, 0);
 
+            // Set pause duration of stat wall
             m_winnerScaleform.CallFunction("SET_PAUSE_DURATION", 5f);
 
+            // Show stat wall
             m_winnerScaleform.CallFunction("SHOW_STAT_WALL", "SUMMARY");
         }
 
+        /// <summary>
+        /// Hide winner cam event by server
+        /// </summary>
         [EventHandler("gamemodes:cl_sv_hidewinnercam")]
         private void OnHideWinnerCam()
         {
+            // Hide winner cam
             m_showWinnerCam = false;
 
+            // Unblur screen
             API.TransitionFromBlurred(100f);
-            API.AnimpostfxStop("MP_Celeb_Win");
-            API.AnimpostfxPlay("MP_Celeb_Win_Out", 0, false);
 
+            // Stop anim postfx
+            API.AnimpostfxStop("MP_Celeb_Win");
+
+            // Show radar again
             Screen.Hud.IsRadarVisible = true;
 
+            // Clean up and remove scaleform
             m_winnerScaleform.Dispose();
             m_winnerScaleform = null;
 
+            // Unpause game
             Game.Pause(false);
 
+            // Fade out screen
             _ = ScreenUtils.FadeOut();
         }
 
+        /// <summary>
+        /// Tick function
+        /// </summary>
         [Tick]
         private async Task OnTick()
         {
+            // Check if winner cam should be shown and scaleform exists
             if (m_showWinnerCam && m_winnerScaleform != null)
             {
+                // Hide notifications
                 API.ThefeedHideThisFrame();
 
+                // Render scaleform
                 m_winnerScaleform.Render2D();
             }
 
