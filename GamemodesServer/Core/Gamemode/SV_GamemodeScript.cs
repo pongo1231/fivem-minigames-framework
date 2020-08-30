@@ -1,6 +1,7 @@
 ﻿using GamemodesServer.Core.Map;
 using GamemodesServer.Utils;
 using GamemodesShared;
+using GamemodesShared.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -269,7 +270,7 @@ namespace GamemodesServer.Core.Gamemode
             IsGamemodePreStartRunning = true;
 
             // Choose a random map
-            CurrentMap = m_gamemodeMaps[new Random().Next(0, m_gamemodeMaps.Count)];
+            CurrentMap = m_gamemodeMaps[RandomUtils.RandomInt(0, m_gamemodeMaps.Count)];
 
             // Load map
             await CurrentMap.Load();

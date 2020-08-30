@@ -1,5 +1,6 @@
 ﻿using CitizenFX.Core;
 using CitizenFX.Core.Native;
+using GamemodesShared.Utils;
 using System;
 using System.Threading.Tasks;
 
@@ -54,8 +55,7 @@ namespace GamemodesClient.Core
             {
                 /* Randomly select a music event */
 
-                Random random = new Random();
-                int choice = random.Next(2);
+                int choice = RandomUtils.RandomInt(0, 2);
 
                 switch (choice)
                 {
@@ -68,7 +68,7 @@ namespace GamemodesClient.Core
 
                     // Arena Wars
                     case 1:
-                        choice = random.Next(1, 9);
+                        choice = RandomUtils.RandomInt(1, 9);
                         s_curMusicEvent = $"MC_AW_MUSIC_{choice}";
 
                         break;

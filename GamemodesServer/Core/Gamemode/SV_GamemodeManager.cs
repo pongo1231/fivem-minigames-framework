@@ -2,6 +2,7 @@
 using CitizenFX.Core.Native;
 using GamemodesServer.Utils;
 using GamemodesShared;
+using GamemodesShared.Utils;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -37,11 +38,6 @@ namespace GamemodesServer.Core.Gamemode
         /// Whether clients have been made aware of gamemode start yet
         /// </summary>
         private bool m_initializedGamemodeClients = false;
-
-        /// <summary>
-        /// Random
-        /// </summary>
-        private Random m_random = new Random();
 
         /// <summary>
         /// Whether we are waiting for gamemode to stop after timer has run out
@@ -126,7 +122,7 @@ namespace GamemodesServer.Core.Gamemode
                     }
 
                     // Start random gamemode
-                    s_curGamemode = s_registeredGamemodes[m_random.Next(0, s_registeredGamemodes.Count)];
+                    s_curGamemode = s_registeredGamemodes[RandomUtils.RandomInt(0, s_registeredGamemodes.Count)];
                 }
 
                 // Prestart gamemode

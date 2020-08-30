@@ -1,5 +1,6 @@
 ﻿using CitizenFX.Core;
 using GamemodesShared;
+using GamemodesShared.Utils;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -94,7 +95,7 @@ namespace GamemodesServer.Core
             while (m_toSortIntoTeams.Count > 0)
             {
                 // Choose random player from list
-                Player player = m_toSortIntoTeams[new Random().Next(0, m_toSortIntoTeams.Count)];
+                Player player = m_toSortIntoTeams[RandomUtils.RandomInt(0, m_toSortIntoTeams.Count)];
 
                 // Store type of team
                 ETeamType teamType = ETeamType.TEAM_UNK;

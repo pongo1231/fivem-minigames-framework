@@ -52,6 +52,9 @@
   <ItemGroup>
     <Compile Include="Core\SV_StopGamemodeVotingHandler.cs" />
     <Compile Include="Core\SV_TimeWeatherManager.cs" />
+    <Compile Include="Gamemodes\Knockdown\SV_GM_Knockdown.cs" />
+    <Compile Include="Gamemodes\Knockdown\SV_GM_Knockdown_Map.cs" />
+    <Compile Include="Gamemodes\Knockdown\SV_GM_Knockdown_Map_1.cs" />
     <Compile Include="Gamemodes\Scooterball\SV_GM_Scooterball_Map.cs" />
     <Compile Include="Gamemodes\Scooterball\SV_GM_Scooterball_Map_1.cs" />
     <Compile Include="Core\Gamemode\SV_GamemodeBaseScript.cs" />
