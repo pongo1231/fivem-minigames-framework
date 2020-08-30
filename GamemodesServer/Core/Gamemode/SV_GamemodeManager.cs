@@ -5,6 +5,7 @@ using GamemodesShared;
 using GamemodesShared.Utils;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace GamemodesServer.Core.Gamemode
@@ -121,8 +122,17 @@ namespace GamemodesServer.Core.Gamemode
                         Log.WriteLine($"Couldn't find forced gamemode {forcedGamemodeName}!");
                     }
 
+                    // Store all except last gamemode
+                    GamemodeBaseScript[] gamemodeChoices = s_registeredGamemodes.Where(_gamemode => !_gamemode.ExcludeFromChoicesList).ToArray();
+
                     // Start random gamemode
-                    s_curGamemode = s_registeredGamemodes[RandomUtils.RandomInt(0, s_registeredGamemodes.Count)];
+                    s_curGamemode = gamemodeChoices[RandomUtils.RandomInt(0, gamemodeChoices.Length)];
+
+                    // Reset exclude status for all gamemodes
+                    foreach (GamemodeBaseScript gamemode in s_registeredGamemodes)
+                    {
+                        gamemode.ExcludeFromChoicesList = false;
+                    }
                 }
 
                 // Prestart gamemode
@@ -272,6 +282,9 @@ namespace GamemodesServer.Core.Gamemode
 
             // Once again wait a bit
             await Delay(5000);
+
+            // Set last gamemode to current gamemode
+            s_curGamemode.ExcludeFromChoicesList = true;
 
             // Set current gamemode to none
             s_curGamemode = null;

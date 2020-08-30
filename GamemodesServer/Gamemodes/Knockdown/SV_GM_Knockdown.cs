@@ -204,7 +204,7 @@ namespace GamemodesServer.Gamemodes.Knockdown
                 return;
             }
 
-            // Spawn more obstacles if there are below 50
+            // Spawn more obstacles if there are less than limit
             if (m_obstacles.Count < 50)
             {
                 // Create obstacle
@@ -244,13 +244,13 @@ namespace GamemodesServer.Gamemodes.Knockdown
                     if (RandomUtils.RandomInt(0, 2) == 0)
                     {
                         obstacle.Prop.Position = GetRandomPosInArea(CurrentMap.ObstacleSpawnPos1_1, CurrentMap.ObstacleSpawnPos1_2);
-                        obstacle.Prop.Velocity = CurrentMap.ObstacleSpawnPos1_Forward * RandomUtils.RandomFloat(20000f, 100000f);
+                        obstacle.Prop.Velocity = CurrentMap.ObstacleSpawnPos1_Forward;
                         obstacle.Direction = CurrentMap.ObstacleSpawnPos1_Forward.X;
                     }
                     else
                     {
                         obstacle.Prop.Position = GetRandomPosInArea(CurrentMap.ObstacleSpawnPos2_1, CurrentMap.ObstacleSpawnPos2_2);
-                        obstacle.Prop.Velocity = CurrentMap.ObstacleSpawnPos2_Forward * RandomUtils.RandomFloat(20000f, 100000f);
+                        obstacle.Prop.Velocity = CurrentMap.ObstacleSpawnPos2_Forward;
                         obstacle.Direction = CurrentMap.ObstacleSpawnPos2_Forward.X;
                     }
 
@@ -262,16 +262,16 @@ namespace GamemodesServer.Gamemodes.Knockdown
                     // Get current velocity
                     Vector3 velocity = obstacle.Prop.Velocity;
 
-                    if (velocity.X < 40f && obstacle.Direction > 0f)
+                    if (velocity.X < 30f && obstacle.Direction > 0f)
                     {
-                        // Force speed to be at least 40
-                        velocity.X = 40f;
+                        // Force speed to be at least 30
+                        velocity.X = 30f;
                         obstacle.Prop.Velocity = velocity;
                     }
-                    else if (velocity.X > -40f && obstacle.Direction < 0f)
+                    else if (velocity.X > -30f && obstacle.Direction < 0f)
                     {
                         // Force speed to be at least -40
-                        velocity.X = -40f;
+                        velocity.X = -30f;
                         obstacle.Prop.Velocity = velocity;
                     }
                 }

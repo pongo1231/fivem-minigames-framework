@@ -12,11 +12,6 @@ namespace GamemodesClient.Core
     public class MusicManager : BaseScript
     {
         /// <summary>
-        /// Currently running music event
-        /// </summary>
-        private static string s_curMusicEvent;
-
-        /// <summary>
         /// Tick function
         /// </summary>
         /// <returns></returns>
@@ -27,11 +22,6 @@ namespace GamemodesClient.Core
             {
                 // Play 30s countdown music when only 30 seconds are left
                 Play("FM_COUNTDOWN_30S");
-            }
-            else if (TimerManager.SecondsLeft == 1)
-            {
-                // Kill countdown music towards end
-                Play("FM_COUNTDOWN_30S_KILL");
             }
 
             await Task.FromResult(0);
@@ -44,12 +34,6 @@ namespace GamemodesClient.Core
         /// <param name="_extraMusicEvent">Additional music event to trigger to control intensity of normal music event</param>
         public static void Play(string _musicEvent = null, string _extraMusicEvent = null)
         {
-            // Set currently running music event
-            s_curMusicEvent = _musicEvent;
-
-            // Save extra music event
-            string extraMusicEvent = _extraMusicEvent;
-
             // Check if music event is set
             if (_musicEvent == null)
             {
@@ -61,27 +45,27 @@ namespace GamemodesClient.Core
                 {
                     // Deadline
                     case 0:
-                        s_curMusicEvent = "BKR_DEADLINE_START_MUSIC";
-                        extraMusicEvent = "MP_MC_ACTION_HPREP";
+                        _musicEvent = "BKR_DEADLINE_START_MUSIC";
+                        _extraMusicEvent = "MP_MC_ACTION_HPREP";
 
                         break;
 
                     // Arena Wars
                     case 1:
                         choice = RandomUtils.RandomInt(1, 9);
-                        s_curMusicEvent = $"MC_AW_MUSIC_{choice}";
+                        _musicEvent = $"MC_AW_MUSIC_{choice}";
 
                         break;
                 }
             }
 
             // Trigger chosen music event
-            API.TriggerMusicEvent(s_curMusicEvent);
+            API.TriggerMusicEvent(_musicEvent);
 
             // Also trigger extra music event if one exists
-            if (extraMusicEvent != null)
+            if (_extraMusicEvent != null)
             {
-                API.TriggerMusicEvent(extraMusicEvent);
+                API.TriggerMusicEvent(_extraMusicEvent);
             }
         }
 
@@ -90,15 +74,7 @@ namespace GamemodesClient.Core
         /// </summary>
         public static void Stop()
         {
-            // Check if music event is running
-            if (s_curMusicEvent != null)
-            {
-                // Cancel music event
-                API.CancelMusicEvent(s_curMusicEvent);
-
-                // Set music event as not running
-                s_curMusicEvent = null;
-            }
+            Play("FM_COUNTDOWN_30S_KILL");
         }
     }
 }

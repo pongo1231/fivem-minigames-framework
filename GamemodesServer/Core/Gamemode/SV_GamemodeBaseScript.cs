@@ -29,6 +29,11 @@ namespace GamemodesServer.Core.Gamemode
         public int TimerSeconds { get; protected set; } = -2;
 
         /// <summary>
+        /// Whether this gamemode can be chosen by gamemode manager randomly
+        /// </summary>
+        public bool ExcludeFromChoicesList { get; set; } = false;
+
+        /// <summary>
         /// Pre start function
         /// </summary>
         public abstract Task PreStart();

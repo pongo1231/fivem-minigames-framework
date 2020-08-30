@@ -117,6 +117,8 @@ namespace GamemodesServer.Core
                     m_voteRunning = false;
 
                     GamemodeManager.StopGamemode();
+
+                    ChatUtils.SendMessage("^2Gamemode has been stopped by vote!");
                 }
                 else
                 {
