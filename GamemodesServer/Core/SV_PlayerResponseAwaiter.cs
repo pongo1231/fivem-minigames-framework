@@ -71,6 +71,11 @@ namespace GamemodesServer.Core
 
         public static async Task AwaitResponse(string _serverClientEventName, string _clientServerEventName, params object[] _serverClientEventArgs)
         {
+            if (PlayerLoadStateManager.GetLoadedInPlayers().Count() == 0)
+            {
+                return;
+            }
+
             List<Task> responseAwaits = new List<Task>();
 
             foreach (Player player in PlayerLoadStateManager.GetLoadedInPlayers())
