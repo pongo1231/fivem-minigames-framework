@@ -7,70 +7,120 @@ using System.Threading.Tasks;
 
 namespace GamemodesClient.Core
 {
+    /// <summary>
+    /// Boost manager class
+    /// </summary>
     public class BoostManager : BaseScript
     {
+        /// <summary>
+        /// Target vehicle to manage boost of
+        /// </summary>
         public static GmNetEntity<Vehicle> BoostVehicle;
+
+        /// <summary>
+        /// Whether boost should be enabled or not
+        /// </summary>
         public static bool BoostEnabled = false;
 
+        /// <summary>
+        /// Current fuel level (1 is max)
+        /// </summary>
         private float m_boostFuel = 1f;
-        private long m_boostFuelLastTimeStamp;
-        private bool m_usingBoost = false;
-        private bool m_boostPlayedSound = true;
 
+        /// <summary>
+        /// Timestamp to save from last tick execution
+        /// </summary>
+        private long m_boostFuelLastTimeStamp;
+
+        /// <summary>
+        /// Whether boost was triggered
+        /// </summary>
+        private bool m_usingBoost = false;
+
+        /// <summary>
+        /// Whether sound played when boost is fully recharged has been played yet
+        /// </summary>
+        private bool m_boostRechargedPlayedSound = true;
+
+        /// <summary>
+        /// Tick function
+        /// </summary>
+        /// <returns></returns>
         [Tick]
         private async Task OnTickHandleBoost()
         {
+            // Abort if either target vehicle doesn't exist or boost isn't enabled
             if (!BoostVehicle.Exists || !BoostEnabled)
             {
                 return;
             }
 
+            // Show ability bar to indicate fuel recharge level
             API.SetAbilityBarVisibilityInMultiplayer(true);
 
+            // Save current timestamp
             long curTimeStamp = API.GetGameTimer();
+
+            // Calculate delta from current and last timestamp
             long boostDelta = curTimeStamp - m_boostFuelLastTimeStamp;
+
+            // Set last timestamp to current timestamp
             m_boostFuelLastTimeStamp = curTimeStamp;
 
+            // Check if boost button has been pressed
             if (Game.IsControlJustPressed(1, Control.VehicleRocketBoost))
             {
+                // Trigger boost if fuel is full
                 if (m_boostFuel == 1f)
                 {
                     m_usingBoost = true;
                 }
             }
 
+            // Set ability bar level to current fuel level and set max to 1
             API.SetAbilityBarValue(m_boostFuel, 1f);
 
+            // Check if boost is currently active
             if (m_usingBoost)
             {
+                // Give the current vehicle a force push
                 BoostVehicle.Entity.ApplyForceRelative(new Vector3(0f, 0.4f, 0f));
 
+                // Calculate new fuel level
                 m_boostFuel = Math.Max(m_boostFuel - boostDelta * 0.0006f, 0f);
 
-                //API.PlaySoundFrontend(-1, "FocusIn", "HintCamSounds", true);
+                // Play active boost sound
                 API.PlaySoundFromEntity(-1, "CLOTHES_THROWN", BoostVehicle.Entity.Handle, "RE_DOMESTIC_SOUNDSET", false, 0);
 
+                // Display networked boost particle effects
                 BoostVehicle.Entity.PlayPtfxOnEntity("scr_rcbarry2", "muz_clown", true, 0.2f, API.GetEntityBoneIndexByName(BoostVehicle.Entity.Handle, "wheel_lr"));
-
                 BoostVehicle.Entity.PlayPtfxOnEntity("scr_rcbarry2", "muz_clown", true, 0.2f, API.GetEntityBoneIndexByName(BoostVehicle.Entity.Handle, "wheel_rr"));
 
+                // Show boost screen effect
                 Screen.Effects.Start(ScreenEffect.RaceTurbo, 1000);
 
-                if (m_boostFuel == 0f)
+                // Check if fuel is empty
+                if (m_boostFuel <= 0f)
                 {
+                    // Set boost as not active anymore
                     m_usingBoost = false;
 
-                    m_boostPlayedSound = false;
+                    // Set boost recharged sound as not played yet
+                    m_boostRechargedPlayedSound = false;
                 }
             }
             else
             {
+                // Calculate new fuel level
                 m_boostFuel = Math.Min(m_boostFuel + boostDelta * 0.0002f, 1f);
 
-                if (m_boostFuel == 1f && !m_boostPlayedSound)
+                // Check if fuel is full and sound hasn't been played yet
+                if (m_boostFuel >= 1f && !m_boostRechargedPlayedSound)
                 {
-                    m_boostPlayedSound = true;
+                    // Set fuel fully recharged sound flag as played
+                    m_boostRechargedPlayedSound = true;
 
+                    // Play sound
                     API.PlaySoundFrontend(-1, "GO", "HUD_MINI_GAME_SOUNDSET", false);
                 }
             }

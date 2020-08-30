@@ -6,86 +6,96 @@ using System.Threading.Tasks;
 
 namespace GamemodesClient.Core
 {
+    /// <summary>
+    /// Entity pool class
+    /// </summary>
     public static class EntityPool
     {
-        private static List<GmNetEntity<Entity>> s_entities = new List<GmNetEntity<Entity>>();
+        /// <summary>
+        /// List of spawned in (non-networked) entities
+        /// </summary>
+        private static List<Entity> s_entities = new List<Entity>();
 
-        public static async Task<GmNetEntity<Prop>> CreateProp(Model _model, Vector3 _pos, bool _dynamic, bool _networked)
+        /// <summary>
+        /// Create and add a new non-networked prop to pool
+        /// </summary>
+        /// <param name="_model">Model of prop</param>
+        /// <param name="_pos">Position of prop</param>
+        /// <param name="_dynamic">Whether prop is dynamic</param>
+        /// <returns>The new prop</returns>
+        public static async Task<Prop> CreateProp(Model _model, Vector3 _pos, bool _dynamic)
         {
+            // Request and wait for model to load
             _model.Request();
             while (!_model.IsLoaded)
             {
                 await BaseScript.Delay(0);
             }
 
-            GmNetEntity<Prop> prop = new GmNetEntity<Prop>(new Prop(API.CreateObject(_model.Hash, _pos.X, _pos.Y, _pos.Z, _networked, true, _dynamic)));
+            // Create new prop
+            Prop prop = new Prop(API.CreateObject(_model.Hash, _pos.X, _pos.Y, _pos.Z, false, true, _dynamic));
 
-            if (_networked)
-            {
-                prop.Entity.RequestControl();
-            }
+            // Set position of prop to target position without any offsets
+            prop.PositionNoOffset = _pos;
 
-            prop.Entity.PositionNoOffset = _pos;
+            // Add new prop to pool
+            s_entities.Add(prop);
 
-            s_entities.Add(new GmNetEntity<Entity>(prop.Entity));
-
+            // Return prop
             return prop;
         }
 
-        public static async Task<GmNetEntity<Vehicle>> CreateVehicle(Model _model, Vector3 _pos, float _heading, bool _networked)
+        /// <summary>
+        /// Create and add new non-networked vehicle to pool
+        /// </summary>
+        /// <param name="_model">Model of vehicle</param>
+        /// <param name="_pos">Position of vehicle</param>
+        /// <param name="_heading">Heading of vehicle</param>
+        /// <returns></returns>
+        public static async Task<Vehicle> CreateVehicle(Model _model, Vector3 _pos, float _heading)
         {
+            // Request and wait for model to load
             _model.Request();
             while (!_model.IsLoaded)
             {
                 await BaseScript.Delay(0);
             }
 
-            GmNetEntity<Vehicle> vehicle = new GmNetEntity<Vehicle>(new Vehicle(API.CreateVehicle((uint)_model.Hash, _pos.X, _pos.Y, _pos.Z, _heading, _networked, true)));
+            // Create a new vehicle
+            Vehicle vehicle = new Vehicle(API.CreateVehicle((uint)_model.Hash, _pos.X, _pos.Y, _pos.Z, _heading, false, true));
 
-            if (_networked)
-            {
-                vehicle.Entity.RequestControl();
-            }
+            // Set position of vehicle to target position without any offsets
+            vehicle.PositionNoOffset = _pos;
 
-            vehicle.Entity.PositionNoOffset = _pos;
+            // Add new vehicle to pool
+            s_entities.Add(vehicle);
 
-            s_entities.Add(new GmNetEntity<Entity>(vehicle.Entity));
-
+            // Return vehicle
             return vehicle;
         }
 
+        /// <summary>
+        /// Add an entity to pool
+        /// </summary>
+        /// <param name="_entity">Entity to add to pool</param>
         public static void AddToPool(Entity _entity)
         {
-            s_entities.Add(new GmNetEntity<Entity>(_entity));
-        }
-
-        public static void AddToPool(GmNetEntity<Entity> _entity)
-        {
+            // Add entity to pool
             s_entities.Add(_entity);
         }
 
-        public static void AddToPool(GmNetEntity<Ped> _entity)
-        {
-            s_entities.Add(new GmNetEntity<Entity>(_entity.Entity));
-        }
-
-        public static void AddToPool(GmNetEntity<Vehicle> _entity)
-        {
-            s_entities.Add(new GmNetEntity<Entity>(_entity.Entity));
-        }
-
-        public static void AddToPool(GmNetEntity<Prop> _entity)
-        {
-            s_entities.Add(new GmNetEntity<Entity>(_entity.Entity));
-        }
-
+        /// <summary>
+        /// Clear pool of entities
+        /// </summary>
         public static void ClearEntities()
         {
-            foreach (GmNetEntity<Entity> entity in s_entities)
+            // Remove all entities in pool
+            foreach (Entity entity in s_entities)
             {
-                entity.Entity.Delete();
+                entity.Delete();
             }
 
+            // Clear pool
             s_entities.Clear();
         }
     }

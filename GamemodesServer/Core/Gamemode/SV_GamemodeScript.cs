@@ -1,5 +1,4 @@
-﻿using CitizenFX.Core.Native;
-using GamemodesServer.Core.Map;
+﻿using GamemodesServer.Core.Map;
 using GamemodesServer.Utils;
 using GamemodesShared;
 using System;

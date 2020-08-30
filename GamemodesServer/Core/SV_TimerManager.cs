@@ -17,7 +17,7 @@ namespace GamemodesServer.Core
         {
             get
             {
-                return s_secondsLeft <= 0;
+                return s_secondsLeft == 0 || s_secondsLeft == -1;
             }
         }
 

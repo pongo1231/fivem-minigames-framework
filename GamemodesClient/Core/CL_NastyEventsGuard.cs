@@ -3,8 +3,14 @@ using System;
 
 namespace GamemodesClient.Core
 {
+    /// <summary>
+    /// Illegal event manager class
+    /// </summary>
     public class NastyEventsGuard : BaseScript
     {
+        /// <summary>
+        /// List of events which are definitely not sent with good intentions
+        /// </summary>
         private readonly string[] m_nastyEvents =
         {
             "ambulancier:selfRespawn",
@@ -20,6 +26,9 @@ namespace GamemodesClient.Core
             "UnJP"
         };
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public NastyEventsGuard()
         {
             foreach (string _eventName in m_nastyEvents)
@@ -28,6 +37,9 @@ namespace GamemodesClient.Core
             }
         }
 
+        /// <summary>
+        /// Indicates to server to drop this client
+        /// </summary>
         private void SendDropMeToServer()
         {
             TriggerServerEvent("gamemodes:sv_cl_dropme");

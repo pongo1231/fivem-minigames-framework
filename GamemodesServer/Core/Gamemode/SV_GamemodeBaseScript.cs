@@ -8,7 +8,7 @@ namespace GamemodesServer.Core.Gamemode
         public string Name { get; protected set; } = "???";
         public string Description { get; protected set; } = "???";
         public string EventName { get; protected set; } = "null";
-        public int TimerSeconds { get; protected set; } = 180;
+        public int TimerSeconds { get; protected set; } = -2;
 
         public abstract Task PreStart();
 
