@@ -3,8 +3,14 @@ using System;
 
 namespace GamemodesServer.Core
 {
+    /// <summary>
+    /// Nasty events guard
+    /// </summary>
     public class NastyEventsGuard : GmScript
     {
+        /// <summary>
+        /// List of illegal events
+        /// </summary>
         private readonly string[] m_nastyEvents =
         {
             "8321hiue89js",
@@ -234,22 +240,36 @@ namespace GamemodesServer.Core
             "esx_society:putVehicleDFWMInGarage"
         };
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public NastyEventsGuard()
         {
+            // Register all illegal events
             foreach (string _eventName in m_nastyEvents)
             {
                 EventHandlers[_eventName] += new Action<Player>(OnDropClient);
             }
         }
 
+        /// <summary>
+        /// Kick player for triggering illegal event by client
+        /// </summary>
+        /// <param name="_player">Player</param>
         [EventHandler("gamemodes:sv_cl_dropme")]
         private void OnDropClient([FromSource] Player _player)
         {
+            // Drop this little fucker
             DropNastyClient(_player);
         }
 
+        /// <summary>
+        /// Drop client for hax
+        /// </summary>
+        /// <param name="_player">Player</param>
         private void DropNastyClient(Player _player)
         {
+            // Bye bye roleplayer
             _player.Drop("Error while invoking game subroutine sub_7FF7A2BECCD7: System.Net.CorruptionException. Please restart your computer and verify your game files to prevent data loss.");
         }
     }

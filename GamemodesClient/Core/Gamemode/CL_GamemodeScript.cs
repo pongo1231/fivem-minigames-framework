@@ -45,7 +45,7 @@ namespace GamemodesClient.Core.Gamemode
     }
 
     /// <summary>
-    /// Attribute for calling gamemode function on tick
+    /// Attribute for registering tick function while gamemode is running
     /// </summary>
     [AttributeUsage(AttributeTargets.Method)]
     public class GamemodeTickAttribute : Attribute
@@ -159,6 +159,7 @@ namespace GamemodesClient.Core.Gamemode
                 {
                     Debug.WriteLine($"Registering OnTick for gamemode {methodInfo.DeclaringType.Name}");
 
+                    // Add to list of tick delegates
                     m_onTickFuncs.Add(createDelegate(methodInfo));
                 }
             }

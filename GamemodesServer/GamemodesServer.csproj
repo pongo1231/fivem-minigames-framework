@@ -58,7 +58,7 @@
     <Compile Include="Gamemodes\Scooterball\SV_GM_Scooterball.cs" />
     <Compile Include="Core\Map\SV_GamemodeMap.cs" />
     <Compile Include="Core\SV_EntityPool.cs" />
-    <Compile Include="Core\SV_EntityPoolGuard.cs" />
+    <Compile Include="Core\SV_EntityGuard.cs" />
     <Compile Include="Core\SV_ExplosionsGuard.cs" />
     <Compile Include="Core\SV_NastyEventsGuard.cs" />
     <Compile Include="Core\SV_PlayerLoadStateManager.cs" />

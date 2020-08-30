@@ -5,7 +5,7 @@ using GamemodesClient.Utils;
 namespace GamemodesClient.Core
 {
     /// <summary>
-    /// Networked entity helper class
+    /// Networked entity helper struct
     /// </summary>
     /// <typeparam name="T">Type of entity</typeparam>
     public struct GmNetEntity<T> where T : Entity
