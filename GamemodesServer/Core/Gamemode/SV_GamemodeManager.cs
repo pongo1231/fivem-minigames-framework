@@ -219,6 +219,8 @@ namespace GamemodesServer.Core.Gamemode
 
                     // Start gamemode timer
                     TimerManager.SetTimer(s_curGamemode.TimerSeconds);
+
+                    StopGamemodeVotingHandler.ShowReminder();
                 }
                 else
                 {

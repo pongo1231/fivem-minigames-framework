@@ -16,6 +16,9 @@ namespace GamemodesClient.Core
         [EventHandler("gamemodes:cl_sv_spawnmap")]
         private async void OnSpawnMap(List<dynamic> _props)
         {
+            // Respond to server waiting for us
+            TriggerServerEvent("gamemodes:sv_cl_spawnedmap");
+
             // Iterate through all SHGmProps
             foreach (dynamic prop in _props)
             {
@@ -31,9 +34,6 @@ namespace GamemodesClient.Core
                 // Set as frozen
                 spawnedProp.IsPositionFrozen = true;
             }
-
-            // Respond to server waiting for us
-            TriggerServerEvent("gamemodes:sv_cl_spawnedmap");
         }
 
         /// <summary>

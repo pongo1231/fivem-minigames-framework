@@ -1,5 +1,6 @@
 ﻿using CitizenFX.Core;
 using GamemodesShared;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -75,35 +76,51 @@ namespace GamemodesServer.Core
                 return;
             }
 
+            // Create a new list to store new players into and sort into teams randomized later
+            List<Player> m_toSortIntoTeams = new List<Player>();
+
             // Iterate through all loaded in players
             foreach (Player player in PlayerLoadStateManager.GetLoadedInPlayers())
             {
                 // Check whether this player doesn't have a team assigned to them yet
                 if (s_teamPlayers.Find(teamPlayer => teamPlayer.Player == player) == null)
                 {
-                    // Store type of team
-                    ETeamType teamType = ETeamType.TEAM_UNK;
-
-                    // Get players count of both teams
-                    int redCount = s_teamPlayers.FindAll(teamPlayer => teamPlayer.TeamType == ETeamType.TEAM_RED).Count;
-                    int blueCount = s_teamPlayers.FindAll(teamPlayer => teamPlayer.TeamType == ETeamType.TEAM_BLUE).Count;
-
-                    // Set player into team with fewer players
-                    if (redCount < blueCount)
-                    {
-                        teamType = ETeamType.TEAM_RED;
-                    }
-                    else
-                    {
-                        teamType = ETeamType.TEAM_BLUE;
-                    }
-
-                    // Add player to list
-                    s_teamPlayers.Add(new TeamPlayer(player, teamType));
-
-                    // Wait for client to be aware of new team
-                    await PlayerResponseAwaiter.AwaitResponse(player, "gamemodes:cl_sv_setteam", "gamemodes:cl_sv_gotteam", (int)teamType);
+                    // Add to list of players to sort into teams
+                    m_toSortIntoTeams.Add(player);
                 }
+            }
+
+            // Go through all players in to sort list in randomized order
+            while (m_toSortIntoTeams.Count > 0)
+            {
+                // Choose random player from list
+                Player player = m_toSortIntoTeams[new Random().Next(0, m_toSortIntoTeams.Count)];
+
+                // Store type of team
+                ETeamType teamType = ETeamType.TEAM_UNK;
+
+                // Get players count of both teams
+                int redCount = s_teamPlayers.FindAll(teamPlayer => teamPlayer.TeamType == ETeamType.TEAM_RED).Count;
+                int blueCount = s_teamPlayers.FindAll(teamPlayer => teamPlayer.TeamType == ETeamType.TEAM_BLUE).Count;
+
+                // Set player into team with fewer players
+                if (redCount < blueCount)
+                {
+                    teamType = ETeamType.TEAM_RED;
+                }
+                else
+                {
+                    teamType = ETeamType.TEAM_BLUE;
+                }
+
+                // Add player to list
+                s_teamPlayers.Add(new TeamPlayer(player, teamType));
+
+                // Remove player from list
+                m_toSortIntoTeams.Remove(player);
+
+                // Wait for client to be aware of new team
+                await PlayerResponseAwaiter.AwaitResponse(player, "gamemodes:cl_sv_setteam", "gamemodes:cl_sv_gotteam", (int)teamType);
             }
 
             // Set teams as loaded

@@ -41,6 +41,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -49,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\SV_StopGamemodeVotingHandler.cs" />
     <Compile Include="Core\SV_TimeWeatherManager.cs" />
     <Compile Include="Gamemodes\Scooterball\SV_GM_Scooterball_Map.cs" />
     <Compile Include="Gamemodes\Scooterball\SV_GM_Scooterball_Map_1.cs" />
@@ -70,6 +72,7 @@
     <Compile Include="Core\SV_GmScript.cs" />
     <Compile Include="Core\SV_TeamManager.cs" />
     <Compile Include="Core\SV_TimerManager.cs" />
+    <Compile Include="Utils\SV_ChatUtils.cs" />
     <Compile Include="Utils\SV_EntityUtils.cs" />
     <Compile Include="Utils\SV_Log.cs" />
     <Compile Include="Utils\SV_MathUtils.cs" />
