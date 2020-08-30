@@ -23,7 +23,7 @@ namespace GamemodesServer.Core.Gamemode
         private bool m_awaitingGamemodeStop = false;
 
         private bool m_prestartCountdownRunning = false;
-        private int m_prestartCountdown = 5;
+        private int m_prestartCountdown = 4;
 
         [PlayerDropped]
         private void OnPlayerDropped(Player _player)
@@ -78,7 +78,7 @@ namespace GamemodesServer.Core.Gamemode
                 m_initializedGamemodeClients = false;
 
                 m_prestartCountdownRunning = true;
-                m_prestartCountdown = 6;
+                m_prestartCountdown = 4;
             }
             else if (s_stopGamemode)
             {
@@ -105,7 +105,7 @@ namespace GamemodesServer.Core.Gamemode
                 {
                     TriggerClientEvent("gamemodes:cl_sv_showprestartcam", s_curGamemode.Name, s_curGamemode.Description);
 
-                    await Delay(5000);
+                    await Delay(15000);
 
                     TriggerClientEvent("gamemodes:cl_sv_hideprestartcam");
 
