@@ -9,12 +9,12 @@ namespace GamemodesServer.Gamemodes.Knockdown
 
         public Vector3 ObstacleSpawnPos1_1 { get; protected set; }
         public Vector3 ObstacleSpawnPos1_2 { get; protected set; }
-        public Vector3 ObstacleSpawnPos1_Forward { get; protected set; }
+        public Vector3 ObstacleSpawnPos1_Velocity { get; protected set; }
 
 
         public Vector3 ObstacleSpawnPos2_1 { get; protected set; }
         public Vector3 ObstacleSpawnPos2_2 { get; protected set; }
-        public Vector3 ObstacleSpawnPos2_Forward { get; protected set; }
+        public Vector3 ObstacleSpawnPos2_Velocity { get; protected set; }
 
     }
 }

@@ -6,6 +6,7 @@ using GamemodesClient.Core.Gamemode;
 using GamemodesClient.Utils;
 using GamemodesShared;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Threading.Tasks;
 using Font = CitizenFX.Core.UI.Font;
@@ -33,6 +34,16 @@ namespace GamemodesClient.Gamemodes
         private float m_fallOffHeight = float.MaxValue;
 
         /// <summary>
+        /// List of obstacle network ids sent by server
+        /// </summary>
+        private List<int> m_obstacles = new List<int>();
+
+        /// <summary>
+        /// Time until no collisions mode runs out
+        /// </summary>
+        private int m_noCollisionsTimestamp;
+
+        /// <summary>
         /// Constructor
         /// </summary>
         public Knockdown() : base("knockdown", null)
@@ -49,6 +60,9 @@ namespace GamemodesClient.Gamemodes
             // Reset variables
             m_scooter = default;
             m_fallOffHeight = float.MaxValue;
+
+            // Clear obstacles
+            m_obstacles.Clear();
 
             // Request a scooter from server
             TriggerServerEvent("gamemodes:sv_cl_knockdown_requestscooter", SpawnManager.SpawnPos, SpawnManager.SpawnRot);
@@ -152,23 +166,19 @@ namespace GamemodesClient.Gamemodes
         }
 
         /// <summary>
-        /// Spawned ball event by server
+        /// Update obstacles list event by server
         /// </summary>
-        /// <param name="_networkId">Network id of entity</param>
-        [EventHandler("gamemodes:sv_cl_knockdown_spawnedball")]
-        private void OnSpawnedBall(int _networkId)
+        /// <param name="_obstacles">List of obstacle network ids</param>
+        [EventHandler("gamemodes:cl_sv_knockdown_updateobstacles")]
+        private void OnSpawnedBall(List<dynamic> _obstacles)
         {
-            // Get entity
-            GmNetEntity<Prop> prop = new GmNetEntity<Prop>(_networkId, true);
+            // Clear obstacles
+            m_obstacles.Clear();
 
-            // Check if it (still) exists
-            if (prop.Exists)
+            // Add all network ids to list
+            foreach (dynamic networkId in _obstacles)
             {
-                // Request control
-                prop.Entity.RequestControl();
-
-                // Set wonky physics params for obstacle
-                API.SetObjectPhysicsParams(prop.Entity.Handle, 9999999f, 10f, 10f, 100f, 100f, 100f, 100f, 100f, 100f, 100f, 100f);
+                m_obstacles.Add(networkId);
             }
         }
 
@@ -218,13 +228,44 @@ namespace GamemodesClient.Gamemodes
                     {
                         TriggerServerEvent("gamemodes:sv_cl_knockdown_felloff");
 
+                        m_noCollisionsTimestamp = API.GetGameTimer() + 3000;
+
                         // Respawn scooter
                         await SpawnManager.Respawn();
                     }
                 }
             }
 
+            /* Handle obstacles */
+
+            foreach (int obstacleNetworkId in m_obstacles)
+            {
+                // Get entity
+                GmNetEntity<Prop> prop = new GmNetEntity<Prop>(obstacleNetworkId, true);
+
+                // Check if it (still) exists
+                if (prop.Exists)
+                {
+                    // Disable collisions with current scooter if in no collisions mode
+                    if (m_scooter.Exists && m_noCollisionsTimestamp > API.GetGameTimer())
+                    {
+                        API.SetEntityNoCollisionEntity(prop.Entity.Handle, m_scooter.Entity.Handle, true);
+                    }
+                }
+            }
+
             await Task.FromResult(0);
+        }
+
+        [GamemodeTick]
+        private async Task OnTickIndicateNoCollisionsMode()
+        {
+            if (m_scooter.Exists && m_noCollisionsTimestamp > API.GetGameTimer())
+            {
+                m_scooter.Entity.FadeIn();
+            }
+
+            await Delay(200);
         }
     }
 }

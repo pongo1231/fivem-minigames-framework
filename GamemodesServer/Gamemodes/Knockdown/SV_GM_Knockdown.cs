@@ -7,6 +7,7 @@ using GamemodesShared;
 using GamemodesShared.Utils;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace GamemodesServer.Gamemodes.Knockdown
@@ -41,9 +42,9 @@ namespace GamemodesServer.Gamemodes.Knockdown
             public long RespawnTimestamp { get; set; }
 
             /// <summary>
-            /// Direction of obstacle
+            /// Target velocity of obstacle
             /// </summary>
-            public float Direction { get; set; }
+            public Vector3 TargetVelocity { get; set; }
         }
 
         /// <summary>
@@ -259,37 +260,40 @@ namespace GamemodesServer.Gamemodes.Knockdown
                     if (RandomUtils.RandomInt(0, 2) == 0)
                     {
                         obstacle.Prop.Position = GetRandomPosInArea(CurrentMap.ObstacleSpawnPos1_1, CurrentMap.ObstacleSpawnPos1_2);
-                        obstacle.Prop.Velocity = CurrentMap.ObstacleSpawnPos1_Forward;
-                        obstacle.Direction = CurrentMap.ObstacleSpawnPos1_Forward.X;
+                        obstacle.Prop.Velocity = CurrentMap.ObstacleSpawnPos1_Velocity;
+                        obstacle.TargetVelocity = CurrentMap.ObstacleSpawnPos1_Velocity;
                     }
                     else
                     {
                         obstacle.Prop.Position = GetRandomPosInArea(CurrentMap.ObstacleSpawnPos2_1, CurrentMap.ObstacleSpawnPos2_2);
-                        obstacle.Prop.Velocity = CurrentMap.ObstacleSpawnPos2_Forward;
-                        obstacle.Direction = CurrentMap.ObstacleSpawnPos2_Forward.X;
+                        obstacle.Prop.Velocity = CurrentMap.ObstacleSpawnPos2_Velocity;
+                        obstacle.TargetVelocity = CurrentMap.ObstacleSpawnPos2_Velocity;
                     }
 
                     // Reset obstacle respawn time
                     obstacle.RespawnTimestamp = curTimestamp + 30000;
                 }
-                else
-                {
-                    // Get current velocity
-                    Vector3 velocity = obstacle.Prop.Velocity;
 
-                    if (velocity.X < 30f && obstacle.Direction > 0f)
-                    {
-                        // Force speed to be at least 30
-                        velocity.X = 30f;
-                        obstacle.Prop.Velocity = velocity;
-                    }
-                    else if (velocity.X > -30f && obstacle.Direction < 0f)
-                    {
-                        // Force speed to be at least -40
-                        velocity.X = -30f;
-                        obstacle.Prop.Velocity = velocity;
-                    }
+                // Get obstacle velocity
+                Vector3 velocity = obstacle.Prop.Velocity;
+
+                // Set corresponding velocity values
+                if (obstacle.TargetVelocity.X != 0f)
+                {
+                    velocity.X = obstacle.TargetVelocity.X;
                 }
+
+                if (obstacle.TargetVelocity.Y != 0f)
+                {
+                    velocity.Y = obstacle.TargetVelocity.Y;
+                }
+
+                if (obstacle.TargetVelocity.Z != 0f)
+                {
+                    velocity.Z = obstacle.TargetVelocity.Z;
+                }
+
+                obstacle.Prop.Velocity = velocity;
             }
 
             await Task.FromResult(0);
@@ -306,6 +310,18 @@ namespace GamemodesServer.Gamemodes.Knockdown
 
             // Send scores to all clients
             TriggerClientEvent("gamemodes:cl_sv_knockdown_updatescores", m_blueScore, m_redScore);
+
+            // Send list of obstacles to all clients
+            List<int> obstacles = new List<int>();
+            foreach (Obstacle obstacle in m_obstacles)
+            {
+                if (obstacle.Prop.Exists())
+                {
+                    obstacles.Add(obstacle.Prop.NetworkId);
+                }
+            }
+
+            TriggerClientEvent("gamemodes:cl_sv_knockdown_updateobstacles", obstacles);
 
             await Delay(500);
         }
