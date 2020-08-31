@@ -40,12 +40,6 @@ namespace GamemodesServer.Core
             // Wait an extra bit for clients to load this entity
             await BaseScript.Delay(2000);
 
-            // Wait if it still hasn't been created for some reason
-            while (!vehicle.Exists())
-            {
-                await BaseScript.Delay(0);
-            }
-
             // Raise the entity guard again
             EntityGuard.AllowThrough = false;
 
@@ -77,12 +71,6 @@ namespace GamemodesServer.Core
 
             // Wait an extra bit for clients to load this entity
             await BaseScript.Delay(2000);
-
-            // Wait if it still hasn't been created for some reason
-            while (!prop.Exists())
-            {
-                await BaseScript.Delay(0);
-            }
 
             // Raise the entity guard again
             EntityGuard.AllowThrough = false;

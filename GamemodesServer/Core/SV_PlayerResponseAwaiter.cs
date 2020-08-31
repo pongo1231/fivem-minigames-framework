@@ -119,7 +119,7 @@ namespace GamemodesServer.Core
         public static async Task AwaitResponse(string _serverClientEventName, string _clientServerEventName, params object[] _serverClientEventArgs)
         {
             // Return if there are no loaded in players
-            if (PlayerLoadStateManager.GetLoadedInPlayers().Count() == 0)
+            if (PlayerLoadStateManager.GetLoadedInPlayers().Length == 0)
             {
                 return;
             }

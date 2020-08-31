@@ -231,6 +231,9 @@ namespace GamemodesServer.Gamemodes.Knockdown
             await Task.FromResult(0);
         }
 
+        /// <summary>
+        /// Tick function for handling obstacles
+        /// </summary>
         [GamemodeTick]
         private async Task OnTickHandleObstacles()
         {

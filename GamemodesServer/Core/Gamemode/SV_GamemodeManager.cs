@@ -256,32 +256,38 @@ namespace GamemodesServer.Core.Gamemode
             // Prestop gamemode
             await s_curGamemode.PreStop();
 
-            // Wait for all clients to be made aware of this
-            await PlayerResponseAwaiter.AwaitResponse($"gamemodes:cl_sv_{s_curGamemode.EventName}_prestop", "gamemodes:sv_cl_prestoppedgamemode");
+            if (PlayerLoadStateManager.GetLoadedInPlayers().Length > 0)
+            {
+                // Wait for all clients to be made aware of this
+                await PlayerResponseAwaiter.AwaitResponse($"gamemodes:cl_sv_{s_curGamemode.EventName}_prestop", "gamemodes:sv_cl_prestoppedgamemode");
 
-            // Wait a bit
-            await Delay(1000);
+                // Wait a bit
+                await Delay(1000);
 
-            // Get winner team
-            ETeamType winnerTeam = s_curGamemode.GetWinnerTeam();
+                // Get winner team
+                ETeamType winnerTeam = s_curGamemode.GetWinnerTeam();
 
-            // Show winner cam with winner team broadcasted
-            TriggerClientEvent("gamemodes:cl_sv_showwinnercam", (int)winnerTeam);
+                // Show winner cam with winner team broadcasted
+                TriggerClientEvent("gamemodes:cl_sv_showwinnercam", (int)winnerTeam);
 
-            // Wait a bit again
-            await Delay(10000);
+                // Wait a bit again
+                await Delay(10000);
 
-            // Hide winner cam
-            TriggerClientEvent("gamemodes:cl_sv_hidewinnercam");
+                // Hide winner cam
+                TriggerClientEvent("gamemodes:cl_sv_hidewinnercam");
+            }
 
             // Stop gamemode
             await s_curGamemode.Stop();
 
-            // Wait for all clients to stop gamemode
-            await PlayerResponseAwaiter.AwaitResponse($"gamemodes:cl_sv_{s_curGamemode.EventName}_stop", "gamemodes:sv_cl_stoppedgamemode");
+            if (PlayerLoadStateManager.GetLoadedInPlayers().Length > 0)
+            {
+                // Wait for all clients to stop gamemode
+                await PlayerResponseAwaiter.AwaitResponse($"gamemodes:cl_sv_{s_curGamemode.EventName}_stop", "gamemodes:sv_cl_stoppedgamemode");
 
-            // Once again wait a bit
-            await Delay(5000);
+                // Once again wait a bit
+                await Delay(5000);
+            }
 
             // Set last gamemode to current gamemode
             s_curGamemode.ExcludeFromChoicesList = true;
