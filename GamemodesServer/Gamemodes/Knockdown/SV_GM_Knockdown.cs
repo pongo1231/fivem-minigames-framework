@@ -237,6 +237,15 @@ namespace GamemodesServer.Gamemodes.Knockdown
             // Get current timestamp
             long curTimestamp = API.GetGameTimer();
 
+            // Delete all the obstacles which don't exist anymore
+            foreach (Obstacle obstacle in m_obstacles.ToArray())
+            {
+                if (!obstacle.Prop.Exists())
+                {
+                    m_obstacles.Remove(obstacle);
+                }
+            }
+
             // Iterate through all obstacles
             foreach (Obstacle obstacle in m_obstacles)
             {
@@ -277,15 +286,6 @@ namespace GamemodesServer.Gamemodes.Knockdown
                         velocity.X = -30f;
                         obstacle.Prop.Velocity = velocity;
                     }
-                }
-            }
-
-            // And now delete all the obstacles which don't exist anymore
-            foreach (Obstacle obstacle in m_obstacles.ToArray())
-            {
-                if (!obstacle.Prop.Exists())
-                {
-                    m_obstacles.Remove(obstacle);
                 }
             }
 
