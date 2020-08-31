@@ -187,11 +187,11 @@ namespace GamemodesClient.Gamemodes
                 // Draw mission objective text corresponding to team
                 if (TeamManager.TeamType == ETeamType.TEAM_RED)
                 {
-                    ScreenUtils.ShowSubtitle("Don't fall off to not give the ~b~Blue Team~w~ points!");
+                    ScreenUtils.ShowSubtitle("Don't fall off to avoid giving the ~b~Blue Team~w~ points!");
                 }
                 else if (TeamManager.TeamType == ETeamType.TEAM_BLUE)
                 {
-                    ScreenUtils.ShowSubtitle("Don't fall off to not give the ~r~Red Team~w~ points!");
+                    ScreenUtils.ShowSubtitle("Don't fall off to avoid giving the ~r~Red Team~w~ points!");
                 }
             }
 
