@@ -12,19 +12,13 @@ namespace GamemodesClient.Core
     /// </summary>
     public class Main : BaseScript
     {
-        /// <summary>
-        /// Resource start function
-        /// </summary>
-        /// <param name="_resourceName">Name of resource</param>
-        [EventHandler("onClientResourceStart")]
-        private async void OnClientResourceStart(string _resourceName)
+        public Main()
         {
-            // Abort if started resource isn't this one
-            if (API.GetCurrentResourceName() != _resourceName)
-            {
-                return;
-            }
+            OnClientResourceStart();
+        }
 
+        private async void OnClientResourceStart()
+        {
             // Wait for game to fully load in
             while (API.GetIsLoadingScreenActive() || !Game.PlayerPed.Exists())
             {
@@ -32,10 +26,10 @@ namespace GamemodesClient.Core
             }
 
             // Add extra delay for safety
-            await Delay(2000);
+            await Delay(5000);
 
             // Fade out screen
-            _ = ScreenUtils.FadeOut();
+            await ScreenUtils.FadeOut();
 
             // Unpause game if it was paused from previous resource restart
             Game.Pause(false);
