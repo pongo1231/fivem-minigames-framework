@@ -179,7 +179,7 @@ namespace GamemodesServer.Core.Gamemode
                     TriggerClientEvent("gamemodes:cl_sv_showprestartcam", s_curGamemode.Name, s_curGamemode.Description);
 
                     // Wait a bit
-                    await Delay(15000);
+                    await Delay(20000);
 
                     // Hide prestart cam for all clients again
                     TriggerClientEvent("gamemodes:cl_sv_hideprestartcam");
