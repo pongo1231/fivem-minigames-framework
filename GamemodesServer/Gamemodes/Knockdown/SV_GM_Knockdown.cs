@@ -139,6 +139,9 @@ namespace GamemodesServer.Gamemodes.Knockdown
                 // Check whether player is not registered already
                 if (!m_scooterPlayers.Contains(_player))
                 {
+                    // Wait a bit
+                    await Delay(4000);
+
                     // Add player to list
                     m_scooterPlayers.Add(_player);
 
@@ -146,7 +149,7 @@ namespace GamemodesServer.Gamemodes.Knockdown
                     _player.Character.Position = _pos;
 
                     // Wait a bit
-                    await Delay(1000);
+                    await Delay(4000);
 
                     // Spawn scooter
                     Vehicle scooter = await EntityPool.CreateVehicle("panto", _pos, _rot);
@@ -274,6 +277,15 @@ namespace GamemodesServer.Gamemodes.Knockdown
                         velocity.X = -30f;
                         obstacle.Prop.Velocity = velocity;
                     }
+                }
+            }
+
+            // And now delete all the obstacles which don't exist anymore
+            foreach (Obstacle obstacle in m_obstacles.ToArray())
+            {
+                if (!obstacle.Prop.Exists())
+                {
+                    m_obstacles.Remove(obstacle);
                 }
             }
 

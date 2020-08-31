@@ -125,7 +125,7 @@ namespace GamemodesClient.Gamemodes
             //BoostManager.BoostVehicle = m_scooter;
 
             // Fade in screen
-            _ = ScreenUtils.FadeIn();
+            await ScreenUtils.FadeIn();
         }
 
         /// <summary>

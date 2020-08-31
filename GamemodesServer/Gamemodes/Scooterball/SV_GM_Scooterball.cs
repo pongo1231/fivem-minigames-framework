@@ -133,6 +133,9 @@ namespace GamemodesServer.Gamemodes.Scooterball
                 // Check whether player is not registered already
                 if (!m_scooterPlayers.Contains(_player))
                 {
+                    // Wait a bit
+                    await Delay(4000);
+
                     // Add player to list
                     m_scooterPlayers.Add(_player);
 
@@ -140,7 +143,7 @@ namespace GamemodesServer.Gamemodes.Scooterball
                     _player.Character.Position = _pos;
 
                     // Wait a bit
-                    await Delay(1000);
+                    await Delay(4000);
 
                     // Spawn scooter
                     Vehicle scooter = await EntityPool.CreateVehicle("rcbandito", _pos, _rot);
