@@ -1,6 +1,8 @@
 ﻿using CitizenFX.Core;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace GamemodesServer.Core
 {
@@ -56,6 +58,29 @@ namespace GamemodesServer.Core
 
             // Invoke player dropped event
             PlayerDropped?.Invoke(_player);
+        }
+
+        /// <summary>
+        /// Tick function
+        /// </summary>
+        [Tick]
+        private async Task OnTick()
+        {
+            // Iterate through all saved players
+            foreach (Player player in s_loadedPlayers.ToArray())
+            {
+                // Check if player not ingame anymore
+                if (!Players.Contains(player))
+                {
+                    // Remove player from list
+                    s_loadedPlayers.Remove(player);
+
+                    // Invoke player dropped event
+                    PlayerDropped?.Invoke(player);
+                }
+            }
+
+            await Delay(100);
         }
 
         /// <summary>
