@@ -1,7 +1,7 @@
 ﻿using CitizenFX.Core;
 using System;
 
-namespace GamemodesServer.Core
+namespace GamemodesServer.Core.Guards
 {
     /// <summary>
     /// Nasty events guard

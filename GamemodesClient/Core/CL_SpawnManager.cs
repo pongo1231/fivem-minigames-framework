@@ -9,7 +9,7 @@ namespace GamemodesClient.Core
     /// <summary>
     /// Spawn manager class
     /// </summary>
-    public class SpawnManager : BaseScript
+    public class SpawnManager : GmScript
     {
         /// <summary>
         /// Spawn Position

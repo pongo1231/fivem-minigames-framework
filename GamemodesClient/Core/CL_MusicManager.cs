@@ -1,7 +1,6 @@
 ﻿using CitizenFX.Core;
 using CitizenFX.Core.Native;
 using GamemodesShared.Utils;
-using System;
 using System.Threading.Tasks;
 
 namespace GamemodesClient.Core
@@ -9,7 +8,7 @@ namespace GamemodesClient.Core
     /// <summary>
     /// Music event manager class
     /// </summary>
-    public class MusicManager : BaseScript
+    public class MusicManager : GmScript
     {
         /// <summary>
         /// Tick function

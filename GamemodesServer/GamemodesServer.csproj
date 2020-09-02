@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\SV_PlayerScooterManager.cs" />
     <Compile Include="Core\SV_StopGamemodeVotingHandler.cs" />
     <Compile Include="Core\SV_TimeWeatherManager.cs" />
     <Compile Include="Gamemodes\Knockdown\SV_GM_Knockdown.cs" />
@@ -63,9 +64,9 @@
     <Compile Include="Gamemodes\Scooterball\SV_GM_Scooterball.cs" />
     <Compile Include="Core\Map\SV_GamemodeMap.cs" />
     <Compile Include="Core\SV_EntityPool.cs" />
-    <Compile Include="Core\SV_EntityGuard.cs" />
-    <Compile Include="Core\SV_ExplosionsGuard.cs" />
-    <Compile Include="Core\SV_NastyEventsGuard.cs" />
+    <Compile Include="Core\Guards\SV_EntityGuard.cs" />
+    <Compile Include="Core\Guards\SV_ExplosionsGuard.cs" />
+    <Compile Include="Core\Guards\SV_NastyEventsGuard.cs" />
     <Compile Include="Core\SV_PlayerLoadStateManager.cs" />
     <Compile Include="Core\SV_PlayerResponseAwaiter.cs" />
     <Compile Include="Core\SV_Main.cs" />

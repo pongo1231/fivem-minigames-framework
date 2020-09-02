@@ -9,7 +9,7 @@ namespace GamemodesClient.Core
     /// <summary>
     /// Prestart cam manager
     /// </summary>
-    public class PrestartCamManager : BaseScript
+    public class PrestartCamManager : GmScript
     {
         /// <summary>
         /// Whether prestart cam should be shown

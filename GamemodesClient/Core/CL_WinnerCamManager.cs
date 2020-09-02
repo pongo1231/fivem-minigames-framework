@@ -10,7 +10,7 @@ namespace GamemodesClient.Core
     /// <summary>
     /// Winner cam manager class
     /// </summary>
-    public class WinnerCamManager : BaseScript
+    public class WinnerCamManager : GmScript
     {
         /// <summary>
         /// Whether to show winner cam

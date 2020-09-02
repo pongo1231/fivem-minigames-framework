@@ -10,7 +10,7 @@ namespace GamemodesClient.Core
     /// <summary>
     /// Player names manager class
     /// </summary>
-    public class PlayerOverheadTextManager : BaseScript
+    public class PlayerOverheadTextManager : GmScript
     {
         /// <summary>
         /// Whether player names should be visible

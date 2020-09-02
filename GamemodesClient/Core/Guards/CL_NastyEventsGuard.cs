@@ -1,12 +1,11 @@
-﻿using CitizenFX.Core;
-using System;
+﻿using System;
 
-namespace GamemodesClient.Core
+namespace GamemodesClient.Core.Guards
 {
     /// <summary>
     /// Illegal event manager class
     /// </summary>
-    public class NastyEventsGuard : BaseScript
+    public class NastyEventsGuard : GmScript
     {
         /// <summary>
         /// List of events which are definitely not sent with good intentions

@@ -18,11 +18,6 @@ namespace GamemodesClient.Gamemodes
     public class Scooterball : GamemodeScript
     {
         /// <summary>
-        /// Scooter entity of player
-        /// </summary>
-        private GmNetEntity<Vehicle> m_scooter;
-
-        /// <summary>
         /// Ball entity
         /// </summary>
         private GmNetEntity<Prop> m_ball;
@@ -52,12 +47,11 @@ namespace GamemodesClient.Gamemodes
         private async Task OnPreStart()
         {
             // Reset variables
-            m_scooter = default;
             m_ball = default;
             m_fallOffHeight = float.MaxValue;
 
             // Request a scooter from server
-            TriggerServerEvent("gamemodes:sv_cl_scooterball_requestscooter", SpawnManager.SpawnPos, SpawnManager.SpawnRot);
+            PlayerScooterManager.Request();
 
             await Task.FromResult(0);
         }
@@ -87,51 +81,15 @@ namespace GamemodesClient.Gamemodes
         }
 
         /// <summary>
-        /// Spawn scooter event by server
+        /// Stop function
         /// </summary>
-        /// <param name="_netId">Network id of scooter</param>
-        [EventHandler("gamemodes:cl_sv_scooterball_spawnedscooter")]
-        private async void OnServerSpawnScooter(int _netId)
+        [GamemodeStop]
+        private async Task OnStop()
         {
-            // Get scooter entity from network id
-            m_scooter = new GmNetEntity<Vehicle>(_netId, true);
+            // Cleanup scooter
+            PlayerScooterManager.Cleanup();
 
-            // Wait for scooter to exist
-            while (!m_scooter.Exists)
-            {
-                await Delay(0);
-            }
-
-            // Request control of scooter
-            m_scooter.Entity.RequestControl();
-
-            // Set some attributes for scooter
-            m_scooter.Entity.EngineHealth = float.MaxValue;
-            m_scooter.Entity.LockStatus = VehicleLockStatus.StickPlayerInside;
-            m_scooter.Entity.EnginePowerMultiplier = 5f;
-            m_scooter.Entity.EngineTorqueMultiplier = 5f;
-            m_scooter.Entity.IsEngineRunning = true;
-
-            // Set corresponding scooter color depending on team
-            if (TeamManager.TeamType == ETeamType.TEAM_RED)
-            {
-                m_scooter.Entity.Mods.CustomPrimaryColor = Color.FromArgb(255, 0, 0);
-                m_scooter.Entity.Mods.CustomSecondaryColor = Color.FromArgb(255, 0, 0);
-            }
-            else if (TeamManager.TeamType == ETeamType.TEAM_BLUE)
-            {
-                m_scooter.Entity.Mods.CustomPrimaryColor = Color.FromArgb(0, 0, 255);
-                m_scooter.Entity.Mods.CustomSecondaryColor = Color.FromArgb(0, 0, 255);
-            }
-
-            // Networked fade in animation for scooter
-            m_scooter.Entity.FadeIn();
-
-            // Set scooter as boost vehicle
-            BoostManager.BoostVehicle = m_scooter;
-
-            // Fade in screen
-            await ScreenUtils.FadeIn();
+            await Task.FromResult(0);
         }
 
         /// <summary>
@@ -230,15 +188,18 @@ namespace GamemodesClient.Gamemodes
             // Disable cinematic camera
             Game.DisableControlThisFrame(1, Control.VehicleCinCam);
 
+            // Get scooter
+            GmNetEntity<Vehicle> scooter = PlayerScooterManager.CurrentScooter;
+
             // Check if scooter exists
-            if (m_scooter.Exists)
+            if (scooter.Exists)
             {
                 //m_scooter.Entity.Gravity = 7.5f;
 
                 // Set player into scooter if not already done so
-                if (m_scooter.Entity.Driver != Game.PlayerPed)
+                if (scooter.Entity.Driver != Game.PlayerPed)
                 {
-                    Game.PlayerPed.SetIntoVehicle(m_scooter.Entity, VehicleSeat.Driver);
+                    Game.PlayerPed.SetIntoVehicle(scooter.Entity, VehicleSeat.Driver);
                 }
 
                 // Check if prestart camera is not running
@@ -248,20 +209,20 @@ namespace GamemodesClient.Gamemodes
                     Game.DisableControlThisFrame(1, Control.VehicleHandbrake);
 
                     // Check if player has pressed jump key while on ground
-                    if (Game.IsControlJustPressed(1, Control.Jump) && !m_scooter.Entity.IsInAir)
+                    if (Game.IsControlJustPressed(1, Control.Jump) && !scooter.Entity.IsInAir)
                     {
                         // Get current velocity
-                        Vector3 vel = m_scooter.Entity.Velocity;
+                        Vector3 vel = scooter.Entity.Velocity;
 
                         // Set velocity Z
                         vel.Z = 7f;
 
                         // Apply new velocity
-                        m_scooter.Entity.Velocity = vel;
+                        scooter.Entity.Velocity = vel;
                     }
 
                     // Check if scooter below min height or dead
-                    if (m_scooter.Entity.Position.Z < m_fallOffHeight || m_scooter.Entity.IsDead)
+                    if (scooter.Entity.Position.Z < m_fallOffHeight || scooter.Entity.IsDead)
                     {
                         // Respawn scooter
                         await SpawnManager.Respawn();

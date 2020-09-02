@@ -6,7 +6,7 @@ namespace GamemodesClient.Core
     /// <summary>
     /// Time and Weather manager class
     /// </summary>
-    public class TimeWeatherManager : BaseScript
+    public class TimeWeatherManager : GmScript
     {
         /// <summary>
         /// Set time and weather event by server

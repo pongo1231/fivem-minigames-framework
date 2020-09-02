@@ -7,7 +7,6 @@ using GamemodesShared;
 using GamemodesShared.Utils;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace GamemodesServer.Gamemodes.Knockdown
@@ -58,11 +57,6 @@ namespace GamemodesServer.Gamemodes.Knockdown
         private int m_redScore;
 
         /// <summary>
-        /// List of players
-        /// </summary>
-        private List<Player> m_scooterPlayers = new List<Player>();
-
-        /// <summary>
         /// List of obstacles
         /// </summary>
         private List<Obstacle> m_obstacles = new List<Obstacle>();
@@ -82,14 +76,14 @@ namespace GamemodesServer.Gamemodes.Knockdown
         /// Pre start function
         /// </summary>
         [GamemodePreStart]
-        public async Task OnPreStart()
+        private async Task OnPreStart()
         {
             // Reset scores
             m_redScore = 0;
             m_blueScore = 0;
 
-            // Clear players
-            m_scooterPlayers.Clear();
+            // Enable scooters
+            PlayerScooterManager.Enable("panto");
 
             // Clear obstacles
             m_obstacles.Clear();
@@ -98,10 +92,22 @@ namespace GamemodesServer.Gamemodes.Knockdown
         }
 
         /// <summary>
+        /// Pre stop function
+        /// </summary>
+        [GamemodePreStop]
+        public async Task OnPreStop()
+        {
+            // Disable scooters
+            PlayerScooterManager.Disable();
+
+            await Task.FromResult(0);
+        }
+
+        /// <summary>
         /// Timer up function
         /// </summary>
         [GamemodeTimerUp]
-        public async Task OnTimerUp()
+        private async Task OnTimerUp()
         {
             // Go overtime if red score equals blue score
             if (m_redScore == m_blueScore)
@@ -123,46 +129,6 @@ namespace GamemodesServer.Gamemodes.Knockdown
         public override ETeamType GetWinnerTeam()
         {
             return m_redScore > m_blueScore ? ETeamType.TEAM_RED : ETeamType.TEAM_BLUE;
-        }
-
-        /// <summary>
-        /// Request scooter event by client
-        /// </summary>
-        /// <param name="_player">Player</param>
-        /// <param name="_pos">Position</param>
-        /// <param name="_rot">Rotation</param>
-        [GamemodeEventHandler("gamemodes:sv_cl_knockdown_requestscooter")]
-        private async void OnClientRequestScooter([FromSource] Player _player, Vector3 _pos, Vector3 _rot)
-        {
-            // Don't get event handler unregistered when client sends garbage to server
-            try
-            {
-                // Check whether player is not registered already
-                if (!m_scooterPlayers.Contains(_player))
-                {
-                    // Wait a bit
-                    await Delay(4000);
-
-                    // Add player to list
-                    m_scooterPlayers.Add(_player);
-
-                    // Set player position to scooter position
-                    _player.Character.Position = _pos;
-
-                    // Wait a bit
-                    await Delay(4000);
-
-                    // Spawn scooter
-                    Vehicle scooter = await EntityPool.CreateVehicle("panto", _pos, _rot);
-
-                    // Make client aware of scooter
-                    _player.TriggerEvent("gamemodes:cl_sv_knockdown_spawnedscooter", scooter.NetworkId);
-                }
-            }
-            catch (Exception _e)
-            {
-                Log.WriteLine($"{_e}");
-            }
         }
 
         /// <summary>

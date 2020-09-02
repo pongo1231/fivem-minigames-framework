@@ -10,7 +10,7 @@ namespace GamemodesClient.Core
     /// <summary>
     /// Boost manager class
     /// </summary>
-    public class BoostManager : BaseScript
+    public class BoostManager : GmScript
     {
         /// <summary>
         /// Target vehicle to manage boost of

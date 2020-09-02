@@ -7,7 +7,7 @@ namespace GamemodesClient.Core
     /// <summary>
     /// Map manager class
     /// </summary>
-    public class MapManager : BaseScript
+    public class MapManager : GmScript
     {
         /// <summary>
         /// Spawn map event from server

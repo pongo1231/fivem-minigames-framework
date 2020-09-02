@@ -30,11 +30,6 @@ namespace GamemodesServer.Gamemodes.Scooterball
         private bool m_scoredGoal = false;
 
         /// <summary>
-        /// List of players
-        /// </summary>
-        private List<Player> m_scooterPlayers = new List<Player>();
-
-        /// <summary>
         /// Ball entity
         /// </summary>
         private Prop m_ball;
@@ -63,8 +58,8 @@ namespace GamemodesServer.Gamemodes.Scooterball
             // Reset goal scored state
             m_scoredGoal = false;
 
-            // Clear players
-            m_scooterPlayers.Clear();
+            // Enable scooters
+            PlayerScooterManager.Enable("rcbandito");
 
             // Spawn the ball
             m_ball = await EntityPool.CreateProp("stt_prop_stunt_soccer_lball", CurrentMap.BallSpawnPos, default, true);
@@ -86,6 +81,18 @@ namespace GamemodesServer.Gamemodes.Scooterball
 
             // Give the ball movement
             m_ball.Velocity = new Vector3(0f, 0f, -5f);
+
+            await Task.FromResult(0);
+        }
+
+        /// <summary>
+        /// Pre stop function
+        /// </summary>
+        [GamemodePreStop]
+        public async Task OnPreStop()
+        {
+            // Disable scooters
+            PlayerScooterManager.Disable();
 
             await Task.FromResult(0);
         }
@@ -116,46 +123,6 @@ namespace GamemodesServer.Gamemodes.Scooterball
         public override ETeamType GetWinnerTeam()
         {
             return m_redGoals > m_blueGoals ? ETeamType.TEAM_RED : ETeamType.TEAM_BLUE;
-        }
-
-        /// <summary>
-        /// Request scooter event by client
-        /// </summary>
-        /// <param name="_player">Player</param>
-        /// <param name="_pos">Position</param>
-        /// <param name="_rot">Rotation</param>
-        [GamemodeEventHandler("gamemodes:sv_cl_scooterball_requestscooter")]
-        private async void OnClientRequestScooter([FromSource]Player _player, Vector3 _pos, Vector3 _rot)
-        {
-            // Don't get event handler unregistered when client sends garbage to server
-            try
-            {
-                // Check whether player is not registered already
-                if (!m_scooterPlayers.Contains(_player))
-                {
-                    // Wait a bit
-                    await Delay(4000);
-
-                    // Add player to list
-                    m_scooterPlayers.Add(_player);
-
-                    // Set player position to scooter position
-                    _player.Character.Position = _pos;
-
-                    // Wait a bit
-                    await Delay(4000);
-
-                    // Spawn scooter
-                    Vehicle scooter = await EntityPool.CreateVehicle("rcbandito", _pos, _rot);
-
-                    // Make client aware of scooter
-                    _player.TriggerEvent("gamemodes:cl_sv_scooterball_spawnedscooter", scooter.NetworkId);
-                }
-            }
-            catch (Exception _e)
-            {
-                Log.WriteLine($"{_e}");
-            }
         }
 
         /// <summary>

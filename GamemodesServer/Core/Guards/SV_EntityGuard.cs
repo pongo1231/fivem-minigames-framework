@@ -1,7 +1,7 @@
 ﻿using CitizenFX.Core;
 using CitizenFX.Core.Native;
 
-namespace GamemodesServer.Core
+namespace GamemodesServer.Core.Guards
 {
     /// <summary>
     /// Entity guard class

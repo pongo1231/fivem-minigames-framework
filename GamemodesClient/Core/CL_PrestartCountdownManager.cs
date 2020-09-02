@@ -10,7 +10,7 @@ namespace GamemodesClient.Core
     /// <summary>
     /// Prestart countdown manager class
     /// </summary>
-    public class PrestartCountdownManager : BaseScript
+    public class PrestartCountdownManager : GmScript
     {
         /// <summary>
         /// Countdown text

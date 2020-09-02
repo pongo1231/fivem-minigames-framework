@@ -27,7 +27,7 @@ namespace GamemodesServer.Core
     /// <summary>
     /// Script class
     /// </summary>
-    public class GmScript : BaseScript
+    public abstract class GmScript : BaseScript
     {
         /// <summary>
         /// Delegate for new player event

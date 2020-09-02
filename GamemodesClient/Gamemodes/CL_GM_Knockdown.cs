@@ -19,11 +19,6 @@ namespace GamemodesClient.Gamemodes
     public class Knockdown : GamemodeScript
     {
         /// <summary>
-        /// Scooter entity of player
-        /// </summary>
-        private GmNetEntity<Vehicle> m_scooter;
-
-        /// <summary>
         /// Score text
         /// </summary>
         private Text m_goalsText = new Text(null, new PointF(640f, 50f), 1.5f, Color.FromArgb(255, 255, 255), Font.Pricedown, Alignment.Center, true, true);
@@ -58,88 +53,27 @@ namespace GamemodesClient.Gamemodes
         private async Task OnPreStart()
         {
             // Reset variables
-            m_scooter = default;
             m_fallOffHeight = float.MaxValue;
 
             // Clear obstacles
             m_obstacles.Clear();
 
             // Request a scooter from server
-            TriggerServerEvent("gamemodes:sv_cl_knockdown_requestscooter", SpawnManager.SpawnPos, SpawnManager.SpawnRot);
+            TriggerServerEvent("gamemodes:sv_cl_requestscooter", SpawnManager.SpawnPos, SpawnManager.SpawnRot);
 
             await Task.FromResult(0);
         }
 
         /// <summary>
-        /// Start function
+        /// Stop function
         /// </summary>
-        [GamemodeStart]
-        private async Task OnStart()
+        [GamemodeStop]
+        private async Task OnStop()
         {
-            // Enable boost
-            //BoostManager.BoostEnabled = true;
+            // Cleanup scooter
+            PlayerScooterManager.Cleanup();
 
             await Task.FromResult(0);
-        }
-
-        /// <summary>
-        /// Pre stop function
-        /// </summary>
-        [GamemodePreStop]
-        private async Task OnPreStop()
-        {
-            // Disable boost
-            //BoostManager.BoostEnabled = false;
-
-            await Task.FromResult(0);
-        }
-
-        /// <summary>
-        /// Spawn scooter event by server
-        /// </summary>
-        /// <param name="_netId">Network id of scooter</param>
-        [EventHandler("gamemodes:cl_sv_knockdown_spawnedscooter")]
-        private async void OnServerSpawnScooter(int _netId)
-        {
-            // Get scooter entity from network id
-            m_scooter = new GmNetEntity<Vehicle>(_netId, true);
-
-            // Wait for scooter to exist
-            while (!m_scooter.Exists)
-            {
-                await Delay(0);
-            }
-
-            // Request control of scooter
-            m_scooter.Entity.RequestControl();
-
-            // Set some attributes for scooter
-            m_scooter.Entity.EngineHealth = float.MaxValue;
-            m_scooter.Entity.LockStatus = VehicleLockStatus.StickPlayerInside;
-            m_scooter.Entity.EnginePowerMultiplier = 5f;
-            m_scooter.Entity.EngineTorqueMultiplier = 5f;
-            m_scooter.Entity.IsEngineRunning = true;
-
-            // Set corresponding scooter color depending on team
-            if (TeamManager.TeamType == ETeamType.TEAM_RED)
-            {
-                m_scooter.Entity.Mods.CustomPrimaryColor = Color.FromArgb(255, 0, 0);
-                m_scooter.Entity.Mods.CustomSecondaryColor = Color.FromArgb(255, 0, 0);
-            }
-            else if (TeamManager.TeamType == ETeamType.TEAM_BLUE)
-            {
-                m_scooter.Entity.Mods.CustomPrimaryColor = Color.FromArgb(0, 0, 255);
-                m_scooter.Entity.Mods.CustomSecondaryColor = Color.FromArgb(0, 0, 255);
-            }
-
-            // Networked fade in animation for scooter
-            m_scooter.Entity.FadeIn();
-
-            // Set scooter as boost vehicle
-            //BoostManager.BoostVehicle = m_scooter;
-
-            // Fade in screen
-            await ScreenUtils.FadeIn();
         }
 
         /// <summary>
@@ -208,13 +142,16 @@ namespace GamemodesClient.Gamemodes
             // Disable cinematic camera
             Game.DisableControlThisFrame(1, Control.VehicleCinCam);
 
+            // Get scooter
+            GmNetEntity<Vehicle> scooter = PlayerScooterManager.CurrentScooter;
+
             // Check if scooter exists
-            if (m_scooter.Exists)
+            if (scooter.Exists)
             {
                 // Set player into scooter if not already done so
-                if (m_scooter.Entity.Driver != Game.PlayerPed)
+                if (scooter.Entity.Driver != Game.PlayerPed)
                 {
-                    Game.PlayerPed.SetIntoVehicle(m_scooter.Entity, VehicleSeat.Driver);
+                    Game.PlayerPed.SetIntoVehicle(scooter.Entity, VehicleSeat.Driver);
                 }
 
                 // Check if prestart camera is not running
@@ -224,7 +161,7 @@ namespace GamemodesClient.Gamemodes
                     Game.DisableControlThisFrame(1, Control.VehicleHandbrake);
 
                     // Check if scooter below min height or dead
-                    if (m_scooter.Entity.Position.Z < m_fallOffHeight || m_scooter.Entity.IsDead)
+                    if (scooter.Entity.Position.Z < m_fallOffHeight || scooter.Entity.IsDead)
                     {
                         TriggerServerEvent("gamemodes:sv_cl_knockdown_felloff");
 
@@ -247,9 +184,9 @@ namespace GamemodesClient.Gamemodes
                 if (prop.Exists)
                 {
                     // Disable collisions with current scooter if in no collisions mode
-                    if (m_scooter.Exists && m_noCollisionsTimestamp > API.GetGameTimer())
+                    if (scooter.Exists && m_noCollisionsTimestamp > API.GetGameTimer())
                     {
-                        API.SetEntityNoCollisionEntity(prop.Entity.Handle, m_scooter.Entity.Handle, true);
+                        API.SetEntityNoCollisionEntity(prop.Entity.Handle, scooter.Entity.Handle, true);
                     }
                 }
             }
@@ -257,12 +194,19 @@ namespace GamemodesClient.Gamemodes
             await Task.FromResult(0);
         }
 
+        /// <summary>
+        /// Tick function for handling no collisions mode anim
+        /// </summary>
         [GamemodeTick]
         private async Task OnTickIndicateNoCollisionsMode()
         {
-            if (m_scooter.Exists && m_noCollisionsTimestamp > API.GetGameTimer())
+            // Get scooter
+            GmNetEntity<Vehicle> scooter = PlayerScooterManager.CurrentScooter;
+
+            // Play no collisions mode animation if appropriate
+            if (scooter.Exists && m_noCollisionsTimestamp > API.GetGameTimer())
             {
-                m_scooter.Entity.FadeIn();
+                scooter.Entity.FadeIn();
             }
 
             await Delay(200);

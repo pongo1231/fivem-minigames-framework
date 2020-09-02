@@ -7,7 +7,7 @@ namespace GamemodesClient.Core
     /// <summary>
     /// Player control manager class
     /// </summary>
-    public class PlayerControlManager : BaseScript
+    public class PlayerControlManager : GmScript
     {
         /// <summary>
         /// Whether player has control or not

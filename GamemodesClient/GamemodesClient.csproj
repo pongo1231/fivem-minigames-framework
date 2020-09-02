@@ -50,10 +50,12 @@
     <Compile Include="Core\CL_AmbientManager.cs" />
     <Compile Include="Core\CL_BoostManager.cs" />
     <Compile Include="Core\CL_EntityPool.cs" />
+    <Compile Include="Core\CL_GmScript.cs" />
     <Compile Include="Core\CL_Main.cs" />
     <Compile Include="Core\CL_MapManager.cs" />
     <Compile Include="Core\CL_MusicManager.cs" />
-    <Compile Include="Core\CL_NastyEventsGuard.cs" />
+    <Compile Include="Core\CL_PlayerScooterManager.cs" />
+    <Compile Include="Core\Guards\CL_NastyEventsGuard.cs" />
     <Compile Include="Core\CL_PlayerControlManager.cs" />
     <Compile Include="Core\CL_PlayerOverheadTextManager.cs" />
     <Compile Include="Core\CL_PrestartCamManager.cs" />

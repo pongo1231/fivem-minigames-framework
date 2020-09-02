@@ -6,7 +6,7 @@ namespace GamemodesClient.Core
     /// <summary>
     /// Timecycle modifications Manager
     /// </summary>
-    public class TimecycModManager : BaseScript
+    public class TimecycModManager : GmScript
     {
         /// <summary>
         /// Load timecycle modifiers event by server

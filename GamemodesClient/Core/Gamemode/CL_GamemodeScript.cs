@@ -56,7 +56,7 @@ namespace GamemodesClient.Core.Gamemode
     /// <summary>
     /// Gamemode Script
     /// </summary>
-    public abstract class GamemodeScript : BaseScript
+    public abstract class GamemodeScript : GmScript
     {
         /// <summary>
         /// Returns whether prestart has been and start hasn't been run yet

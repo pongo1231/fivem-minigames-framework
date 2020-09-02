@@ -10,7 +10,7 @@ namespace GamemodesClient.Core
     /// <summary>
     /// Timer manager class
     /// </summary>
-    public class TimerManager : BaseScript
+    public class TimerManager : GmScript
     {
         /// <summary>
         /// Timer text

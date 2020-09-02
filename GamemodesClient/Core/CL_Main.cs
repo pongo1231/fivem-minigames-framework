@@ -2,15 +2,13 @@
 using CitizenFX.Core.Native;
 using CitizenFX.Core.UI;
 using GamemodesClient.Utils;
-using System;
-using System.Threading.Tasks;
 
 namespace GamemodesClient.Core
 {
     /// <summary>
     /// Main class
     /// </summary>
-    public class Main : BaseScript
+    public class Main : GmScript
     {
         public Main()
         {

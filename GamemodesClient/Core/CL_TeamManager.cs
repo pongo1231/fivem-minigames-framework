@@ -7,7 +7,7 @@ namespace GamemodesClient.Core
     /// <summary>
     /// Team manager class
     /// </summary>
-    public class TeamManager : BaseScript
+    public class TeamManager : GmScript
     {
         /// <summary>
         /// Team of this player

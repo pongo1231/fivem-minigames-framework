@@ -7,7 +7,7 @@ namespace GamemodesClient.Core
     /// <summary>
     /// Ambient stuff manager class
     /// </summary>
-    public class AmbientManager : BaseScript
+    public class AmbientManager : GmScript
     {
         /// <summary>
         /// Tick function
