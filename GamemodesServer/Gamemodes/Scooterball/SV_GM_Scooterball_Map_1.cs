@@ -3,7 +3,7 @@ using System;
 
 namespace GamemodesServer.Gamemodes.Scooterball
 {
-    /*public class Scooterball_Map_1 : Scooterball_Map
+    /*public abstract class Scooterball_Map_1 : Scooterball_Map
     {
         public Scooterball_Map_1()
         {

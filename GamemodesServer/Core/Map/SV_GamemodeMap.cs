@@ -1,30 +1,91 @@
 ﻿using GamemodesServer.Utils;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
 
 namespace GamemodesServer.Core.Map
 {
     /// <summary>
-    /// Attribute for calling gamemode function on map load
+    /// Attribute for calling map function on map load
     /// </summary>
     [AttributeUsage(AttributeTargets.Method)]
-    public class GamemodeMapLoadAttribute : Attribute
+    public class MapLoadAttribute : Attribute
     {
 
     }
 
     /// <summary>
-    /// Attribute for calling gamemode function on map load
+    /// Attribute for calling map function on map load
     /// </summary>
     [AttributeUsage(AttributeTargets.Method)]
-    public class GamemodeMapUnloadAttribute : Attribute
+    public class MapUnloadAttribute : Attribute
     {
 
     }
 
-    public abstract class GamemodeMap
+    /// <summary>
+    /// Attribute for registering event while map is running
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Method)]
+    public class MapEventHandlerAttribute : Attribute
     {
+        public string EventName { get; private set; }
+
+        public MapEventHandlerAttribute(string _eventName)
+        {
+            EventName = _eventName;
+        }
+    }
+
+    /// <summary>
+    /// Attribute for registering tick function while map is running
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Method)]
+    public class MapTickAttribute : Attribute
+    {
+
+    }
+
+    /// <summary>
+    /// Gamemode map class
+    /// </summary>
+    public abstract class GamemodeMap : GmScript
+    {
+        /// <summary>
+        /// Map event handler class
+        /// </summary>
+        private struct MapEventHandler
+        {
+            /// <summary>
+            /// Name of event
+            /// </summary>
+            public string EventName { get; private set; }
+
+            /// <summary>
+            /// Callback for event
+            /// </summary>
+            public Delegate Callback { get; private set; }
+
+            /// <summary>
+            /// Constructor
+            /// </summary>
+            /// <param name="_eventName">Name of event</param>
+            /// <param name="_callback">Callback for event</param>
+            public MapEventHandler(string _eventName, Delegate _callback)
+            {
+                EventName = _eventName;
+                Callback = _callback;
+            }
+        }
+
+        /// <summary>
+        /// Whether prestart is currently running
+        /// </summary>
+        public bool IsGamemodePreStartRunning { get; set; } = false;
+
         /// <summary>
         /// File name of map
         /// </summary>
@@ -60,6 +121,16 @@ namespace GamemodesServer.Core.Map
         /// </summary>
         private Func<Task> m_onUnload;
 
+        /// <summary>
+        /// List of event handlers
+        /// </summary>
+        private List<MapEventHandler> m_eventHandlers = new List<MapEventHandler>();
+
+        /// <summary>
+        /// List of tick functions
+        /// </summary>
+        private List<Func<Task>> m_onTickFuncs = new List<Func<Task>>();
+
         public GamemodeMap()
         {
             // Create delegate helper
@@ -73,17 +144,45 @@ namespace GamemodesServer.Core.Map
             // Iterate through all functions of child (and all inherited) class(es) via reflection
             foreach (MethodInfo methodInfo in GetType().GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance))
             {
-                if (methodInfo.GetCustomAttribute(typeof(GamemodeMapLoadAttribute)) != null)
+                if (methodInfo.GetCustomAttribute(typeof(MapLoadAttribute)) != null)
                 {
-                    Log.WriteLine($"Registering custom OnLoad for gamemode map {methodInfo.DeclaringType.Name}");
+                    Log.WriteLine($"Registering custom OnLoad for map {methodInfo.DeclaringType.Name}");
 
                     m_onLoad = createDelegate(methodInfo);
                 }
-                else if (methodInfo.GetCustomAttribute(typeof(GamemodeMapUnloadAttribute)) != null)
+                else if (methodInfo.GetCustomAttribute(typeof(MapUnloadAttribute)) != null)
                 {
-                    Log.WriteLine($"Registering custom OnUnload for gamemode map {methodInfo.DeclaringType.Name}");
+                    Log.WriteLine($"Registering custom OnUnload for map {methodInfo.DeclaringType.Name}");
 
                     m_onUnload = createDelegate(methodInfo);
+                }
+                else if (methodInfo.GetCustomAttribute(typeof(MapEventHandlerAttribute)) != null)
+                {
+                    Log.WriteLine($"Registering EventHandler for map {methodInfo.DeclaringType.Name}");
+
+                    // Get event name
+                    string eventName = ((MapEventHandlerAttribute)methodInfo.GetCustomAttribute(typeof(MapEventHandlerAttribute))).EventName;
+
+                    // Get parameters
+                    Type[] parameters = methodInfo.GetParameters().Select(parameter => parameter.ParameterType).ToArray();
+
+                    // Build type for callback
+                    Type actionType = Expression.GetDelegateType(parameters.Concat(new[] { typeof(void) }).ToArray());
+
+                    // Create callback delegate
+                    Delegate callback = methodInfo.IsStatic
+                        ? Delegate.CreateDelegate(actionType, methodInfo)
+                        : Delegate.CreateDelegate(actionType, this, methodInfo);
+
+                    // Add to list of event handlers
+                    m_eventHandlers.Add(new MapEventHandler(eventName, callback));
+                }
+                else if (methodInfo.GetCustomAttribute(typeof(MapTickAttribute)) != null)
+                {
+                    Log.WriteLine($"Registering OnTick for map {methodInfo.DeclaringType.Name}");
+
+                    // Add to list of tick delegates
+                    m_onTickFuncs.Add(createDelegate(methodInfo));
                 }
             }
         }
@@ -114,6 +213,18 @@ namespace GamemodesServer.Core.Map
             {
                 await m_onLoad();
             }
+
+            // Register all event handlers
+            foreach (MapEventHandler eventHandler in m_eventHandlers)
+            {
+                EventHandlers[eventHandler.EventName] += eventHandler.Callback;
+            }
+
+            // Register all tick functions
+            foreach (Func<Task> onTickFunc in m_onTickFuncs)
+            {
+                Tick += onTickFunc;
+            }
         }
 
         /// <summary>
@@ -126,6 +237,18 @@ namespace GamemodesServer.Core.Map
 
             // Clear timecycle modifiers
             TimecycModManager.ClearTimecycModifiers();
+
+            // Unregister all event handlers
+            foreach (MapEventHandler eventHandler in m_eventHandlers)
+            {
+                EventHandlers[eventHandler.EventName] -= eventHandler.Callback;
+            }
+
+            // Unregister all tick functions
+            foreach (Func<Task> onTickFunc in m_onTickFuncs)
+            {
+                Tick -= onTickFunc;
+            }
 
             // Call custom unload function if available
             if (m_onUnload != null)

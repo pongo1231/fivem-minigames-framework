@@ -245,8 +245,14 @@ namespace GamemodesServer.Core.Gamemode
             {
                 Log.WriteLine($"Registering map {type.Name} for gamemode {GetType().Name}");
 
-                // Add to list of registered gamemodes
-                m_gamemodeMaps.Add((MapType)Activator.CreateInstance(type));
+                // Create instance of map
+                MapType mapType = (MapType)Activator.CreateInstance(type);
+
+                // Add to list of registered maps
+                m_gamemodeMaps.Add(mapType);
+
+                // Register map script
+                RegisterScript(mapType);
             }
 
             // Only register gamemode if maps exist for gamemode
@@ -271,6 +277,9 @@ namespace GamemodesServer.Core.Gamemode
 
             // Choose a random map
             CurrentMap = m_gamemodeMaps[RandomUtils.RandomInt(0, m_gamemodeMaps.Count)];
+
+            // Set gamemode as prestarting to map too
+            CurrentMap.IsGamemodePreStartRunning = true;
 
             // Load map
             await CurrentMap.Load();
@@ -301,6 +310,9 @@ namespace GamemodesServer.Core.Gamemode
         {
             // Set gamemode as not prestarting anymore
             IsGamemodePreStartRunning = false;
+
+            // Set gamemode as not prestarting to map too
+            CurrentMap.IsGamemodePreStartRunning = false;
 
             // Call custom start function if available
             if (m_onStart != null)

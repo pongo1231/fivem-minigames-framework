@@ -17,36 +17,6 @@ namespace GamemodesServer.Gamemodes.Knockdown
     public class Knockdown : GamemodeScript<Knockdown_Map>
     {
         /// <summary>
-        /// Obstacle class
-        /// </summary>
-        private class Obstacle
-        {
-            /// <summary>
-            /// Constructor
-            /// </summary>
-            /// <param name="_prop">Prop</param>
-            public Obstacle(Prop _prop)
-            {
-                Prop = _prop;
-            }
-
-            /// <summary>
-            /// Prop
-            /// </summary>
-            public Prop Prop { get; private set; }
-
-            /// <summary>
-            /// Time when to respawn obstacle it didn't fall off map yet
-            /// </summary>
-            public long RespawnTimestamp { get; set; }
-
-            /// <summary>
-            /// Target velocity of obstacle
-            /// </summary>
-            public Vector3 TargetVelocity { get; set; }
-        }
-
-        /// <summary>
         /// Blue score
         /// </summary>
         private int m_blueScore;
@@ -55,11 +25,6 @@ namespace GamemodesServer.Gamemodes.Knockdown
         /// Red score
         /// </summary>
         private int m_redScore;
-
-        /// <summary>
-        /// List of obstacles
-        /// </summary>
-        private List<Obstacle> m_obstacles = new List<Obstacle>();
 
         /// <summary>
         /// Constructor
@@ -84,9 +49,6 @@ namespace GamemodesServer.Gamemodes.Knockdown
 
             // Enable scooters
             PlayerScooterManager.Enable("panto");
-
-            // Clear obstacles
-            m_obstacles.Clear();
 
             await Task.FromResult(0);
         }
@@ -163,109 +125,6 @@ namespace GamemodesServer.Gamemodes.Knockdown
         }
 
         /// <summary>
-        /// Tick function spawn obstacles
-        /// </summary>
-        [GamemodeTick]
-        private async Task OnTickSpawnObstacles()
-        {
-            // Abort if in prestart
-            if (IsGamemodePreStartRunning)
-            {
-                return;
-            }
-
-            // Spawn more obstacles if there are less than limit
-            if (m_obstacles.Count < 50)
-            {
-                // Create obstacle
-                Prop prop = await EntityPool.CreateProp("stt_prop_stunt_bowling_ball", CurrentMap.ObstacleSpawnPos1_1, default, true);
-
-                // Add to list
-                m_obstacles.Add(new Obstacle(prop));
-
-                // Notify client
-                TriggerClientEvent("gamemodes:sv_cl_knockdown_spawnedball", prop.NetworkId);
-
-                /* Repeat with other side */
-
-                prop = await EntityPool.CreateProp("stt_prop_stunt_bowling_ball", CurrentMap.ObstacleSpawnPos2_1, default, true);
-
-                m_obstacles.Add(new Obstacle(prop));
-
-                TriggerClientEvent("gamemodes:sv_cl_knockdown_spawnedball", prop.NetworkId);
-            }
-
-            await Task.FromResult(0);
-        }
-
-        /// <summary>
-        /// Tick function for handling obstacles
-        /// </summary>
-        [GamemodeTick]
-        private async Task OnTickHandleObstacles()
-        {
-            // Get current timestamp
-            long curTimestamp = API.GetGameTimer();
-
-            // Delete all the obstacles which don't exist anymore
-            foreach (Obstacle obstacle in m_obstacles.ToArray())
-            {
-                if (!obstacle.Prop.Exists())
-                {
-                    m_obstacles.Remove(obstacle);
-                }
-            }
-
-            // Iterate through all obstacles
-            foreach (Obstacle obstacle in m_obstacles)
-            {
-                // Check if obstacles should be respawned
-                if (obstacle.Prop.Position.Z < CurrentMap.FallOffHeight || obstacle.RespawnTimestamp < curTimestamp)
-                {
-                    // Spawn obstacle on either left or right side
-                    if (RandomUtils.RandomInt(0, 2) == 0)
-                    {
-                        obstacle.Prop.Position = GetRandomPosInArea(CurrentMap.ObstacleSpawnPos1_1, CurrentMap.ObstacleSpawnPos1_2);
-                        obstacle.Prop.Velocity = CurrentMap.ObstacleSpawnPos1_Velocity;
-                        obstacle.TargetVelocity = CurrentMap.ObstacleSpawnPos1_Velocity;
-                    }
-                    else
-                    {
-                        obstacle.Prop.Position = GetRandomPosInArea(CurrentMap.ObstacleSpawnPos2_1, CurrentMap.ObstacleSpawnPos2_2);
-                        obstacle.Prop.Velocity = CurrentMap.ObstacleSpawnPos2_Velocity;
-                        obstacle.TargetVelocity = CurrentMap.ObstacleSpawnPos2_Velocity;
-                    }
-
-                    // Reset obstacle respawn time
-                    obstacle.RespawnTimestamp = curTimestamp + 30000;
-                }
-
-                // Get obstacle velocity
-                Vector3 velocity = obstacle.Prop.Velocity;
-
-                // Set corresponding velocity values
-                if (obstacle.TargetVelocity.X != 0f)
-                {
-                    velocity.X = obstacle.TargetVelocity.X;
-                }
-
-                if (obstacle.TargetVelocity.Y != 0f)
-                {
-                    velocity.Y = obstacle.TargetVelocity.Y;
-                }
-
-                if (obstacle.TargetVelocity.Z != 0f)
-                {
-                    velocity.Z = obstacle.TargetVelocity.Z;
-                }
-
-                obstacle.Prop.Velocity = velocity;
-            }
-
-            await Task.FromResult(0);
-        }
-
-        /// <summary>
         /// Tick function for sending states
         /// </summary>
         [GamemodeTick]
@@ -277,48 +136,7 @@ namespace GamemodesServer.Gamemodes.Knockdown
             // Send scores to all clients
             TriggerClientEvent("gamemodes:cl_sv_knockdown_updatescores", m_blueScore, m_redScore);
 
-            // Send list of obstacles to all clients
-            List<int> obstacles = new List<int>();
-            foreach (Obstacle obstacle in m_obstacles)
-            {
-                if (obstacle.Prop.Exists())
-                {
-                    obstacles.Add(obstacle.Prop.NetworkId);
-                }
-            }
-
-            TriggerClientEvent("gamemodes:cl_sv_knockdown_updateobstacles", obstacles);
-
             await Delay(500);
-        }
-
-        /// <summary>
-        /// Get random position between 2 positions
-        /// </summary>
-        /// <param name="_pos1">Position 1</param>
-        /// <param name="_pos2">Position 2</param>
-        /// <returns></returns>
-        private Vector3 GetRandomPosInArea(Vector3 _pos1, Vector3 _pos2)
-        {
-            // Get min and max X coords
-            float minX = Math.Min(_pos1.X, _pos2.X);
-            float maxX = Math.Max(_pos1.X, _pos2.X);
-
-            // Get min and max Y coords
-            float minY = Math.Min(_pos1.Y, _pos2.Y);
-            float maxY = Math.Max(_pos1.Y, _pos2.Y);
-
-            // Get min and max Z coords
-            float minZ = Math.Min(_pos1.Z, _pos2.Z);
-            float maxZ = Math.Max(_pos1.Z, _pos2.Z);
-
-            // Generate random coords
-            float x = RandomUtils.RandomFloat(minX, maxX);
-            float y = RandomUtils.RandomFloat(minY, maxY);
-            float z = RandomUtils.RandomFloat(minZ, maxZ);
-
-            // Return vector
-            return new Vector3(x, y, z);
         }
     }
 }
