@@ -57,7 +57,7 @@ namespace GamemodesServer.Gamemodes.Knockdown
         /// <summary>
         /// First obstacle spawn velocity
         /// </summary>
-        private readonly Vector3 m_obstacleSpawnPos1_Velocity = new Vector3(23f, 0f, -25f);
+        private readonly Vector3 m_obstacleSpawnPos1_Velocity = new Vector3(32f, 0f, -40f);
 
         /// <summary>
         /// Second obstacle spawn pos 1
@@ -72,7 +72,7 @@ namespace GamemodesServer.Gamemodes.Knockdown
         /// <summary>
         /// Second obstacle spawn velocity
         /// </summary>
-        private readonly Vector3 m_obstacleSpawnPos2_Velocity = new Vector3(-23f, 0f, -25f);
+        private readonly Vector3 m_obstacleSpawnPos2_Velocity = new Vector3(-32f, 0f, -40f);
 
         /// <summary>
         /// List of obstacles

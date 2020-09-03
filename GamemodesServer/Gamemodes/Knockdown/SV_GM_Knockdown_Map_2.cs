@@ -72,7 +72,7 @@ namespace GamemodesServer.Gamemodes.Knockdown
         /// <summary>
         /// Second obstacle spawn velocity
         /// </summary>
-        private readonly Vector3 m_obstacleSpawnPos_Forward = new Vector3(300f, 0f, -0f);
+        private readonly Vector3 m_obstacleSpawnPos_Forward = new Vector3(300f, 0f, 0f);
 
         /// <summary>
         /// Distance after which obstacles get despawned
