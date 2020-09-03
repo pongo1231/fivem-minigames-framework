@@ -3,8 +3,14 @@ using System;
 
 namespace GamemodesServer.Gamemodes.Scooterball
 {
+    /// <summary>
+    /// Scooterball Map 3
+    /// </summary>
     public class Scooterball_Map_3 : Scooterball_Map
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public Scooterball_Map_3()
         {
             MapFileName = "scooterball/soccer_map_3.xml";

@@ -5,6 +5,7 @@ using GamemodesClient.Core;
 using GamemodesClient.Core.Gamemode;
 using GamemodesClient.Utils;
 using GamemodesShared;
+using GamemodesShared.Utils;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -31,7 +32,7 @@ namespace GamemodesClient.Gamemodes
         /// <summary>
         /// List of obstacle network ids sent by server
         /// </summary>
-        private List<int> m_obstacles = new List<int>();
+        private List<GmNetEntity<Prop>> m_obstacles = new List<GmNetEntity<Prop>>();
 
         /// <summary>
         /// Time until no collisions mode runs out
@@ -100,11 +101,23 @@ namespace GamemodesClient.Gamemodes
         }
 
         /// <summary>
+        /// Spawned obstacle event by server
+        /// </summary>
+        /// <param name="_networkId">Network id of obstacle</param>
+        [EventHandler("gamemodes:cl_sv_knockdown_spawnedobstacle")]
+        private void OnServerSpawnedObstacle(int _networkId)
+        {
+            GmNetEntity<Prop> obstacle = new GmNetEntity<Prop>(_networkId, true);
+
+            obstacle.Entity.Opacity = 0;
+        }
+
+        /// <summary>
         /// Update obstacles list event by server
         /// </summary>
         /// <param name="_obstacles">List of obstacle network ids</param>
         [EventHandler("gamemodes:cl_sv_knockdown_updateobstacles")]
-        private void OnSpawnedBall(List<dynamic> _obstacles)
+        private void OnSpawnedObstacles(List<dynamic> _obstacles)
         {
             // Clear obstacles
             m_obstacles.Clear();
@@ -112,7 +125,7 @@ namespace GamemodesClient.Gamemodes
             // Add all network ids to list
             foreach (dynamic networkId in _obstacles)
             {
-                m_obstacles.Add(networkId);
+                m_obstacles.Add(new GmNetEntity<Prop>(networkId, true));
             }
         }
 
@@ -171,22 +184,34 @@ namespace GamemodesClient.Gamemodes
                         await SpawnManager.Respawn();
                     }
                 }
+
+                // No camping allowed
+                float scooterRoll = scooter.Entity.Rotation.Y;
+                API.SetVehicleReduceGrip(scooter.Entity.Handle, scooter.Entity.Speed < 5f && (scooterRoll < -10f || scooterRoll > 10f));
             }
 
             /* Handle obstacles */
 
-            foreach (int obstacleNetworkId in m_obstacles)
+            foreach (GmNetEntity<Prop> obstacle in m_obstacles)
             {
-                // Get entity
-                GmNetEntity<Prop> prop = new GmNetEntity<Prop>(obstacleNetworkId, true);
-
                 // Check if it (still) exists
-                if (prop.Exists)
+                if (obstacle.Exists)
                 {
                     // Disable collisions with current scooter if in no collisions mode
                     if (scooter.Exists && m_noCollisionsTimestamp > API.GetGameTimer())
                     {
-                        API.SetEntityNoCollisionEntity(prop.Entity.Handle, scooter.Entity.Handle, true);
+                        API.SetEntityNoCollisionEntity(obstacle.Entity.Handle, scooter.Entity.Handle, true);
+                    }
+
+                    // Hide if too far away
+                    float dist = MathUtils.GetDistance(obstacle.Entity.Position, Game.PlayerPed.Position);
+                    if (dist > 250f)
+                    {
+                        obstacle.Entity.Opacity = Math.Max((int)(255 - (dist - 250f) * 25.5f), 0);
+                    }
+                    else if (obstacle.Entity.Opacity != 255)
+                    {
+                        obstacle.Entity.ResetOpacity();
                     }
                 }
             }

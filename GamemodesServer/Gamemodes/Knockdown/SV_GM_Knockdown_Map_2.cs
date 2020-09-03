@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 namespace GamemodesServer.Gamemodes.Knockdown
 {
     /// <summary>
-    /// Knockdown Map 1 class
+    /// Knockdown Map 2 class
     /// </summary>
-    public class Knockdown_Map_1 : Knockdown_Map
+    public class Knockdown_Map_2 : Knockdown_Map
     {
         /// <summary>
         /// Obstacle class
@@ -45,34 +45,39 @@ namespace GamemodesServer.Gamemodes.Knockdown
         }
 
         /// <summary>
+        /// Place to put obstacles first when they are spawned
+        /// </summary>
+        private readonly Vector3 m_obstaclePreSpawnPos = new Vector3(529f, 3888f, 160f);
+
+        /// <summary>
         /// First obstacle spawn pos 1
         /// </summary>
-        private readonly Vector3 m_obstacleSpawnPos1_1 = new Vector3(-1717f, -3021f, 160f);
+        private readonly Vector3 m_obstacleSpawnPos1_1 = new Vector3(250f, 3982f, 184f);
 
         /// <summary>
         /// First obstacle spawn pos 2
         /// </summary>
-        private readonly Vector3 m_obstacleSpawnPos1_2 = new Vector3(-1775f, -2827f, 163f);
-
-        /// <summary>
-        /// First obstacle spawn velocity
-        /// </summary>
-        private readonly Vector3 m_obstacleSpawnPos1_Velocity = new Vector3(23f, 0f, -25f);
+        private readonly Vector3 m_obstacleSpawnPos1_2 = new Vector3(250f, 3847f, 184f);
 
         /// <summary>
         /// Second obstacle spawn pos 1
         /// </summary>
-        private readonly Vector3 m_obstacleSpawnPos2_1 = new Vector3(-1331f, -2827f, 160f);
+        private readonly Vector3 m_obstacleSpawnPos2_1 = new Vector3(250f, 3982f, 214f);
 
         /// <summary>
         /// Second obstacle spawn pos 2
         /// </summary>
-        private readonly Vector3 m_obstacleSpawnPos2_2 = new Vector3(-1280f, -3022f, 163f);
+        private readonly Vector3 m_obstacleSpawnPos2_2 = new Vector3(250f, 3847f, 214f);
 
         /// <summary>
         /// Second obstacle spawn velocity
         /// </summary>
-        private readonly Vector3 m_obstacleSpawnPos2_Velocity = new Vector3(-23f, 0f, -25f);
+        private readonly Vector3 m_obstacleSpawnPos_Forward = new Vector3(300f, 0f, -0f);
+
+        /// <summary>
+        /// Distance after which obstacles get despawned
+        /// </summary>
+        private readonly float m_obstacleDespawnDist = 500f;
 
         /// <summary>
         /// List of obstacles
@@ -82,11 +87,11 @@ namespace GamemodesServer.Gamemodes.Knockdown
         /// <summary>
         /// Constructor
         /// </summary>
-        public Knockdown_Map_1()
+        public Knockdown_Map_2()
         {
-            MapFileName = "knockdown/knockdown_map_1.xml";
+            MapFileName = "knockdown/knockdown_map_2.xml";
 
-            FallOffHeight = 53f;
+            FallOffHeight = 150f;
         }
 
         /// <summary>
@@ -98,8 +103,7 @@ namespace GamemodesServer.Gamemodes.Knockdown
             // Clear obstacles
             m_obstacles.Clear();
 
-            // Also create platform players are on on the server side for better ball sync
-            await EntityPool.CreateProp("stt_prop_stunt_bblock_huge_05", new Vector3(-1522.16589f, -2924.78613f, 74.1650925f), default, false);
+            await Task.FromResult(0);
         }
 
         /// <summary>
@@ -118,7 +122,7 @@ namespace GamemodesServer.Gamemodes.Knockdown
             if (m_obstacles.Count < 50)
             {
                 // Create obstacle
-                Prop prop = await EntityPool.CreateProp("stt_prop_stunt_bowling_ball", m_obstacleSpawnPos1_1, default, true);
+                Prop prop = await EntityPool.CreateProp("stt_prop_stunt_bowling_ball", m_obstaclePreSpawnPos, default, true);
 
                 // Add to list
                 m_obstacles.Add(new Obstacle(prop));
@@ -152,44 +156,26 @@ namespace GamemodesServer.Gamemodes.Knockdown
             foreach (Obstacle obstacle in m_obstacles)
             {
                 // Check if obstacles should be respawned
-                if (obstacle.Prop.Position.Z < FallOffHeight || obstacle.RespawnTimestamp < curTimestamp)
+                if ((obstacle.Prop.Position - m_obstacleSpawnPos1_1).Length() > m_obstacleDespawnDist || obstacle.RespawnTimestamp < curTimestamp)
                 {
                     // Spawn obstacle on either left or right side
                     if (RandomUtils.RandomInt(0, 2) == 0)
                     {
                         obstacle.Prop.Position = Utils.MathUtils.GetRandomPosInArea(m_obstacleSpawnPos1_1, m_obstacleSpawnPos1_2);
-                        obstacle.TargetVelocity = m_obstacleSpawnPos1_Velocity;
                     }
                     else
                     {
                         obstacle.Prop.Position = Utils.MathUtils.GetRandomPosInArea(m_obstacleSpawnPos2_1, m_obstacleSpawnPos2_2);
-                        obstacle.TargetVelocity = m_obstacleSpawnPos2_Velocity;
                     }
+
+                    obstacle.TargetVelocity = m_obstacleSpawnPos_Forward;
 
                     // Reset obstacle respawn time
                     obstacle.RespawnTimestamp = curTimestamp + 30000;
                 }
 
-                // Get obstacle velocity
-                Vector3 velocity = obstacle.Prop.Velocity;
-
-                // Set corresponding velocity values
-                if (obstacle.TargetVelocity.X != 0f)
-                {
-                    velocity.X = obstacle.TargetVelocity.X;
-                }
-
-                if (obstacle.TargetVelocity.Y != 0f)
-                {
-                    velocity.Y = obstacle.TargetVelocity.Y;
-                }
-
-                if (obstacle.TargetVelocity.Z != 0f)
-                {
-                    velocity.Z = obstacle.TargetVelocity.Z;
-                }
-
-                obstacle.Prop.Velocity = velocity;
+                // Set velocity to target velocity
+                obstacle.Prop.Velocity = obstacle.TargetVelocity;
             }
 
             await Task.FromResult(0);

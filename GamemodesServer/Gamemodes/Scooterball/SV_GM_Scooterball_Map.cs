@@ -1,5 +1,6 @@
 ﻿using CitizenFX.Core;
 using GamemodesServer.Core.Map;
+using System.Collections.Generic;
 
 namespace GamemodesServer.Gamemodes.Scooterball
 {
