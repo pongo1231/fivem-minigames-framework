@@ -67,6 +67,7 @@
     <Compile Include="Core\CL_TimeWeatherManager.cs" />
     <Compile Include="Core\CL_WinnerCamManager.cs" />
     <Compile Include="Core\Gamemode\CL_GamemodeScript.cs" />
+    <Compile Include="Gamemodes\CL_GM_Hoops.cs" />
     <Compile Include="Gamemodes\CL_GM_Knockdown.cs" />
     <Compile Include="Gamemodes\CL_GM_Scooterball.cs" />
     <Compile Include="Core\CL_GmNetEntity.cs" />

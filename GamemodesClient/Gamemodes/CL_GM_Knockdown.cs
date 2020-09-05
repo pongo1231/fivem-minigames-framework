@@ -117,7 +117,7 @@ namespace GamemodesClient.Gamemodes
         /// </summary>
         /// <param name="_obstacles">List of obstacle network ids</param>
         [EventHandler("gamemodes:cl_sv_knockdown_updateobstacles")]
-        private void OnSpawnedObstacles(List<dynamic> _obstacles)
+        private void OnUpdateObstacles(List<dynamic> _obstacles)
         {
             // Clear obstacles
             m_obstacles.Clear();

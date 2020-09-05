@@ -236,7 +236,7 @@ namespace GamemodesServer.Core
 
                     // Get first free team spawn
                     PlayerSpawn freeSpawn = s_playerSpawns.Find(playerSpawn =>
-                        (playerSpawn.SpawnOccupiedBy == null || playerSpawn.SpawnOccupiedBy == player) && playerSpawn.SpawnTeamType == TeamManager.GetPlayerTeam(player));
+                        (playerSpawn.SpawnOccupiedBy == null || playerSpawn.SpawnOccupiedBy == player) && playerSpawn.SpawnTeamType == player.GetTeam());
 
                     // Mark spawn as occupied and notify player if spawn was found
                     if (freeSpawn != null)

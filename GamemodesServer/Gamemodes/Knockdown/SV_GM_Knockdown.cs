@@ -101,7 +101,7 @@ namespace GamemodesServer.Gamemodes.Knockdown
         private void OnClientFellOff([FromSource]Player _player)
         {
             // Get player team
-            ETeamType playerTeam = TeamManager.GetPlayerTeam(_player);
+            ETeamType playerTeam = _player.GetTeam();
 
             // Increase score of opposite team (and stop gamemode if in overtime)
             if (playerTeam == ETeamType.TEAM_RED)

@@ -1,6 +1,5 @@
 ﻿using CitizenFX.Core;
 using GamemodesServer.Core.Map;
-using System.Collections.Generic;
 
 namespace GamemodesServer.Gamemodes.Scooterball
 {
@@ -15,7 +14,7 @@ namespace GamemodesServer.Gamemodes.Scooterball
         public Vector3 BallSpawnPos { get; protected set; }
 
         /// <summary>
-        /// Height at which the ball we respawn
+        /// Height at which the ball / players respawn
         /// </summary>
         public float FallOffHeight { get; protected set; }
 
