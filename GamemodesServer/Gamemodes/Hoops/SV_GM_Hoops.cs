@@ -16,16 +16,6 @@ namespace GamemodesServer.Gamemodes.Hoops
     public class Hoops : GamemodeScript<Hoops_Map>
     {
         /// <summary>
-        /// Red score
-        /// </summary>
-        private int m_redScore;
-
-        /// <summary>
-        /// Blue score
-        /// </summary>
-        private int m_blueScore;
-
-        /// <summary>
         /// Array of hoops
         /// </summary>
         private Hoop[] m_hoops;
@@ -47,10 +37,6 @@ namespace GamemodesServer.Gamemodes.Hoops
         [GamemodePreStart]
         private async Task OnPreStart()
         {
-            // Reset scores
-            m_redScore = 0;
-            m_blueScore = 0;
-
             // Copy hoops from current map
             m_hoops = CurrentMap.Hoops;
 
@@ -85,7 +71,7 @@ namespace GamemodesServer.Gamemodes.Hoops
         private async Task OnTimerUp()
         {
             // Go overtime if red score equals blue score
-            if (m_redScore == m_blueScore)
+            if (ScoreManager.AreScoresEqual())
             {
                 TimerManager.SetOvertime();
             }
@@ -104,7 +90,7 @@ namespace GamemodesServer.Gamemodes.Hoops
         /// <returns>Winner team</returns>
         public override ETeamType GetWinnerTeam()
         {
-            return m_redScore > m_blueScore ? ETeamType.TEAM_RED : ETeamType.TEAM_BLUE;
+            return ScoreManager.GetWinnerTeam();
         }
 
         /// <summary>
@@ -131,18 +117,8 @@ namespace GamemodesServer.Gamemodes.Hoops
                     // Check if player is inside hoop
                     if (playerPos.IsInArea(hoopPos - 3f, hoopPos + 3f))
                     {
-                        // Get player team
-                        ETeamType playerTeam = player.GetTeam();
-
-                        // Add points according to player team and hoop type
-                        if (playerTeam == ETeamType.TEAM_RED)
-                        {
-                            m_redScore += hoop.IsExtraWorth ? 5 : 1;
-                        }
-                        else if (playerTeam == ETeamType.TEAM_BLUE)
-                        {
-                            m_blueScore += hoop.IsExtraWorth ? 5 : 1;
-                        }
+                        // Add score to player team
+                        ScoreManager.AddScore(player.GetTeam(), hoop.IsExtraWorth ? 5 : 1);
 
                         // Stop gamemode if in overtime
                         if (TimerManager.InOvertime)
@@ -179,22 +155,10 @@ namespace GamemodesServer.Gamemodes.Hoops
         }
 
         /// <summary>
-        /// Tick function for sending (slow) states
+        /// Tick function
         /// </summary>
         [GamemodeTick]
-        private async Task OnTickSendSlowEvents()
-        {
-            // Send scores to all clients
-            TriggerClientEvent("gamemodes:cl_sv_hoops_updatescores", m_blueScore, m_redScore);
-
-            await Delay(500);
-        }
-
-        /// <summary>
-        /// Tick function for sending (fast) states
-        /// </summary>
-        [GamemodeTick]
-        private async Task OnTickSendFastEvents()
+        private async Task OnTick()
         {
             // Send all hoops to clients
             TriggerClientEvent("gamemodes:cl_sv_hoops_updatehoops", m_hoops.Where(_hoop => _hoop.IsActive));

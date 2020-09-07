@@ -300,6 +300,9 @@ namespace GamemodesServer.Core.Gamemode
         /// </summary>
         public override async Task Stop()
         {
+            // Reset scores
+            ScoreManager.ResetScores();
+
             // Unload map
             await CurrentMap.Unload();
 

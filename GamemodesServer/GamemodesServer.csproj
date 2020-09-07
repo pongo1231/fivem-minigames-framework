@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="Core\SV_PlayerScooterManager.cs" />
     <Compile Include="Core\SV_PlayerTeamExtensions.cs" />
+    <Compile Include="Core\SV_ScoreManager.cs" />
     <Compile Include="Core\SV_StopGamemodeVotingHandler.cs" />
     <Compile Include="Core\SV_TimeWeatherManager.cs" />
     <Compile Include="Gamemodes\Hoops\SV_GM_Hoops.cs" />

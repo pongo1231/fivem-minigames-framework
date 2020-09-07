@@ -277,7 +277,7 @@ namespace GamemodesServer.Core.Gamemode
                 ETeamType winnerTeam = s_curGamemode.GetWinnerTeam();
 
                 // Show winner cam with winner team broadcasted
-                TriggerClientEvent("gamemodes:cl_sv_showwinnercam", (int)winnerTeam);
+                TriggerClientEvent("gamemodes:cl_sv_showwinnercam", (int)winnerTeam, ScoreManager.GetScore(ETeamType.TEAM_RED), ScoreManager.GetScore(ETeamType.TEAM_BLUE));
 
                 // Wait a bit again
                 await Delay(10000);

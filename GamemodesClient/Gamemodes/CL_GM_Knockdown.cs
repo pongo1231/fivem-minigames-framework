@@ -20,11 +20,6 @@ namespace GamemodesClient.Gamemodes
     public class Knockdown : GamemodeScript
     {
         /// <summary>
-        /// Score text
-        /// </summary>
-        private Text m_goalsText = new Text(null, new PointF(640f, 50f), 1.5f, Color.FromArgb(255, 255, 255), Font.Pricedown, Alignment.Center, true, true);
-
-        /// <summary>
         /// List of obstacle network ids sent by server
         /// </summary>
         private List<GmNetEntity<Prop>> m_obstacles = new List<GmNetEntity<Prop>>();
@@ -55,18 +50,6 @@ namespace GamemodesClient.Gamemodes
             TriggerServerEvent("gamemodes:sv_cl_requestscooter", SpawnManager.SpawnPos, SpawnManager.SpawnRot);
 
             await Task.FromResult(0);
-        }
-
-        /// <summary>
-        /// Update scores event by server
-        /// </summary>
-        /// <param name="_blueGoals">Blue score</param>
-        /// <param name="_redGoals">Red score</param>
-        [EventHandler("gamemodes:cl_sv_knockdown_updatescores")]
-        private void OnUpdateScores(int _blueGoals, int _redGoals)
-        {
-            // Set score text
-            m_goalsText.Caption = $"~r~{_redGoals}   ~b~{_blueGoals}";
         }
 
         /// <summary>
@@ -107,9 +90,6 @@ namespace GamemodesClient.Gamemodes
             // Check if not in prestart camera
             if (!IsGamemodePreStartRunning)
             {
-                // Draw score text
-                m_goalsText.Draw();
-
                 // Draw mission objective text corresponding to team
                 if (TeamManager.TeamType == ETeamType.TEAM_RED)
                 {

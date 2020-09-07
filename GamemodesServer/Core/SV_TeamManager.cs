@@ -164,6 +164,24 @@ namespace GamemodesServer.Core
         }
 
         /// <summary>
+        /// Get enemy team of given team
+        /// </summary>
+        /// <param name="_teamType">Either red or blue team</param>
+        /// <returns>Enemy team of given team or TEAM_UNK if invalid team</returns>
+        public static ETeamType GetEnemyTeam(ETeamType _teamType)
+        {
+            switch (_teamType)
+            {
+                case ETeamType.TEAM_RED:
+                    return ETeamType.TEAM_BLUE;
+                case ETeamType.TEAM_BLUE:
+                    return ETeamType.TEAM_RED;
+            }
+
+            return ETeamType.TEAM_UNK;
+        }
+
+        /// <summary>
         /// Enable teams
         /// </summary>
         public static void EnableTeams()

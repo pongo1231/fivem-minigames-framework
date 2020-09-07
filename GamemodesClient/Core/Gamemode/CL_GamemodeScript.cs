@@ -212,6 +212,9 @@ namespace GamemodesClient.Core.Gamemode
             // Play some random music event
             MusicManager.Play();
 
+            // Start drawing scores
+            ScoreManager.DrawScores = true;
+
             // Start oneshot screen effect indicating player can move again
             Screen.Effects.Start(ScreenEffect.MpCelebWinOut);
 
@@ -235,6 +238,9 @@ namespace GamemodesClient.Core.Gamemode
 
             // Stop music event
             MusicManager.Stop();
+
+            // Stop drawing scores
+            ScoreManager.DrawScores = false;
 
             // Disable boost
             BoostManager.BoostEnabled = false;

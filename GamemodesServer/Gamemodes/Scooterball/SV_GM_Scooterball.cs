@@ -13,16 +13,6 @@ namespace GamemodesServer.Gamemodes.Scooterball
     public class Scooterball : GamemodeScript<Scooterball_Map>
     {
         /// <summary>
-        /// Blue score
-        /// </summary>
-        private int m_blueGoals;
-
-        /// <summary>
-        /// Red score
-        /// </summary>
-        private int m_redGoals;
-
-        /// <summary>
         /// Whether a goal has been scored
         /// </summary>
         private bool m_scoredGoal = false;
@@ -49,10 +39,6 @@ namespace GamemodesServer.Gamemodes.Scooterball
         [GamemodePreStart]
         public async Task OnPreStart()
         {
-            // Reset scores
-            m_redGoals = 0;
-            m_blueGoals = 0;
-
             // Reset goal scored state
             m_scoredGoal = false;
 
@@ -102,7 +88,7 @@ namespace GamemodesServer.Gamemodes.Scooterball
         public async Task OnTimerUp()
         {
             // Go overtime if red score equals blue score
-            if (m_redGoals == m_blueGoals)
+            if (ScoreManager.AreScoresEqual())
             {
                 TimerManager.SetOvertime();
             }
@@ -120,7 +106,7 @@ namespace GamemodesServer.Gamemodes.Scooterball
         /// </summary>
         public override ETeamType GetWinnerTeam()
         {
-            return m_redGoals > m_blueGoals ? ETeamType.TEAM_RED : ETeamType.TEAM_BLUE;
+            return ScoreManager.GetWinnerTeam();
         }
 
         /// <summary>
@@ -129,9 +115,6 @@ namespace GamemodesServer.Gamemodes.Scooterball
         [GamemodeTick]
         private async Task OnTickSendEvents()
         {
-            // Send scores to all clients
-            TriggerClientEvent("gamemodes:cl_sv_scooterball_updatescores", m_blueGoals, m_redGoals);
-
             // Send ball network id to all clients if existant
             if (m_ball.Exists())
             {
@@ -193,15 +176,8 @@ namespace GamemodesServer.Gamemodes.Scooterball
                 // Set goal as scored
                 m_scoredGoal = true;
 
-                // Increase scores for team
-                if (_teamType == ETeamType.TEAM_RED)
-                {
-                    m_redGoals++;
-                }
-                else if (_teamType == ETeamType.TEAM_BLUE)
-                {
-                    m_blueGoals++;
-                }
+                // Add score to team
+                ScoreManager.AddScore(_teamType);
 
                 // Broadcast goal scored to all clients
                 TriggerClientEvent("gamemodes:cl_sv_scooterball_goalscored", (int)_teamType, m_ball.Position);

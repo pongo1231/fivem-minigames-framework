@@ -21,12 +21,6 @@ namespace GamemodesClient.Gamemodes
         /// Ball entity
         /// </summary>
         private GmNetEntity<Prop> m_ball;
-
-        /// <summary>
-        /// Score text
-        /// </summary>
-        private Text m_goalsText = new Text(null, new PointF(640f, 50f), 1.5f, Color.FromArgb(255, 255, 255), Font.Pricedown, Alignment.Center, true, true);
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -74,18 +68,6 @@ namespace GamemodesClient.Gamemodes
         }
 
         /// <summary>
-        /// Update scores event by server
-        /// </summary>
-        /// <param name="_blueGoals">Blue score</param>
-        /// <param name="_redGoals">Red score</param>
-        [EventHandler("gamemodes:cl_sv_scooterball_updatescores")]
-        private void OnUpdateScores(int _blueGoals, int _redGoals)
-        {
-            // Set score text
-            m_goalsText.Caption = $"~r~{_redGoals}   ~b~{_blueGoals}";
-        }
-
-        /// <summary>
         /// Goal scored event by server
         /// </summary>
         /// <param name="_teamType">Team which scored a goal</param>
@@ -130,9 +112,6 @@ namespace GamemodesClient.Gamemodes
             // Check if not in prestart camera
             if (!IsGamemodePreStartRunning)
             {
-                // Draw score text
-                m_goalsText.Draw();
-
                 // Draw mission objective text corresponding to team
                 if (TeamManager.TeamType == ETeamType.TEAM_RED)
                 {

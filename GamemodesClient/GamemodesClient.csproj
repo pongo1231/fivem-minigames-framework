@@ -55,6 +55,7 @@
     <Compile Include="Core\CL_MapManager.cs" />
     <Compile Include="Core\CL_MusicManager.cs" />
     <Compile Include="Core\CL_PlayerScooterManager.cs" />
+    <Compile Include="Core\CL_ScoreManager.cs" />
     <Compile Include="Core\CL_TeamExtensions.cs" />
     <Compile Include="Core\Guards\CL_NastyEventsGuard.cs" />
     <Compile Include="Core\CL_PlayerControlManager.cs" />

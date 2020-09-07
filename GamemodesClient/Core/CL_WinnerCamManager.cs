@@ -27,7 +27,7 @@ namespace GamemodesClient.Core
         /// </summary>
         /// <param name="_winnerTeam">Winner team</param>
         [EventHandler("gamemodes:cl_sv_showwinnercam")]
-        private async void OnShowWinnerCam(int _winnerTeam)
+        private async void OnShowWinnerCam(int _winnerTeam, int _redScore, int _blueScore)
         {
             // Show winner cam
             m_showWinnerCam = true;
@@ -53,12 +53,30 @@ namespace GamemodesClient.Core
                 await Delay(0);
             }
 
+            // Create winner text label for scaleform
+            ETeamType winnerTeam = (ETeamType)_winnerTeam;
+
+            switch (winnerTeam)
+            {
+                case ETeamType.TEAM_RED:
+                    API.AddTextEntry("_GAMEMODES_WINNER", "~r~Red~w~ won!");
+
+                    break;
+                case ETeamType.TEAM_BLUE:
+                    API.AddTextEntry("_GAMEMODES_WINNER", "~b~Blue~w~ won!");
+
+                    break;
+                case ETeamType.TEAM_UNK:
+                    API.AddTextEntry("_GAMEMODES_WINNER", "Invalid");
+
+                    break;
+            }
+
             // Create MP_CELEBRATION stat wall
             m_winnerScaleform.CallFunction("CREATE_STAT_WALL", "SUMMARY", "HUD_COLOUR_FRIENDLY", 255);
 
             // Add winner text to stat wall
-            m_winnerScaleform.CallFunction("ADD_WINNER_TO_WALL", "SUMMARY", "CELEB_MATCH", "", "", 0, false,
-                (ETeamType)_winnerTeam == ETeamType.TEAM_RED ? "~r~Team Red~w~ won!" : "~b~Team Blue~w~ won!", true);
+            m_winnerScaleform.CallFunction("ADD_WINNER_TO_WALL", "SUMMARY", "_GAMEMODES_WINNER", "", "", 0, false, $"~r~{_redScore}~w~ - ~b~{_blueScore}", true);
 
             // Add background to stat wall
             m_winnerScaleform.CallFunction("ADD_BACKGROUND_TO_WALL", "SUMMARY", 255, 0);

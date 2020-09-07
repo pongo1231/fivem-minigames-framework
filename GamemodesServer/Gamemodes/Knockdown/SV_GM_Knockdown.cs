@@ -12,16 +12,6 @@ namespace GamemodesServer.Gamemodes.Knockdown
     public class Knockdown : GamemodeScript<Knockdown_Map>
     {
         /// <summary>
-        /// Blue score
-        /// </summary>
-        private int m_blueScore;
-
-        /// <summary>
-        /// Red score
-        /// </summary>
-        private int m_redScore;
-
-        /// <summary>
         /// Constructor
         /// </summary>
         public Knockdown()
@@ -38,10 +28,6 @@ namespace GamemodesServer.Gamemodes.Knockdown
         [GamemodePreStart]
         private async Task OnPreStart()
         {
-            // Reset scores
-            m_redScore = 0;
-            m_blueScore = 0;
-
             // Enable scooters
             PlayerScooterManager.Enable("panto", CurrentMap.FallOffHeight);
 
@@ -67,7 +53,7 @@ namespace GamemodesServer.Gamemodes.Knockdown
         private async Task OnTimerUp()
         {
             // Go overtime if red score equals blue score
-            if (m_redScore == m_blueScore)
+            if (ScoreManager.AreScoresEqual())
             {
                 TimerManager.SetOvertime();
             }
@@ -85,7 +71,7 @@ namespace GamemodesServer.Gamemodes.Knockdown
         /// </summary>
         public override ETeamType GetWinnerTeam()
         {
-            return m_redScore > m_blueScore ? ETeamType.TEAM_RED : ETeamType.TEAM_BLUE;
+            return ScoreManager.GetWinnerTeam();
         }
 
         /// <summary>
@@ -95,40 +81,14 @@ namespace GamemodesServer.Gamemodes.Knockdown
         [GamemodeEventHandler("gamemodes:sv_cl_knockdown_felloff")]
         private void OnClientFellOff([FromSource]Player _player)
         {
-            // Get player team
-            ETeamType playerTeam = _player.GetTeam();
+            // Add score to enemy team
+            ScoreManager.AddScore(TeamManager.GetEnemyTeam(_player.GetTeam()));
 
-            // Increase score of opposite team (and stop gamemode if in overtime)
-            if (playerTeam == ETeamType.TEAM_RED)
+            // Stop if in overtime
+            if (TimerManager.InOvertime)
             {
-                m_blueScore++;
-
-                if (TimerManager.InOvertime)
-                {
-                    StopGamemode();
-                }
+                StopGamemode();
             }
-            else if (playerTeam == ETeamType.TEAM_BLUE)
-            {
-                m_redScore++;
-
-                if (TimerManager.InOvertime)
-                {
-                    StopGamemode();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Tick function for sending states
-        /// </summary>
-        [GamemodeTick]
-        private async Task OnTickSendEvents()
-        {
-            // Send scores to all clients
-            TriggerClientEvent("gamemodes:cl_sv_knockdown_updatescores", m_blueScore, m_redScore);
-
-            await Delay(500);
         }
     }
 }
