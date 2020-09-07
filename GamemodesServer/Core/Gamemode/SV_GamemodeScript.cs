@@ -207,8 +207,26 @@ namespace GamemodesServer.Core.Gamemode
             // Set gamemode as prestarting
             IsGamemodePreStartRunning = true;
 
-            // Choose a random map
-            CurrentMap = m_gamemodeMaps[RandomUtils.RandomInt(0, m_gamemodeMaps.Count)];
+            // Store all except previous maps
+            MapType[] mapChoices = m_gamemodeMaps.Where(_map => !_map.ExcludeFromChoicesList).ToArray();
+
+            // Select random map
+            CurrentMap = mapChoices[RandomUtils.RandomInt(0, mapChoices.Length)];
+
+            // Reset exclude status for all maps if this map is the last non-excluded one
+            if (m_gamemodeMaps.Where(_map => !_map.ExcludeFromChoicesList).Count() <= 1)
+            {
+                foreach (MapType map in m_gamemodeMaps)
+                {
+                    map.ExcludeFromChoicesList = false;
+                }
+            }
+
+            // Exclude this map from list until all other maps have been chosen (if there are more than 1 registered maps)
+            if (m_gamemodeMaps.Count > 1)
+            {
+                CurrentMap.ExcludeFromChoicesList = true;
+            }
 
             // Set gamemode as prestarting to map too
             CurrentMap.IsGamemodePreStartRunning = true;

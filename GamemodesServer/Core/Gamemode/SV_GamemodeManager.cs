@@ -122,16 +122,25 @@ namespace GamemodesServer.Core.Gamemode
                         Log.WriteLine($"Couldn't find forced gamemode {forcedGamemodeName}!");
                     }
 
-                    // Store all except last gamemode
+                    // Store all except previous gamemodes
                     GamemodeBaseScript[] gamemodeChoices = s_registeredGamemodes.Where(_gamemode => !_gamemode.ExcludeFromChoicesList).ToArray();
 
                     // Start random gamemode
                     s_curGamemode = gamemodeChoices[RandomUtils.RandomInt(0, gamemodeChoices.Length)];
 
-                    // Reset exclude status for all gamemodes
-                    foreach (GamemodeBaseScript gamemode in s_registeredGamemodes)
+                    // Reset exclude status for all gamemodes if this gamemode is the last non-excluded one
+                    if (s_registeredGamemodes.Where(_gamemode => !_gamemode.ExcludeFromChoicesList).Count() <= 1)
                     {
-                        gamemode.ExcludeFromChoicesList = false;
+                        foreach (GamemodeBaseScript gamemode in s_registeredGamemodes)
+                        {
+                            gamemode.ExcludeFromChoicesList = false;
+                        }
+                    }
+
+                    // Exclude this gamemode from list until all other gamemodes have been chosen (if there are more than 1 registered gamemodes)
+                    if (s_registeredGamemodes.Count > 1)
+                    {
+                        s_curGamemode.ExcludeFromChoicesList = true;
                     }
                 }
 
@@ -288,9 +297,6 @@ namespace GamemodesServer.Core.Gamemode
                 // Once again wait a bit
                 await Delay(5000);
             }
-
-            // Set last gamemode to current gamemode
-            s_curGamemode.ExcludeFromChoicesList = true;
 
             // Set current gamemode to none
             s_curGamemode = null;

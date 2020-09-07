@@ -82,34 +82,39 @@ namespace GamemodesServer.Core.Map
         }
 
         /// <summary>
+        /// Whether this map should be not a choice when selecting a new one
+        /// </summary>
+        public bool ExcludeFromChoicesList = false;
+
+        /// <summary>
         /// Whether prestart is currently running
         /// </summary>
-        public bool IsGamemodePreStartRunning { get; set; } = false;
+        public bool IsGamemodePreStartRunning = false;
 
         /// <summary>
         /// File name of map
         /// </summary>
-        protected string MapFileName { get; set; }
+        protected string MapFileName;
 
         /// <summary>
         /// Timecycle modifier to use
         /// </summary>
-        protected string TimecycMod { get; set; }
+        protected string TimecycMod;
 
         /// <summary>
         /// Extra timecycle modifier to use
         /// </summary>
-        protected string TimecycModExtra { get; set; }
+        protected string TimecycModExtra;
 
         /// <summary>
         /// Time to set
         /// </summary>
-        protected TimeSpan Time { get; set; } = new TimeSpan(12, 0, 0);
+        protected TimeSpan Time = new TimeSpan(12, 0, 0);
 
         /// <summary>
         /// Weather to set
         /// </summary>
-        protected string Weather { get; set; } = "EXTRASUNNY";
+        protected string Weather = "EXTRASUNNY";
 
         /// <summary>
         /// Custom load function
