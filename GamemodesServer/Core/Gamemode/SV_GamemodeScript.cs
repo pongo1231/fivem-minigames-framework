@@ -251,6 +251,8 @@ namespace GamemodesServer.Core.Gamemode
             {
                 Tick += onTickFunc;
             }
+
+            Log.WriteLine($"Loaded map {CurrentMap.GetType().Name} for gamemode {Name}!");
         }
 
         /// <summary>
@@ -314,6 +316,8 @@ namespace GamemodesServer.Core.Gamemode
             {
                 await m_onStop();
             }
+
+            Log.WriteLine($"Unloaded map {CurrentMap.GetType().Name} for gamemode {Name}!");
         }
 
         /// <summary>

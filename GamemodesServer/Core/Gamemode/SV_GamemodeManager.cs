@@ -59,8 +59,9 @@ namespace GamemodesServer.Core.Gamemode
         /// Player dropped function
         /// </summary>
         /// <param name="_player">Player</param>
+        /// <param name="_dropReason">Reason for drop</param>
         [PlayerDropped]
-        private void OnPlayerDropped(Player _player)
+        private void OnPlayerDropped(Player _player, string _dropReason)
         {
             // Remove player from list
             m_gamemodePlayers.Remove(_player);
@@ -184,6 +185,8 @@ namespace GamemodesServer.Core.Gamemode
                 // Check if clients haven't been made aware of this gamemode yet
                 if (!m_initializedGamemodeClients)
                 {
+                    Log.WriteLine($"Starting prestart cam for gamemode {s_curGamemode.EventName}!");
+
                     // Show prestart cam to all clients
                     TriggerClientEvent("gamemodes:cl_sv_showprestartcam", s_curGamemode.Name, s_curGamemode.Description);
 
@@ -195,6 +198,8 @@ namespace GamemodesServer.Core.Gamemode
 
                     // Flag all clients as aware
                     m_initializedGamemodeClients = true;
+
+                    Log.WriteLine($"Stopped prestart cam for gamemode {s_curGamemode.EventName}!");
                 }
 
                 // Check if timer has run out and we aren't waiting for gamemode to stop yet
@@ -205,6 +210,8 @@ namespace GamemodesServer.Core.Gamemode
 
                     // Notify gamemode of timer being up
                     s_curGamemode.TimerUp();
+
+                    Log.WriteLine($"Timer up, waiting for gamemode {s_curGamemode.EventName} to stop!");
                 }
             }
 
@@ -218,7 +225,7 @@ namespace GamemodesServer.Core.Gamemode
         private async Task OnTickCountdown()
         {
             // Check if countdown should be running
-            if (m_prestartCountdownRunning && m_initializedGamemodeClients)
+            if (m_prestartCountdownRunning && m_initializedGamemodeClients && s_curGamemode != null)
             {
                 // Decrement and check if countdown has reached 0
                 if (m_prestartCountdown-- == 0)
@@ -235,7 +242,10 @@ namespace GamemodesServer.Core.Gamemode
                     // Start gamemode timer
                     TimerManager.SetTimer(s_curGamemode.TimerSeconds);
 
+                    // Show /votestop command reminder
                     StopGamemodeVotingHandler.ShowReminder();
+
+                    Log.WriteLine($"Countdown completed, gamemode {s_curGamemode.EventName} fully started!");
                 }
                 else
                 {
@@ -276,6 +286,8 @@ namespace GamemodesServer.Core.Gamemode
                 // Get winner team
                 ETeamType winnerTeam = s_curGamemode.GetWinnerTeam();
 
+                Log.WriteLine($"Started winner cam for gamemode {s_curGamemode.EventName}!");
+
                 // Show winner cam with winner team broadcasted
                 TriggerClientEvent("gamemodes:cl_sv_showwinnercam", (int)winnerTeam, ScoreManager.GetScore(ETeamType.TEAM_RED), ScoreManager.GetScore(ETeamType.TEAM_BLUE));
 
@@ -284,6 +296,8 @@ namespace GamemodesServer.Core.Gamemode
 
                 // Hide winner cam
                 TriggerClientEvent("gamemodes:cl_sv_hidewinnercam");
+
+                Log.WriteLine($"Stopped winner cam for gamemode {s_curGamemode.EventName}!");
             }
 
             // Stop gamemode
@@ -297,6 +311,8 @@ namespace GamemodesServer.Core.Gamemode
                 // Once again wait a bit
                 await Delay(5000);
             }
+
+            Log.WriteLine($"Stopped gamemode {s_curGamemode.EventName} with scores {ScoreManager.GetScore(ETeamType.TEAM_RED)} (Red) - {ScoreManager.GetScore(ETeamType.TEAM_BLUE)} (Blue)!");
 
             // Set current gamemode to none
             s_curGamemode = null;

@@ -20,8 +20,9 @@ namespace GamemodesServer.Core
         /// Dropped player function
         /// </summary>
         /// <param name="_player">Player</param>
+        /// <param name="_dropReason">Reason for drop</param>
         [PlayerDropped]
-        private void OnPlayerDropped(Player _player)
+        private void OnPlayerDropped(Player _player, string _dropReason)
         {
             // Remove player from list
             s_loadedPlayers.Remove(_player);
@@ -49,15 +50,15 @@ namespace GamemodesServer.Core
         /// Player dropped event
         /// </summary>
         /// <param name="_player">Player</param>
-        /// <param name="_reason">Reason for drop</param>
+        /// <param name="_dropReason">Reason for drop</param>
         [EventHandler("playerDropped")]
-        private void OnPlayerDropped([FromSource] Player _player, string _reason)
+        private void OnEventPlayerDropped([FromSource]Player _player, string _dropReason)
         {
             // Remove player from list
             s_loadedPlayers.Remove(_player);
 
             // Invoke player dropped event
-            PlayerDropped?.Invoke(_player);
+            PlayerDropped?.Invoke(_player, _dropReason);
         }
 
         /// <summary>
@@ -76,7 +77,7 @@ namespace GamemodesServer.Core
                     s_loadedPlayers.Remove(player);
 
                     // Invoke player dropped event
-                    PlayerDropped?.Invoke(player);
+                    PlayerDropped?.Invoke(player, "playerDropped not called");
                 }
             }
 

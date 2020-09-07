@@ -72,6 +72,9 @@ namespace GamemodesClient.Core
             // Set scooter as boost vehicle
             BoostManager.BoostVehicle = CurrentScooter;
 
+            // Notify server we finally received the scooter
+            TriggerServerEvent("gamemodes:sv_cl_gotscooter");
+
             // Fade in screen
             await ScreenUtils.FadeIn();
         }

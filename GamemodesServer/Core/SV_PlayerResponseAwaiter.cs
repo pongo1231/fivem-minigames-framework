@@ -31,7 +31,7 @@ namespace GamemodesServer.Core
         /// </summary>
         /// <param name="_player">Player</param>
         /// <param name="_serverClientEventName">Name of event to send to client</param>
-        /// <param name="_clientServerEventName">Name of event to receive from client</param>
+        /// <param name="_clientServerEventName">Name of event to await for from client</param>
         /// <param name="_serverClientEventArgs">Arguments for sending to client</param>
         private async Task _AwaitResponse(Player _player, string _serverClientEventName, string _clientServerEventName, params object[] _serverClientEventArgs)
         {
@@ -44,7 +44,7 @@ namespace GamemodesServer.Core
             // Callback for event
             Action<Player> callback = (player) =>
             {
-                Debug.WriteLine($"Got response from client for {_serverClientEventName}!");
+                Debug.WriteLine($"Got response from {_player.Name} for {_serverClientEventName}!");
 
                 // Set as completed
                 hasCompleted = true;
@@ -103,7 +103,7 @@ namespace GamemodesServer.Core
         /// </summary>
         /// <param name="_player">Player</param>
         /// <param name="_serverClientEventName">Name of event to send to client</param>
-        /// <param name="_clientServerEventName">Name of event to receive from client</param>
+        /// <param name="_clientServerEventName">Name of event to await for from client</param>
         /// <param name="_serverClientEventArgs">Arguments for sending to client</param>
         public static async Task AwaitResponse(Player _player, string _serverClientEventName, string _clientServerEventName, params object[] _serverClientEventArgs)
         {
@@ -114,7 +114,7 @@ namespace GamemodesServer.Core
         /// Send event and wait for all clients to either respond or get dropped because of not responding
         /// </summary>
         /// <param name="_serverClientEventName">Name of event to send to client</param>
-        /// <param name="_clientServerEventName">Name of event to receive from client</param>
+        /// <param name="_clientServerEventName">Name of event to await for from client</param>
         /// <param name="_serverClientEventArgs">Arguments for sending to client</param>
         public static async Task AwaitResponse(string _serverClientEventName, string _clientServerEventName, params object[] _serverClientEventArgs)
         {

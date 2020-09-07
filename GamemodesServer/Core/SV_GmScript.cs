@@ -44,7 +44,8 @@ namespace GamemodesServer.Core
         /// Delegate for player dropped event
         /// </summary>
         /// <param name="_player">Player</param>
-        public delegate void PlayerDroppedHandler(Player _player);
+        /// <param name="_dropReason">Reason for drop</param>
+        public delegate void PlayerDroppedHandler(Player _player, string _dropReason);
 
         /// <summary>
         /// Player dropped event

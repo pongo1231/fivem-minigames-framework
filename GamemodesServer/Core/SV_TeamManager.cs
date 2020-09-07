@@ -58,8 +58,9 @@ namespace GamemodesServer.Core
         /// Player dropped function
         /// </summary>
         /// <param name="_player">Player</param>
+        /// <param name="_dropReason">Reason for drop</param>
         [PlayerDropped]
-        private void OnPlayerDropped(Player _player)
+        private void OnPlayerDropped(Player _player, string _dropReason)
         {
             // Remove player from list
             s_teamPlayers.RemoveAll(teamPlayer => teamPlayer.Player == _player);

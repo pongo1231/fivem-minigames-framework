@@ -10,11 +10,17 @@ namespace GamemodesClient.Core
     /// </summary>
     public class Main : GmScript
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public Main()
         {
             OnClientResourceStart();
         }
 
+        /// <summary>
+        /// On start function
+        /// </summary>
         private async void OnClientResourceStart()
         {
             // Wait for game to fully load in
