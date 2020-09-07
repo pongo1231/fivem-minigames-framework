@@ -1,12 +1,7 @@
 ﻿using CitizenFX.Core;
-using CitizenFX.Core.Native;
 using GamemodesServer.Core;
 using GamemodesServer.Core.Gamemode;
-using GamemodesServer.Utils;
 using GamemodesShared;
-using GamemodesShared.Utils;
-using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace GamemodesServer.Gamemodes.Knockdown

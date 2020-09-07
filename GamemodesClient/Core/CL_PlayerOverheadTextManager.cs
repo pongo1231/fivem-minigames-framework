@@ -92,25 +92,23 @@ namespace GamemodesClient.Core
                     // Set visibility status of player name
                     API.SetMpGamerTagVisibility(overheadPlayer.OverheadHandle, 0, ShowOverheadText);
 
-                    // Get team player from player network id
-                    SHTeamPlayer teamPlayer = TeamManager.TeamPlayers.Find(_teamPlayer => _teamPlayer.PlayerNetId == player.ServerId);
+                    // Get team type
+                    ETeamType teamType = player.GetTeam();
 
-                    // Check if team player exists
-                    if (teamPlayer != null)
+                    if (teamType == ETeamType.TEAM_RED)
                     {
-                        // Get team type
-                        ETeamType teamType = (ETeamType)teamPlayer.PlayerTeamType;
-
-                        if (teamType == ETeamType.TEAM_RED)
-                        {
-                            // Red color for red team
-                            API.SetMpGamerTagColour(overheadPlayer.OverheadHandle, 0, 6);
-                        }
-                        else if (teamType == ETeamType.TEAM_BLUE)
-                        {
-                            // Blue color for blue team
-                            API.SetMpGamerTagColour(overheadPlayer.OverheadHandle, 0, 202);
-                        }
+                        // Red color for red team
+                        API.SetMpGamerTagColour(overheadPlayer.OverheadHandle, 0, 6);
+                    }
+                    else if (teamType == ETeamType.TEAM_BLUE)
+                    {
+                        // Blue color for blue team
+                        API.SetMpGamerTagColour(overheadPlayer.OverheadHandle, 0, 202);
+                    }
+                    else if (teamType == ETeamType.TEAM_UNK)
+                    {
+                        // White color for unknown team
+                        API.SetMpGamerTagColour(overheadPlayer.OverheadHandle, 0, 0);
                     }
                 }
             }
