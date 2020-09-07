@@ -48,7 +48,7 @@ namespace GamemodesServer.Gamemodes.Knockdown
             m_blueScore = 0;
 
             // Enable scooters
-            PlayerScooterManager.Enable("panto");
+            PlayerScooterManager.Enable("panto", CurrentMap.FallOffHeight);
 
             await Task.FromResult(0);
         }
@@ -130,9 +130,6 @@ namespace GamemodesServer.Gamemodes.Knockdown
         [GamemodeTick]
         private async Task OnTickSendEvents()
         {
-            // Send fall off height to all clients
-            TriggerClientEvent("gamemodes:cl_sv_knockdown_setfalloffheight", CurrentMap.FallOffHeight);
-
             // Send scores to all clients
             TriggerClientEvent("gamemodes:cl_sv_knockdown_updatescores", m_blueScore, m_redScore);
 

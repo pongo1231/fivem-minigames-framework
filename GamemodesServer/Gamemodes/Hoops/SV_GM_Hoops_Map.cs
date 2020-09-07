@@ -4,7 +4,7 @@ using GamemodesServer.Core.Map;
 namespace GamemodesServer.Gamemodes.Hoops
 {
     /// <summary>
-    /// Hoops map class
+    /// Hoops map base class
     /// </summary>
     public class Hoops_Map : GamemodeMap
     {
@@ -46,11 +46,6 @@ namespace GamemodesServer.Gamemodes.Hoops
             /// </summary>
             public bool IsExtraWorth { get; private set; }
         }
-
-        /// <summary>
-        /// Height at which stuff should respawn
-        /// </summary>
-        public float FallOffHeight { get; protected set; }
 
         /// <summary>
         /// Array of hoops

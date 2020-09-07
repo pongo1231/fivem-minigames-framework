@@ -61,7 +61,7 @@ namespace GamemodesServer.Gamemodes.Hoops
             }
 
             // Enable scooters
-            PlayerScooterManager.Enable("rcbandito");
+            PlayerScooterManager.Enable("rcbandito", CurrentMap.FallOffHeight);
 
             await Task.FromResult(0);
         }
@@ -184,9 +184,6 @@ namespace GamemodesServer.Gamemodes.Hoops
         [GamemodeTick]
         private async Task OnTickSendSlowEvents()
         {
-            // Send fall off height to all clients
-            TriggerClientEvent("gamemodes:cl_sv_hoops_setfalloffheight", CurrentMap.FallOffHeight);
-
             // Send scores to all clients
             TriggerClientEvent("gamemodes:cl_sv_hoops_updatescores", m_blueScore, m_redScore);
 

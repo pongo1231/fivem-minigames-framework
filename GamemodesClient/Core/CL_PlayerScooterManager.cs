@@ -2,6 +2,7 @@
 using GamemodesClient.Utils;
 using GamemodesShared;
 using System.Drawing;
+using System.Threading.Tasks;
 
 namespace GamemodesClient.Core
 {
@@ -14,6 +15,16 @@ namespace GamemodesClient.Core
         /// Current scooter
         /// </summary>
         public static GmNetEntity<Vehicle> CurrentScooter { get; private set; }
+
+        /// <summary>
+        /// If scooter has been respawned this frame
+        /// </summary>
+        public static bool RespawnedThisFrame { get; private set; } = false;
+
+        /// <summary>
+        /// Height at which scooters should respawn
+        /// </summary>
+        private float m_fallOffHeight = float.MaxValue;
 
         /// <summary>
         /// Server spawned scooter event by server
@@ -63,6 +74,41 @@ namespace GamemodesClient.Core
 
             // Fade in screen
             await ScreenUtils.FadeIn();
+        }
+
+        /// <summary>
+        /// Update falloff height event by server
+        /// </summary>
+        /// <param name="_height">Falloff height</param>
+        [EventHandler("gamemodes:cl_sv_setscooterfalloffheight")]
+        private void OnSetFallOffHeight(float _height)
+        {
+            m_fallOffHeight = _height;
+        }
+
+        /// <summary>
+        /// Tick function
+        /// </summary>
+        [Tick]
+        private async Task OnTick()
+        {
+            // Flag as not respawned this frame
+            RespawnedThisFrame = false;
+
+            if (CurrentScooter.Exists)
+            {
+                // Check if scooter at falloff height or dead
+                if (CurrentScooter.Entity.Position.Z < m_fallOffHeight || CurrentScooter.Entity.IsDead)
+                {
+                    // Respawn scooter
+                    await SpawnManager.Respawn();
+
+                    // Flag as respawned this frame
+                    RespawnedThisFrame = true;
+                }
+            }
+
+            await Task.FromResult(0);
         }
 
         /// <summary>

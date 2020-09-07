@@ -2,6 +2,7 @@
 using GamemodesServer.Utils;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace GamemodesServer.Core
 {
@@ -44,6 +45,11 @@ namespace GamemodesServer.Core
         /// Current scooter vehicle to spawn for clients
         /// </summary>
         private static string s_scooterVehicle;
+
+        /// <summary>
+        /// Height at which scooters should respawn
+        /// </summary>
+        private static float s_fallOffHeight = float.MinValue;
 
         /// <summary>
         /// Player dropped function
@@ -116,16 +122,35 @@ namespace GamemodesServer.Core
         }
 
         /// <summary>
+        /// Tick function
+        /// </summary>
+        [Tick]
+        private async Task OnTick()
+        {
+            // Update falloff height for all clients if scooters are enabled
+            if (s_scooterVehicle != null)
+            {
+                TriggerClientEvent("gamemodes:cl_sv_setscooterfalloffheight", s_fallOffHeight);
+            }
+
+            await Delay(500);
+        }
+
+        /// <summary>
         /// Allow clients to spawn scooters
         /// </summary>
         /// <param name="_vehicleModel">Vehicle model to spawn for clients</param>
-        public static void Enable(string _vehicleModel)
+        /// <param name="_fallOffHeight">Height at which scooters should respawn</param>
+        public static void Enable(string _vehicleModel, float _fallOffHeight)
         {
             // Clear list
             s_scooterPlayers.Clear();
 
             // Set current model to specified model
             s_scooterVehicle = _vehicleModel;
+
+            // Set falloff height
+            s_fallOffHeight = _fallOffHeight;
         }
 
         /// <summary>

@@ -25,11 +25,6 @@ namespace GamemodesClient.Gamemodes
         private Text m_goalsText = new Text(null, new PointF(640f, 50f), 1.5f, Color.FromArgb(255, 255, 255), Font.Pricedown, Alignment.Center, true, true);
 
         /// <summary>
-        /// Max height before player is considered as off map
-        /// </summary>
-        private float m_fallOffHeight = float.MaxValue;
-
-        /// <summary>
         /// List of obstacle network ids sent by server
         /// </summary>
         private List<GmNetEntity<Prop>> m_obstacles = new List<GmNetEntity<Prop>>();
@@ -53,26 +48,11 @@ namespace GamemodesClient.Gamemodes
         [GamemodePreStart]
         private async Task OnPreStart()
         {
-            // Reset variables
-            m_fallOffHeight = float.MaxValue;
-
             // Clear obstacles
             m_obstacles.Clear();
 
             // Request a scooter from server
             TriggerServerEvent("gamemodes:sv_cl_requestscooter", SpawnManager.SpawnPos, SpawnManager.SpawnRot);
-
-            await Task.FromResult(0);
-        }
-
-        /// <summary>
-        /// Stop function
-        /// </summary>
-        [GamemodeStop]
-        private async Task OnStop()
-        {
-            // Cleanup scooter
-            PlayerScooterManager.Cleanup();
 
             await Task.FromResult(0);
         }
@@ -87,17 +67,6 @@ namespace GamemodesClient.Gamemodes
         {
             // Set score text
             m_goalsText.Caption = $"~r~{_redGoals}   ~b~{_blueGoals}";
-        }
-
-        /// <summary>
-        /// Set fall off height event by server
-        /// </summary>
-        /// <param name="_fallOffHeight">Fall off height</param>
-        [EventHandler("gamemodes:cl_sv_knockdown_setfalloffheight")]
-        private void OnSetFallOffHeight(float _fallOffHeight)
-        {
-            // Set fall off height
-            m_fallOffHeight = _fallOffHeight;
         }
 
         /// <summary>
@@ -174,14 +143,11 @@ namespace GamemodesClient.Gamemodes
                     Game.DisableControlThisFrame(1, Control.VehicleHandbrake);
 
                     // Check if scooter below min height or dead
-                    if (scooter.Entity.Position.Z < m_fallOffHeight || scooter.Entity.IsDead)
+                    if (PlayerScooterManager.RespawnedThisFrame)
                     {
                         TriggerServerEvent("gamemodes:sv_cl_knockdown_felloff");
 
                         m_noCollisionsTimestamp = API.GetGameTimer() + 3000;
-
-                        // Respawn scooter
-                        await SpawnManager.Respawn();
                     }
                 }
 

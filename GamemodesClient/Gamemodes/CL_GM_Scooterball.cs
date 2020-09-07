@@ -28,11 +28,6 @@ namespace GamemodesClient.Gamemodes
         private Text m_goalsText = new Text(null, new PointF(640f, 50f), 1.5f, Color.FromArgb(255, 255, 255), Font.Pricedown, Alignment.Center, true, true);
 
         /// <summary>
-        /// Max height before player is considered as off map
-        /// </summary>
-        private float m_fallOffHeight = float.MaxValue;
-
-        /// <summary>
         /// Constructor
         /// </summary>
         public Scooterball() : base("scooterball", "~INPUT_VEH_ROCKET_BOOST~  -  Boost\n~INPUT_JUMP~  -  Jump")
@@ -48,7 +43,6 @@ namespace GamemodesClient.Gamemodes
         {
             // Reset variables
             m_ball = default;
-            m_fallOffHeight = float.MaxValue;
 
             // Request a scooter from server
             PlayerScooterManager.Request();
@@ -64,30 +58,6 @@ namespace GamemodesClient.Gamemodes
         {
             // Enable boost
             BoostManager.BoostEnabled = true;
-
-            await Task.FromResult(0);
-        }
-
-        /// <summary>
-        /// Pre stop function
-        /// </summary>
-        [GamemodePreStop]
-        private async Task OnPreStop()
-        {
-            // Disable boost
-            BoostManager.BoostEnabled = false;
-
-            await Task.FromResult(0);
-        }
-
-        /// <summary>
-        /// Stop function
-        /// </summary>
-        [GamemodeStop]
-        private async Task OnStop()
-        {
-            // Cleanup scooter
-            PlayerScooterManager.Cleanup();
 
             await Task.FromResult(0);
         }
@@ -150,17 +120,6 @@ namespace GamemodesClient.Gamemodes
         }
 
         /// <summary>
-        /// Set fall off height event by server
-        /// </summary>
-        /// <param name="_fallOffHeight">Fall off height</param>
-        [EventHandler("gamemodes:cl_sv_scooterball_setfalloffheight")]
-        private void OnSetFallOffHeight(float _fallOffHeight)
-        {
-            // Set fall off height
-            m_fallOffHeight = _fallOffHeight;
-        }
-
-        /// <summary>
         /// Tick function
         /// </summary>
         [GamemodeTick]
@@ -219,13 +178,6 @@ namespace GamemodesClient.Gamemodes
 
                         // Apply new velocity
                         scooter.Entity.Velocity = vel;
-                    }
-
-                    // Check if scooter below min height or dead
-                    if (scooter.Entity.Position.Z < m_fallOffHeight || scooter.Entity.IsDead)
-                    {
-                        // Respawn scooter
-                        await SpawnManager.Respawn();
                     }
                 }
             }

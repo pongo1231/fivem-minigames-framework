@@ -22,11 +22,6 @@ namespace GamemodesClient.Gamemodes
         private Text m_goalsText = new Text(null, new PointF(640f, 50f), 1.5f, Color.FromArgb(255, 255, 255), Font.Pricedown, Alignment.Center, true, true);
 
         /// <summary>
-        /// Max height before player is considered as off map
-        /// </summary>
-        private float m_fallOffHeight = float.MaxValue;
-
-        /// <summary>
         /// List of hoops
         /// </summary>
         private List<dynamic> m_hoops = new List<dynamic>();
@@ -50,9 +45,6 @@ namespace GamemodesClient.Gamemodes
         [GamemodePreStart]
         private async Task OnPreStart()
         {
-            // Reset variables
-            m_fallOffHeight = float.MaxValue;
-
             // Clear hoops
             m_hoops.Clear();
 
@@ -68,7 +60,7 @@ namespace GamemodesClient.Gamemodes
         [GamemodePreStop]
         private async Task OnPreStop()
         {
-            /* Clear all blips */
+            /* Clear all hoop blips */
 
             foreach (Blip blip in m_blips)
             {
@@ -76,18 +68,6 @@ namespace GamemodesClient.Gamemodes
             }
 
             m_blips.Clear();
-
-            await Task.FromResult(0);
-        }
-
-        /// <summary>
-        /// Stop function
-        /// </summary>
-        [GamemodeStop]
-        private async Task OnStop()
-        {
-            // Cleanup scooter
-            PlayerScooterManager.Cleanup();
 
             await Task.FromResult(0);
         }
@@ -102,17 +82,6 @@ namespace GamemodesClient.Gamemodes
         {
             // Set score text
             m_goalsText.Caption = $"~r~{_redGoals}   ~b~{_blueGoals}";
-        }
-
-        /// <summary>
-        /// Set fall off height event by server
-        /// </summary>
-        /// <param name="_fallOffHeight">Fall off height</param>
-        [EventHandler("gamemodes:cl_sv_hoops_setfalloffheight")]
-        private void OnSetFallOffHeight(float _fallOffHeight)
-        {
-            // Set fall off height
-            m_fallOffHeight = _fallOffHeight;
         }
 
         /// <summary>
@@ -213,13 +182,6 @@ namespace GamemodesClient.Gamemodes
                 {
                     // Disable handbrakes
                     Game.DisableControlThisFrame(1, Control.VehicleHandbrake);
-
-                    // Check if scooter below min height or dead
-                    if (scooter.Entity.Position.Z < m_fallOffHeight || scooter.Entity.IsDead)
-                    {
-                        // Respawn scooter
-                        await SpawnManager.Respawn();
-                    }
                 }
             }
 

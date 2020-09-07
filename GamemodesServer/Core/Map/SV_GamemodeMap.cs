@@ -92,6 +92,11 @@ namespace GamemodesServer.Core.Map
         public bool IsGamemodePreStartRunning = false;
 
         /// <summary>
+        /// Height at which stuff should respawn
+        /// </summary>
+        public float FallOffHeight = float.MinValue;
+
+        /// <summary>
         /// File name of map
         /// </summary>
         protected string MapFileName;
@@ -198,7 +203,11 @@ namespace GamemodesServer.Core.Map
         public async Task Load()
         {
             // Load map file if it exists
-            if (MapFileName != null)
+            if (MapFileName == null)
+            {
+                Log.WriteLine($"!!! Map {GetType().Name} has no MapFileName configured !!!");
+            }
+            else
             {
                 // Start in maps directory
                 await MapLoader.LoadMap($"maps/{MapFileName}");

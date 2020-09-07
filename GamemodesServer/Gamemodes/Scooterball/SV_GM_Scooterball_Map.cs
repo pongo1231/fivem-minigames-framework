@@ -4,7 +4,7 @@ using GamemodesServer.Core.Map;
 namespace GamemodesServer.Gamemodes.Scooterball
 {
     /// <summary>
-    /// Scooterball Map class
+    /// Scooterball map base class
     /// </summary>
     public abstract class Scooterball_Map : GamemodeMap
     {
@@ -12,11 +12,6 @@ namespace GamemodesServer.Gamemodes.Scooterball
         /// Position to spawn ball at
         /// </summary>
         public Vector3 BallSpawnPos { get; protected set; }
-
-        /// <summary>
-        /// Height at which the ball / players respawn
-        /// </summary>
-        public float FallOffHeight { get; protected set; }
 
         /// <summary>
         /// Position 1 of red goal

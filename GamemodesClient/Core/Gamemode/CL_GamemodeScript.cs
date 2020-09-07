@@ -236,6 +236,9 @@ namespace GamemodesClient.Core.Gamemode
             // Stop music event
             MusicManager.Stop();
 
+            // Disable boost
+            BoostManager.BoostEnabled = false;
+
             // Unregister all custom tick functions
             foreach (Func<Task> onTickFunc in m_onTickFuncs)
             {
@@ -260,6 +263,9 @@ namespace GamemodesClient.Core.Gamemode
             // Clear all timecycle modifiers
             API.ClearTimecycleModifier();
             API.ClearExtraTimecycleModifier();
+
+            // Cleanup scooter
+            PlayerScooterManager.Cleanup();
 
             // Run custom stop function if available
             if (m_onStop != null)

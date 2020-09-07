@@ -57,7 +57,7 @@ namespace GamemodesServer.Gamemodes.Scooterball
             m_scoredGoal = false;
 
             // Enable scooters
-            PlayerScooterManager.Enable("rcbandito");
+            PlayerScooterManager.Enable("rcbandito", CurrentMap.FallOffHeight);
 
             // Spawn the ball
             m_ball = await EntityPool.CreateProp("stt_prop_stunt_soccer_lball", CurrentMap.BallSpawnPos, default, true);
@@ -129,9 +129,6 @@ namespace GamemodesServer.Gamemodes.Scooterball
         [GamemodeTick]
         private async Task OnTickSendEvents()
         {
-            // Send fall off height to all clients
-            TriggerClientEvent("gamemodes:cl_sv_scooterball_setfalloffheight", CurrentMap.FallOffHeight);
-
             // Send scores to all clients
             TriggerClientEvent("gamemodes:cl_sv_scooterball_updatescores", m_blueGoals, m_redGoals);
 
