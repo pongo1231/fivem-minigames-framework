@@ -1,17 +1,28 @@
 ﻿namespace GamemodesServer.Gamemodes.Hoops
 {
+    /// <summary>
+    /// Hoops map 1 class
+    /// </summary>
     public class Hoops_Map_1 : Hoops_Map
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public Hoops_Map_1()
         {
+            // Set file name
             MapFileName = "hoops/hoops_map_1.xml";
 
+            // Set timecycle modifier
             TimecycMod = "pulse";
 
+            // Set weather
             Weather = "CLOUDS";
 
+            // Set falloff height
             FallOffHeight = 343f;
 
+            // List of hoops
             Hoops = new Hoop[] {
                 // Loop
                 new Hoop(-68f, -814f, 377.5f),

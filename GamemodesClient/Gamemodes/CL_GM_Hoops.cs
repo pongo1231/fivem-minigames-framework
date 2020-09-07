@@ -1,5 +1,4 @@
 ﻿using CitizenFX.Core;
-using CitizenFX.Core.Native;
 using CitizenFX.Core.UI;
 using GamemodesClient.Core;
 using GamemodesClient.Core.Gamemode;
@@ -12,6 +11,9 @@ using Font = CitizenFX.Core.UI.Font;
 
 namespace GamemodesClient.Gamemodes
 {
+    /// <summary>
+    /// Hoops gamemode class
+    /// </summary>
     public class Hoops : GamemodeScript
     {
         /// <summary>
@@ -24,8 +26,14 @@ namespace GamemodesClient.Gamemodes
         /// </summary>
         private float m_fallOffHeight = float.MaxValue;
 
+        /// <summary>
+        /// List of hoops
+        /// </summary>
         private List<dynamic> m_hoops = new List<dynamic>();
 
+        /// <summary>
+        /// List of hoop blips
+        /// </summary>
         private List<Blip> m_blips = new List<Blip>();
 
         /// <summary>
@@ -45,7 +53,7 @@ namespace GamemodesClient.Gamemodes
             // Reset variables
             m_fallOffHeight = float.MaxValue;
 
-            // Clear obstacles
+            // Clear hoops
             m_hoops.Clear();
 
             // Request a scooter from server
@@ -55,11 +63,13 @@ namespace GamemodesClient.Gamemodes
         }
 
         /// <summary>
-        /// Prestop function
+        /// Pre stop function
         /// </summary>
         [GamemodePreStop]
         private async Task OnPreStop()
         {
+            /* Clear all blips */
+
             foreach (Blip blip in m_blips)
             {
                 blip.Delete();
@@ -106,13 +116,16 @@ namespace GamemodesClient.Gamemodes
         }
 
         /// <summary>
-        /// Update obstacles list event by server
+        /// Update active hoops list event by server
         /// </summary>
-        /// <param name="_obstacles">List of obstacle network ids</param>
+        /// <param name="_obstacles">List of hoop objects</param>
         [EventHandler("gamemodes:cl_sv_hoops_updatehoops")]
         private void OnUpdateObstacles(List<dynamic> _hoops)
         {
+            // Update hoops list
             m_hoops = _hoops;
+
+            /* Remove all existing hoop blips */
 
             foreach (Blip blip in m_blips)
             {
@@ -121,6 +134,7 @@ namespace GamemodesClient.Gamemodes
 
             m_blips.Clear();
 
+            // Create new blips for all active hoops if gamemode is started
             if (!IsGamemodePreStartRunning)
             {
                 foreach (dynamic hoop in m_hoops)
@@ -135,17 +149,27 @@ namespace GamemodesClient.Gamemodes
             }
         }
 
+        /// <summary>
+        /// Collected hoop event by server
+        /// </summary>
+        /// <param name="_isExtraWorth">If hoop gives extra points</param>
         [EventHandler("gamemodes:cl_sv_hoops_collectedhoop")]
         private void OnCollectHoop(bool _isExtraWorth)
         {
+            // Play collection sound
             AudioUtils.PlayFrontendAudio("GTAO_Shepherd_Sounds", "Checkpoint_Teammate");
 
+            // Show notification
             Screen.ShowNotification(_isExtraWorth ? "~g~You collected a green hoop!" : "You collected a hoop!");
         }
 
+        /// <summary>
+        /// Tick function
+        /// </summary>
         [GamemodeTick]
         private async Task OnTick()
         {
+            // Check if gamemode has started
             if (!IsGamemodePreStartRunning)
             {
                 // Draw score text
@@ -161,6 +185,7 @@ namespace GamemodesClient.Gamemodes
                     ScreenUtils.ShowSubtitle("Collect hoops to score points for the ~b~Blue Team~w~!");
                 }
 
+                // Draw all active hoops
                 foreach (dynamic hoop in m_hoops)
                 {
                     World.DrawMarker(MarkerType.VerticleCircle, hoop.Position, Vector3.Zero, Vector3.Zero, new Vector3(7f, 7f, 7f),
