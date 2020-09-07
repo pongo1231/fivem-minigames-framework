@@ -1,4 +1,5 @@
 ﻿using CitizenFX.Core;
+using CitizenFX.Core.Native;
 using CitizenFX.Core.UI;
 using GamemodesClient.Core;
 using GamemodesClient.Core.Gamemode;
@@ -30,7 +31,7 @@ namespace GamemodesClient.Gamemodes
         /// <summary>
         /// Constructor
         /// </summary>
-        public Hoops() : base("hoops", "~r~Red Hoops~w~ are worth 1 point.\r~g~Green Hoops~w~ are worth 2 points.")
+        public Hoops() : base("hoops", "~r~Red Hoops~w~ are worth 1 point.\r~g~Green Hoops~w~ are worth 5 points.")
         {
 
         }
@@ -120,19 +121,30 @@ namespace GamemodesClient.Gamemodes
 
             m_blips.Clear();
 
-            foreach (dynamic hoop in m_hoops)
+            if (!IsGamemodePreStartRunning)
             {
-                Blip blip = World.CreateBlip(hoop.Position);
-                blip.Scale = 0.75f;
-                blip.Color = hoop.IsExtraWorth ? BlipColor.Green : BlipColor.Red;
-                blip.Name = "Hoop";
+                foreach (dynamic hoop in m_hoops)
+                {
+                    Blip blip = World.CreateBlip(hoop.Position);
+                    blip.Scale = 0.75f;
+                    blip.Color = hoop.IsExtraWorth ? BlipColor.Green : BlipColor.Red;
+                    blip.Name = "Hoop";
 
-                m_blips.Add(blip);
+                    m_blips.Add(blip);
+                }
             }
         }
 
+        [EventHandler("gamemodes:cl_sv_hoops_collectedhoop")]
+        private void OnCollectHoop(bool _isExtraWorth)
+        {
+            AudioUtils.PlayFrontendAudio("GTAO_Shepherd_Sounds", "Checkpoint_Teammate");
+
+            Screen.ShowNotification(_isExtraWorth ? "~g~You collected a green hoop!" : "You collected a hoop!");
+        }
+
         [GamemodeTick]
-        private async Task OnTickDrawHoops()
+        private async Task OnTick()
         {
             if (!IsGamemodePreStartRunning)
             {
@@ -151,8 +163,8 @@ namespace GamemodesClient.Gamemodes
 
                 foreach (dynamic hoop in m_hoops)
                 {
-                    World.DrawMarker(MarkerType.VerticleCircle, hoop.Position, Vector3.Zero, hoop.Rotation, new Vector3(7f, 7f, 7f),
-                        hoop.IsExtraWorth ? Color.FromArgb(0, 255, 0) : Color.FromArgb(255, 0, 0));
+                    World.DrawMarker(MarkerType.VerticleCircle, hoop.Position, Vector3.Zero, Vector3.Zero, new Vector3(7f, 7f, 7f),
+                        hoop.IsExtraWorth ? Color.FromArgb(127, 0, 255, 0) : Color.FromArgb(127, 255, 0, 0), false, true);
                 }
             }
 
@@ -169,6 +181,20 @@ namespace GamemodesClient.Gamemodes
                 if (scooter.Entity.Driver != Game.PlayerPed)
                 {
                     Game.PlayerPed.SetIntoVehicle(scooter.Entity, VehicleSeat.Driver);
+                }
+
+                // Check if prestart camera is not running
+                if (!IsGamemodePreStartRunning)
+                {
+                    // Disable handbrakes
+                    Game.DisableControlThisFrame(1, Control.VehicleHandbrake);
+
+                    // Check if scooter below min height or dead
+                    if (scooter.Entity.Position.Z < m_fallOffHeight || scooter.Entity.IsDead)
+                    {
+                        // Respawn scooter
+                        await SpawnManager.Respawn();
+                    }
                 }
             }
 

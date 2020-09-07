@@ -88,17 +88,17 @@ namespace GamemodesServer.Gamemodes.Hoops
                 {
                     Vector3 hoopPos = hoop.Position;
 
-                    if (playerPos.IsInArea(hoopPos - 5f, hoopPos + 5f))
+                    if (playerPos.IsInArea(hoopPos - 3f, hoopPos + 3f))
                     {
                         ETeamType playerTeam = player.GetTeam();
 
                         if (playerTeam == ETeamType.TEAM_RED)
                         {
-                            m_redScore++;
+                            m_redScore += hoop.IsExtraWorth ? 5 : 1;
                         }
                         else if (playerTeam == ETeamType.TEAM_BLUE)
                         {
-                            m_blueScore++;
+                            m_blueScore += hoop.IsExtraWorth ? 5 : 1;
                         }
 
                         if (TimerManager.InOvertime)
@@ -108,13 +108,21 @@ namespace GamemodesServer.Gamemodes.Hoops
 
                         hoop.IsActive = false;
                         hoop.RespawnTimestamp = curTimestamp + 30000;
+
+                        player.TriggerEvent("gamemodes:cl_sv_hoops_collectedhoop", hoop.IsExtraWorth);
+
+                        if (m_hoops.Where(_hoop => _hoop.IsActive).Count() == 0)
+                        {
+                            foreach (Hoop _hoop in m_hoops.Where(__hoop => __hoop != hoop))
+                            {
+                                _hoop.IsActive = true;
+                            }
+                        }
                     }
                 }
             }
 
-            bool anyHoopActive = m_hoops.Where(_hoop => _hoop.IsActive).Count() > 0;
-
-            foreach (Hoop hoop in m_hoops.Where(_hoop => !anyHoopActive || (!_hoop.IsActive && _hoop.RespawnTimestamp < curTimestamp)))
+            foreach (Hoop hoop in m_hoops.Where(_hoop => !_hoop.IsActive && _hoop.RespawnTimestamp < curTimestamp))
             {
                 hoop.IsActive = true;
             }
@@ -146,7 +154,7 @@ namespace GamemodesServer.Gamemodes.Hoops
             // Send all hoops to clients
             TriggerClientEvent("gamemodes:cl_sv_hoops_updatehoops", m_hoops.Where(_hoop => _hoop.IsActive));
 
-            await Delay(200);
+            await Delay(100);
         }
     }
 }

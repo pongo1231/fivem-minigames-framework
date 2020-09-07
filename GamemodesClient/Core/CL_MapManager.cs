@@ -33,6 +33,9 @@ namespace GamemodesClient.Core
 
                 // Set as frozen
                 spawnedProp.IsPositionFrozen = true;
+
+                // Set to max lod distance
+                spawnedProp.LodDistance = short.MaxValue;
             }
         }
 
