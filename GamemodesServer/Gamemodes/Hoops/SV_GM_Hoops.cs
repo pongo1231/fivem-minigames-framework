@@ -52,7 +52,13 @@ namespace GamemodesServer.Gamemodes.Hoops
             m_blueScore = 0;
 
             // Copy hoops from current map
-            m_hoops = CurrentMap.Hoops.ToArray();
+            m_hoops = CurrentMap.Hoops;
+
+            // Activate all hoops again
+            foreach (Hoop hoop in m_hoops)
+            {
+                hoop.IsActive = true;
+            }
 
             // Enable scooters
             PlayerScooterManager.Enable("rcbandito");
@@ -146,7 +152,7 @@ namespace GamemodesServer.Gamemodes.Hoops
 
                         // Disable hoop for some time
                         hoop.IsActive = false;
-                        hoop.RespawnTimestamp = curTimestamp + 30000;
+                        hoop.RespawnTimestamp = hoop.IsExtraWorth ? long.MaxValue : curTimestamp + 30000;
 
                         // Notify player of hoop collection
                         player.TriggerEvent("gamemodes:cl_sv_hoops_collectedhoop", hoop.IsExtraWorth);
@@ -154,7 +160,7 @@ namespace GamemodesServer.Gamemodes.Hoops
                         // Respawn all hoops (except this one) if there are none left
                         if (m_hoops.Where(_hoop => _hoop.IsActive).Count() == 0)
                         {
-                            foreach (Hoop _hoop in m_hoops.Where(__hoop => __hoop != hoop))
+                            foreach (Hoop _hoop in m_hoops.Where(__hoop => __hoop != hoop && !__hoop.IsExtraWorth))
                             {
                                 _hoop.IsActive = true;
                             }

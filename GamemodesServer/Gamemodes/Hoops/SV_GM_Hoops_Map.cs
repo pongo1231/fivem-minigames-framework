@@ -22,8 +22,6 @@ namespace GamemodesServer.Gamemodes.Hoops
             /// <param name="_isExtraWorth">If hoop gives extra points (for ones in hard places)</param>
             public Hoop(float _x, float _y, float _z, bool _isExtraWorth = false)
             {
-                IsActive = true;
-                RespawnTimestamp = 0;
                 Position = new Vector3(_x, _y, _z);
                 IsExtraWorth = _isExtraWorth;
             }
@@ -31,12 +29,12 @@ namespace GamemodesServer.Gamemodes.Hoops
             /// <summary>
             /// If hoop is active
             /// </summary>
-            public bool IsActive;
+            public bool IsActive = true;
 
             /// <summary>
             /// Time when the hoop should respawn again
             /// </summary>
-            public long RespawnTimestamp;
+            public long RespawnTimestamp = 0;
 
             /// <summary>
             /// Position of hoop
