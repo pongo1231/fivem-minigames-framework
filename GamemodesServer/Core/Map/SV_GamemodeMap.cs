@@ -9,51 +9,51 @@ using System.Threading.Tasks;
 namespace GamemodesServer.Core.Map
 {
     /// <summary>
-    /// Attribute for calling map function on map load
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Method)]
-    public class MapLoadAttribute : Attribute
-    {
-
-    }
-
-    /// <summary>
-    /// Attribute for calling map function on map load
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Method)]
-    public class MapUnloadAttribute : Attribute
-    {
-
-    }
-
-    /// <summary>
-    /// Attribute for registering event while map is running
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Method)]
-    public class MapEventHandlerAttribute : Attribute
-    {
-        public string EventName { get; private set; }
-
-        public MapEventHandlerAttribute(string _eventName)
-        {
-            EventName = _eventName;
-        }
-    }
-
-    /// <summary>
-    /// Attribute for registering tick function while map is running
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Method)]
-    public class MapTickAttribute : Attribute
-    {
-
-    }
-
-    /// <summary>
     /// Gamemode map class
     /// </summary>
     public abstract class GamemodeMap : GmScript
     {
+        /// <summary>
+        /// Attribute for calling map function on map load
+        /// </summary>
+        [AttributeUsage(AttributeTargets.Method)]
+        protected class MapLoadAttribute : Attribute
+        {
+
+        }
+
+        /// <summary>
+        /// Attribute for calling map function on map load
+        /// </summary>
+        [AttributeUsage(AttributeTargets.Method)]
+        protected class MapUnloadAttribute : Attribute
+        {
+
+        }
+
+        /// <summary>
+        /// Attribute for registering event while map is running
+        /// </summary>
+        [AttributeUsage(AttributeTargets.Method)]
+        protected class MapEventHandlerAttribute : Attribute
+        {
+            public string EventName { get; private set; }
+
+            public MapEventHandlerAttribute(string _eventName)
+            {
+                EventName = _eventName;
+            }
+        }
+
+        /// <summary>
+        /// Attribute for registering tick function while map is running
+        /// </summary>
+        [AttributeUsage(AttributeTargets.Method)]
+        protected class MapTickAttribute : Attribute
+        {
+
+        }
+
         /// <summary>
         /// Map event handler class
         /// </summary>

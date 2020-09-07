@@ -51,8 +51,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\SV_PlayerScooterManager.cs" />
+    <Compile Include="Core\SV_PlayerTeamExtensions.cs" />
     <Compile Include="Core\SV_StopGamemodeVotingHandler.cs" />
     <Compile Include="Core\SV_TimeWeatherManager.cs" />
+    <Compile Include="Gamemodes\Hoops\SV_GM_Hoops.cs" />
+    <Compile Include="Gamemodes\Hoops\SV_GM_Hoops_Map.cs" />
+    <Compile Include="Gamemodes\Hoops\SV_GM_Hoops_Map_1.cs" />
     <Compile Include="Gamemodes\Knockdown\SV_GM_Knockdown.cs" />
     <Compile Include="Gamemodes\Knockdown\SV_GM_Knockdown_Map.cs" />
     <Compile Include="Gamemodes\Knockdown\SV_GM_Knockdown_Map_1.cs" />
@@ -94,5 +98,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

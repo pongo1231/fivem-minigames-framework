@@ -9,55 +9,55 @@ using System.Threading.Tasks;
 namespace GamemodesClient.Core.Gamemode
 {
     /// <summary>
-    /// Attribute for calling gamemode function before prestart cam
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Method)]
-    public class GamemodePreStartAttribute : Attribute
-    {
-
-    }
-
-    /// <summary>
-    /// Attribute for calling gamemode function after prestart cam
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Method)]
-    public class GamemodeStartAttribute : Attribute
-    {
-
-    }
-
-    /// <summary>
-    /// Attribute for calling gamemode function before prestop (winner) cam
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Method)]
-    public class GamemodePreStopAttribute : Attribute
-    {
-
-    }
-
-    /// <summary>
-    /// Attribute for calling gamemode function after prestop (winner) cam
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Method)]
-    public class GamemodeStopAttribute : Attribute
-    {
-
-    }
-
-    /// <summary>
-    /// Attribute for registering tick function while gamemode is running
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Method)]
-    public class GamemodeTickAttribute : Attribute
-    {
-
-    }
-
-    /// <summary>
     /// Gamemode Script
     /// </summary>
     public abstract class GamemodeScript : GmScript
     {
+        /// <summary>
+        /// Attribute for calling gamemode function before prestart cam
+        /// </summary>
+        [AttributeUsage(AttributeTargets.Method)]
+        protected class GamemodePreStartAttribute : Attribute
+        {
+
+        }
+
+        /// <summary>
+        /// Attribute for calling gamemode function after prestart cam
+        /// </summary>
+        [AttributeUsage(AttributeTargets.Method)]
+        protected class GamemodeStartAttribute : Attribute
+        {
+
+        }
+
+        /// <summary>
+        /// Attribute for calling gamemode function before prestop (winner) cam
+        /// </summary>
+        [AttributeUsage(AttributeTargets.Method)]
+        protected class GamemodePreStopAttribute : Attribute
+        {
+
+        }
+
+        /// <summary>
+        /// Attribute for calling gamemode function after prestop (winner) cam
+        /// </summary>
+        [AttributeUsage(AttributeTargets.Method)]
+        protected class GamemodeStopAttribute : Attribute
+        {
+
+        }
+
+        /// <summary>
+        /// Attribute for registering tick function while gamemode is running
+        /// </summary>
+        [AttributeUsage(AttributeTargets.Method)]
+        protected class GamemodeTickAttribute : Attribute
+        {
+
+        }
+
         /// <summary>
         /// Returns whether prestart has been and start hasn't been run yet
         /// </summary>

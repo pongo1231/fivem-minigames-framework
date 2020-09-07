@@ -35,7 +35,9 @@ namespace GamemodesClient.Core
             CurrentScooter.Entity.RequestControl();
 
             // Set some attributes for scooter
+            CurrentScooter.Entity.HealthFloat = float.MaxValue;
             CurrentScooter.Entity.EngineHealth = float.MaxValue;
+            CurrentScooter.Entity.PetrolTankHealth = float.MaxValue;
             CurrentScooter.Entity.LockStatus = VehicleLockStatus.StickPlayerInside;
             CurrentScooter.Entity.EnginePowerMultiplier = 5f;
             CurrentScooter.Entity.EngineTorqueMultiplier = 5f;
