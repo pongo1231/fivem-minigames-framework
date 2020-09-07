@@ -66,7 +66,10 @@ namespace GamemodesServer.Core
             if (scooterPlayer != null)
             {
                 // Delete scooter
-                scooterPlayer.Scooter.Delete();
+                if (scooterPlayer.Scooter.Exists())
+                {
+                    scooterPlayer.Scooter.Delete();
+                }
 
                 // Clean up from list
                 s_scooterPlayers.Remove(scooterPlayer);

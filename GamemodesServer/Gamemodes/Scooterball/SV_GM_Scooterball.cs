@@ -134,7 +134,7 @@ namespace GamemodesServer.Gamemodes.Scooterball
             if (!m_ball.Exists())
             {
                 // Create ball
-                m_ball = await EntityPool.CreateProp("stt_prop_stunt_soccer_lball", CurrentMap.BallSpawnPos, default, true);
+                m_ball = await EntityPool.CreateProp("stt_prop_stunt_soccer_ball", CurrentMap.BallSpawnPos, default, true);
 
                 // Give the ball movement
                 m_ball.Velocity = new Vector3(0f, 0f, -5f);
@@ -205,14 +205,17 @@ namespace GamemodesServer.Gamemodes.Scooterball
             // Set position to ball spawn position
             m_ball.Position = CurrentMap.BallSpawnPos;
 
-            // Give the ball movement
-            m_ball.Velocity = new Vector3(0f, 0f, -5f);
+            // Wait a bit
+            await Delay(1000);
 
             // Broadcast ball as resetted to all clients
             TriggerClientEvent("gamemodes:sv_cl_scooterball_resetball");
 
             // Wait a bit
             await Delay(1000);
+
+            // Give the ball movement
+            m_ball.Velocity = new Vector3(0f, 0f, -5f);
 
             // Set no goals scored right now
             m_scoredGoal = false;

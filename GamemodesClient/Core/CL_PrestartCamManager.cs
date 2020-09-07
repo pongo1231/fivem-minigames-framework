@@ -51,7 +51,7 @@ namespace GamemodesClient.Core
             m_prestartScaleform.CallFunction("ADD_OBJECTIVE_TO_WALL", "SUMMARY", $"~y~{_gamemodeName}", $"~g~{_gamemodeDescription}", true);
 
             // Set duration stat wall is shown
-            m_prestartScaleform.CallFunction("SET_PAUSE_DURATION", 18f);
+            m_prestartScaleform.CallFunction("SET_PAUSE_DURATION", 11f);
 
             // Show the stat wall
             m_prestartScaleform.CallFunction("SHOW_STAT_WALL", "SUMMARY");

@@ -59,15 +59,15 @@ namespace GamemodesClient.Core
             switch (winnerTeam)
             {
                 case ETeamType.TEAM_RED:
-                    API.AddTextEntry("_GAMEMODES_WINNER", "~r~Red~w~ won!");
+                    API.AddTextEntry("_GAMEMODES_WINNER", "~r~red~w~ won!");
 
                     break;
                 case ETeamType.TEAM_BLUE:
-                    API.AddTextEntry("_GAMEMODES_WINNER", "~b~Blue~w~ won!");
+                    API.AddTextEntry("_GAMEMODES_WINNER", "~b~blue~w~ won!");
 
                     break;
                 case ETeamType.TEAM_UNK:
-                    API.AddTextEntry("_GAMEMODES_WINNER", "Invalid");
+                    API.AddTextEntry("_GAMEMODES_WINNER", "a tie!");
 
                     break;
             }
