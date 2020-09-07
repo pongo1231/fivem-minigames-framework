@@ -46,7 +46,7 @@ namespace GamemodesServer.Gamemodes.Scooterball
             PlayerScooterManager.Enable("rcbandito", CurrentMap.FallOffHeight);
 
             // Spawn the ball
-            m_ball = await EntityPool.CreateProp("stt_prop_stunt_soccer_lball", CurrentMap.BallSpawnPos, default, true);
+            m_ball = await EntityPool.CreateProp("stt_prop_stunt_soccer_ball", CurrentMap.BallSpawnPos, default, true);
 
             // Set ball as frozen
             m_ball.IsPositionFrozen = true;
