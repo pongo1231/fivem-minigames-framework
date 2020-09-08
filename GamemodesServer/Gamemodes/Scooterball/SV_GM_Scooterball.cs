@@ -43,7 +43,7 @@ namespace GamemodesServer.Gamemodes.Scooterball
             m_scoredGoal = false;
 
             // Enable scooters
-            PlayerScooterManager.Enable("rcbandito", CurrentMap.FallOffHeight);
+            PlayerScooterManager.Enable(CurrentMap.ScooterModel, CurrentMap.FallOffHeight);
 
             // Spawn the ball
             m_ball = await EntityPool.CreateProp("stt_prop_stunt_soccer_ball", CurrentMap.BallSpawnPos, default, true);
@@ -143,7 +143,8 @@ namespace GamemodesServer.Gamemodes.Scooterball
             }
 
             // Check if ball is off map
-            if (m_ball.Position.Z < CurrentMap.FallOffHeight)
+            if (m_ball.Position.Z < CurrentMap.FallOffHeight
+                || (CurrentMap.Boundary1 != default && CurrentMap.Boundary2 != default && !m_ball.Position.IsInArea(CurrentMap.Boundary1, CurrentMap.Boundary2)))
             {
                 // Respawn ball
                 await ResetBall();

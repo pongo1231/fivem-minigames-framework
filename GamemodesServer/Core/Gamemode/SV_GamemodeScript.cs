@@ -1,4 +1,5 @@
-﻿using GamemodesServer.Core.Map;
+﻿using CitizenFX.Core.Native;
+using GamemodesServer.Core.Map;
 using GamemodesServer.Utils;
 using GamemodesShared;
 using GamemodesShared.Utils;
@@ -207,25 +208,44 @@ namespace GamemodesServer.Core.Gamemode
             // Set gamemode as prestarting
             IsGamemodePreStartRunning = true;
 
-            // Store all except previous maps
-            MapType[] mapChoices = m_gamemodeMaps.Where(_map => !_map.ExcludeFromChoicesList).ToArray();
+            // Check if there's a forced map set as convar
+            string forcedMapName = API.GetConvar($"gamemodes_{EventName}_forced_map", string.Empty);
+            MapType forcedMap = m_gamemodeMaps.Find(_map => _map.MapName == forcedMapName);
 
-            // Select random map
-            CurrentMap = mapChoices[RandomUtils.RandomInt(0, mapChoices.Length)];
-
-            // Reset exclude status for all maps if this map is the last non-excluded one
-            if (m_gamemodeMaps.Where(_map => !_map.ExcludeFromChoicesList).Count() <= 1)
+            // Choose map to load
+            if (forcedMap != null)
             {
-                foreach (MapType map in m_gamemodeMaps)
-                {
-                    map.ExcludeFromChoicesList = false;
-                }
+                // Set gamemode to forced gamemode
+                CurrentMap = forcedMap;
             }
-
-            // Exclude this map from list until all other maps have been chosen (if there are more than 1 registered maps)
-            if (m_gamemodeMaps.Count > 1)
+            else
             {
-                CurrentMap.ExcludeFromChoicesList = true;
+                // Notify if forced map couldn't be found
+                if (forcedMapName != string.Empty)
+                {
+                    Log.WriteLine($"Couldn't find forced map {forcedMapName} for gamemode {EventName}!");
+                }
+
+                // Store all except previous maps
+                MapType[] mapChoices = m_gamemodeMaps.Where(_map => !_map.ExcludeFromChoicesList).ToArray();
+
+                // Select random map
+                CurrentMap = mapChoices[RandomUtils.RandomInt(0, mapChoices.Length)];
+
+                // Reset exclude status for all maps if this map is the last non-excluded one
+                if (m_gamemodeMaps.Where(_map => !_map.ExcludeFromChoicesList).Count() <= 1)
+                {
+                    foreach (MapType map in m_gamemodeMaps)
+                    {
+                        map.ExcludeFromChoicesList = false;
+                    }
+                }
+
+                // Exclude this map from list until all other maps have been chosen (if there are more than 1 registered maps)
+                if (m_gamemodeMaps.Count > 1)
+                {
+                    CurrentMap.ExcludeFromChoicesList = true;
+                }
             }
 
             // Set gamemode as prestarting to map too

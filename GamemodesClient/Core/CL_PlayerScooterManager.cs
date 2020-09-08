@@ -54,6 +54,9 @@ namespace GamemodesClient.Core
             CurrentScooter.Entity.EngineTorqueMultiplier = 5f;
             CurrentScooter.Entity.IsEngineRunning = true;
 
+            // Player shouldn't be knocked out of vehicle ever
+            Game.PlayerPed.CanBeKnockedOffBike = false;
+
             // Set corresponding scooter color depending on team
             if (TeamManager.TeamType == ETeamType.TEAM_RED)
             {

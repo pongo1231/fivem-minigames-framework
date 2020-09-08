@@ -12,12 +12,12 @@ namespace GamemodesServer.Utils
         /// <param name="_target">Target position</param>
         /// <param name="_pos1">Position 1</param>
         /// <param name="_pos2">Position 2</param>
-        /// <returns></returns>
+        /// <returns>Whether target position is within the 2 positions</returns>
         public static bool IsInArea(this Vector3 _target, Vector3 _pos1, Vector3 _pos2)
         {
-            return (_target.X > _pos1.X && _target.X < _pos2.X || _target.X < _pos1.X && _target.X > _pos2.X)
-                && (_target.Y > _pos1.Y && _target.Y < _pos2.Y || _target.Y < _pos1.Y && _target.Y > _pos2.Y)
-                && (_target.Z > _pos1.Z && _target.Z < _pos2.Z || _target.Z < _pos1.Z && _target.Z > _pos2.Z);
+            return ((_target.X > _pos1.X && _target.X < _pos2.X) || (_target.X < _pos1.X && _target.X > _pos2.X))
+                && ((_target.Y > _pos1.Y && _target.Y < _pos2.Y) || (_target.Y < _pos1.Y && _target.Y > _pos2.Y))
+                && ((_target.Z > _pos1.Z && _target.Z < _pos2.Z) || (_target.Z < _pos1.Z && _target.Z > _pos2.Z));
         }
 
         /// <summary>

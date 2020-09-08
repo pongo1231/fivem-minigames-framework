@@ -15,14 +15,14 @@ namespace GamemodesServer.Gamemodes.Scooterball
         {
             MapFileName = "scooterball/soccer_map_3.xml";
 
+            FallOffHeight = 200f;
+
             TimecycMod = "MP_Arena_theme_atlantis";
 
             Time = new TimeSpan(12, 0, 0);
             Weather = "EXTRASUNNY";
 
             BallSpawnPos = new Vector3(-279f, -735f, 288f);
-
-            FallOffHeight = 200f;
 
             RedGoalPos1 = new Vector3(-134f, -719f, 279f);
             RedGoalPos2 = new Vector3(-131f, -735f, 271f);

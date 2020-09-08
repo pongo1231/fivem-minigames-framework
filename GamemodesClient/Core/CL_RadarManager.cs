@@ -12,7 +12,7 @@ namespace GamemodesClient.Core
         /// <summary>
         /// Minimap scaleform
         /// </summary>
-        Scaleform m_minimap = new Scaleform("minimap");
+        //Scaleform m_minimap = new Scaleform("minimap");
 
         /// <summary>
         /// Whether this is the first tick
@@ -28,7 +28,7 @@ namespace GamemodesClient.Core
                 m_firstTick = false;
 
                 // Refresh minimap scaleform by forcing big mode
-                API.SetRadarBigmapEnabled(true, false);
+                //API.SetRadarBigmapEnabled(true, false);
 
                 // Wait
                 await Delay(0);
@@ -36,14 +36,14 @@ namespace GamemodesClient.Core
             else
             {
                 // Disable big mode of minimap
-                API.SetRadarBigmapEnabled(false, false);
+                //API.SetRadarBigmapEnabled(false, false);
 
                 // Force blips only minimap mode
                 API.HideMinimapExteriorMapThisFrame();
                 API.HideMinimapInteriorMapThisFrame();
 
                 // Disable health and armor bar
-                m_minimap.CallFunction("SETUP_HEALTH_ARMOUR", 3);
+                //m_minimap.CallFunction("SETUP_HEALTH_ARMOUR", 3);
             }
 
             await Task.FromResult(0);

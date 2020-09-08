@@ -92,9 +92,14 @@ namespace GamemodesServer.Core.Map
         public bool IsGamemodePreStartRunning = false;
 
         /// <summary>
+        /// Name of map
+        /// </summary>
+        public string MapName { get; protected set; }
+
+        /// <summary>
         /// Height at which stuff should respawn
         /// </summary>
-        public float FallOffHeight = float.MinValue;
+        public float FallOffHeight { get; protected set; } = float.MinValue;
 
         /// <summary>
         /// File name of map
