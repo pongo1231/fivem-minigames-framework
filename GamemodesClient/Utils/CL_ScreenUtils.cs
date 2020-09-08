@@ -10,6 +10,28 @@ namespace GamemodesClient.Utils
     public static class ScreenUtils
     {
         /// <summary>
+        /// Whether screen is either fading or faded out
+        /// </summary>
+        public static bool IsFadedOut
+        {
+            get
+            {
+                return Screen.Fading.IsFadingOut || Screen.Fading.IsFadedOut;
+            }
+        }
+
+        /// <summary>
+        /// Whether screen is fading or faded in
+        /// </summary>
+        public static bool IsFadedIn
+        {
+            get
+            {
+                return Screen.Fading.IsFadingIn || Screen.Fading.IsFadedIn;
+            }
+        }
+
+        /// <summary>
         /// Fade in screen
         /// </summary>
         public static async Task FadeIn()

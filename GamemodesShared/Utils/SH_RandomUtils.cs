@@ -16,7 +16,7 @@ namespace GamemodesShared.Utils
         /// Generate random integer between min and max
         /// </summary>
         /// <param name="_min">Min</param>
-        /// <param name="_max">Max</param>
+        /// <param name="_max">Max (exclusive)</param>
         /// <returns>Random integer</returns>
         public static int RandomInt(int _min, int _max)
         {

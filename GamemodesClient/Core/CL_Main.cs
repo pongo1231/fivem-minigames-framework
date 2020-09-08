@@ -47,6 +47,9 @@ namespace GamemodesClient.Core
             // Set radar as visible
             Screen.Hud.IsRadarVisible = true;
 
+            // Reset camera
+            API.RenderScriptCams(false, false, 0, false, false);
+
             // Indicate to server we fully loaded in and are ready for gamemodes
             TriggerServerEvent("gamemodes:sv_cl_loadedin");
         }

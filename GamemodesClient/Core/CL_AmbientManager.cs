@@ -1,5 +1,6 @@
 ﻿using CitizenFX.Core;
 using CitizenFX.Core.Native;
+using CitizenFX.Core.UI;
 using System.Threading.Tasks;
 
 namespace GamemodesClient.Core
@@ -37,6 +38,11 @@ namespace GamemodesClient.Core
             API.SetScenarioPedDensityMultiplierThisFrame(0f, 0f);
             API.SetSomeVehicleDensityMultiplierThisFrame(0f);
             API.SetVehicleDensityMultiplierThisFrame(0f);
+
+            // Hide bottom right text (vehicle and street names)
+            Screen.Hud.HideComponentThisFrame(HudComponent.VehicleName);
+            Screen.Hud.HideComponentThisFrame(HudComponent.AreaName);
+            Screen.Hud.HideComponentThisFrame(HudComponent.StreetName);
 
             await Task.FromResult(0);
         }

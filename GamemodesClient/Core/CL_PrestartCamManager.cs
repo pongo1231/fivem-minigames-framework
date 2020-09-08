@@ -1,7 +1,10 @@
 ﻿using CitizenFX.Core;
 using CitizenFX.Core.Native;
 using CitizenFX.Core.UI;
+using GamemodesClient.Utils;
+using GamemodesShared.Utils;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace GamemodesClient.Core
@@ -17,9 +20,9 @@ namespace GamemodesClient.Core
         private bool m_showPrestartCam = false;
 
         /// <summary>
-        /// Scaleform used in prestart cam
+        /// Scaleforms used in prestart cam
         /// </summary>
-        private Scaleform m_prestartScaleform;
+        private List<Scaleform> m_scaleforms = new List<Scaleform>();
 
         /// <summary>
         /// Prestart cam start event by server
@@ -27,7 +30,7 @@ namespace GamemodesClient.Core
         /// <param name="_gamemodeName">Name of current gamemode</param>
         /// <param name="_gamemodeDescription">Description of current gamemode</param>
         [EventHandler("gamemodes:cl_sv_showprestartcam")]
-        private async void OnShowWinnerCam(string _gamemodeName, string _gamemodeDescription)
+        private async void OnShowPrestartCam(string _gamemodeName, string _gamemodeDescription)
         {
             // Show prestart cam
             m_showPrestartCam = true;
@@ -35,33 +38,60 @@ namespace GamemodesClient.Core
             // Hide radar
             Screen.Hud.IsRadarVisible = false;
 
-            // Create new MP_CELEBRATION scaleform
-            m_prestartScaleform = new Scaleform("MP_CELEBRATION");
+            // Add scaleforms
+            m_scaleforms.Add(new Scaleform("MP_CELEBRATION_BG"));
+            m_scaleforms.Add(new Scaleform("MP_CELEBRATION_FG"));
+            m_scaleforms.Add(new Scaleform("MP_CELEBRATION"));
 
-            // Wait for scaleform to load
-            while (!m_prestartScaleform.IsLoaded)
+            // Wait for scaleforms to load
+            foreach (Scaleform scaleform in m_scaleforms)
+            {
+                while (!scaleform.IsLoaded)
+                {
+                    await Delay(0);
+                }
+            }
+
+            // Wait for screen to fully fade in
+            while (ScreenUtils.IsFadedOut)
             {
                 await Delay(0);
             }
 
-            // Create a new stat wall for MP_CELEBRATION
-            m_prestartScaleform.CallFunction("CREATE_STAT_WALL", "SUMMARY", "HUD_COLOUR_TECH_GREEN_VERY_DARK", 255);
+            foreach (Scaleform scaleform in m_scaleforms)
+            {
+                // Create stat wall
+                scaleform.CallFunction("CREATE_STAT_WALL", "SUMMARY", "HUD_COLOUR_BLACK", 255);
 
-            // Add objective text to stat wall
-            m_prestartScaleform.CallFunction("ADD_OBJECTIVE_TO_WALL", "SUMMARY", $"~y~{_gamemodeName}", $"~g~{_gamemodeDescription}", true);
+                // Add intro to stat wall
+                scaleform.CallFunction("ADD_INTRO_TO_WALL", "SUMMARY", $"~y~{_gamemodeName}", $"~g~{_gamemodeDescription}", "", "", "", 0, 0, "", true, "HUD_COLOUR_BLACK");
 
-            // Set duration stat wall is shown
-            m_prestartScaleform.CallFunction("SET_PAUSE_DURATION", 11f);
+                // Add background to stat wall
+                scaleform.CallFunction("ADD_BACKGROUND_TO_WALL", "SUMMARY", 75, 0);
 
-            // Show the stat wall
-            m_prestartScaleform.CallFunction("SHOW_STAT_WALL", "SUMMARY");
+                // Set duration stat wall is shown
+                scaleform.CallFunction("SET_PAUSE_DURATION", 9);
+
+                // Show the stat wall
+                scaleform.CallFunction("SHOW_STAT_WALL", "SUMMARY");
+            }
+
+            // Play new round sound
+            if (RandomUtils.RandomInt(0, 100) == 0)
+            {
+                AudioUtils.PlayFrontendAudio("DLC_VW_AS_Sounds", "Survival_Passed");
+            }
+            else
+            {
+                AudioUtils.PlayFrontendAudio("CELEBRATION_SOUNDSET", "Shard_Appear");
+            }
         }
 
         /// <summary>
         /// Prestart cam stop event by server
         /// </summary>
         [EventHandler("gamemodes:cl_sv_hideprestartcam")]
-        private void OnHideWinnerCam()
+        private void OnHidePrestartCam()
         {
             // Hide prestart cam
             m_showPrestartCam = false;
@@ -69,22 +99,30 @@ namespace GamemodesClient.Core
             // Set radar as visible
             Screen.Hud.IsRadarVisible = true;
 
-            // Clear scaleform
-            m_prestartScaleform.Dispose();
-            m_prestartScaleform = null;
+            // Clear scaleforms
+            foreach (Scaleform scaleform in m_scaleforms)
+            {
+                scaleform.Dispose();
+            }
+
+            // Clear list
+            m_scaleforms.Clear();
         }
 
         [Tick]
         private async Task OnTick()
         {
-            // Check if prestart is shown and scaleform exists
-            if (m_showPrestartCam && m_prestartScaleform != null)
+            // Check if prestart is shown
+            if (m_showPrestartCam)
             {
                 // Hide notifications
                 API.ThefeedHideThisFrame();
 
-                // Render scaleform
-                m_prestartScaleform.Render2D();
+                // Render scaleforms
+                foreach (Scaleform scaleform in m_scaleforms)
+                {
+                    scaleform.Render2D();
+                }
             }
 
             await Task.FromResult(0);

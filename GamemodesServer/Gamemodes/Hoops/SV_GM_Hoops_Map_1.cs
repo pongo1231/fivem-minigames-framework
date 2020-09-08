@@ -1,4 +1,6 @@
-﻿namespace GamemodesServer.Gamemodes.Hoops
+﻿using System;
+
+namespace GamemodesServer.Gamemodes.Hoops
 {
     /// <summary>
     /// Hoops map 1 class
@@ -15,6 +17,8 @@
 
             // Set timecycle modifier
             TimecycMod = "pulse";
+
+            Time = new TimeSpan(20, 0, 0);
 
             // Set weather
             Weather = "CLOUDS";

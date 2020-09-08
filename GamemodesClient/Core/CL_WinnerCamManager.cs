@@ -3,6 +3,7 @@ using CitizenFX.Core.Native;
 using CitizenFX.Core.UI;
 using GamemodesClient.Utils;
 using GamemodesShared;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace GamemodesClient.Core
@@ -18,9 +19,9 @@ namespace GamemodesClient.Core
         private bool m_showWinnerCam = false;
 
         /// <summary>
-        /// Scaleform for winner cam
+        /// Scaleforms for winner cam
         /// </summary>
-        private Scaleform m_winnerScaleform;
+        private List<Scaleform> m_scaleforms = new List<Scaleform>();
 
         /// <summary>
         /// Show winner cam event by server
@@ -44,13 +45,18 @@ namespace GamemodesClient.Core
             // Pause game
             Game.Pause(true);
 
-            // Initialize MP_CELEBRATION scaleform
-            m_winnerScaleform = new Scaleform("MP_CELEBRATION");
+            // Add scaleforms
+            m_scaleforms.Add(new Scaleform("MP_CELEBRATION_BG"));
+            m_scaleforms.Add(new Scaleform("MP_CELEBRATION_FG"));
+            m_scaleforms.Add(new Scaleform("MP_CELEBRATION"));
 
-            // Wait for scaleform to load
-            while (!m_winnerScaleform.IsLoaded)
+            // Wait for scaleforms to load
+            foreach (Scaleform scaleform in m_scaleforms)
             {
-                await Delay(0);
+                while (!scaleform.IsLoaded)
+                {
+                    await Delay(0);
+                }
             }
 
             // Create winner text label for scaleform
@@ -72,33 +78,48 @@ namespace GamemodesClient.Core
                     break;
             }
 
-            // Create MP_CELEBRATION stat wall
-            m_winnerScaleform.CallFunction("CREATE_STAT_WALL", "SUMMARY", "HUD_COLOUR_FRIENDLY", 255);
+            foreach (Scaleform scaleform in m_scaleforms)
+            {
+                // Create stat wall
+                scaleform.CallFunction("CREATE_STAT_WALL", "SUMMARY", "HUD_COLOUR_BLACK", 255);
 
-            // Add winner text to stat wall
-            m_winnerScaleform.CallFunction("ADD_WINNER_TO_WALL", "SUMMARY", "_GAMEMODES_WINNER", "", "", 0, false, $"~r~{_redScore}~w~ - ~b~{_blueScore}", true);
+                // Add winner text to stat wall
+                scaleform.CallFunction("ADD_WINNER_TO_WALL", "SUMMARY", "_GAMEMODES_WINNER", "", "", 0, false, $"~r~{_redScore}~w~ - ~b~{_blueScore}", true);
 
-            // Add background to stat wall
-            m_winnerScaleform.CallFunction("ADD_BACKGROUND_TO_WALL", "SUMMARY", 255, 0);
+                // Add background to stat wall
+                scaleform.CallFunction("ADD_BACKGROUND_TO_WALL", "SUMMARY", 75, 0);
 
-            // Set pause duration of stat wall
-            m_winnerScaleform.CallFunction("SET_PAUSE_DURATION", 5f);
+                // Set pause duration of stat wall
+                scaleform.CallFunction("SET_PAUSE_DURATION", 8);
 
-            // Show stat wall
-            m_winnerScaleform.CallFunction("SHOW_STAT_WALL", "SUMMARY");
+                // Show stat wall
+                scaleform.CallFunction("SHOW_STAT_WALL", "SUMMARY");
+            }
         }
 
         /// <summary>
         /// Hide winner cam event by server
         /// </summary>
         [EventHandler("gamemodes:cl_sv_hidewinnercam")]
-        private void OnHideWinnerCam()
+        private async void OnHideWinnerCam()
         {
             // Hide winner cam
             m_showWinnerCam = false;
 
+            // Clean up scaleforms
+            foreach (Scaleform scaleform in m_scaleforms)
+            {
+                scaleform.Dispose();
+            }
+
+            // Clear scaleforms list
+            m_scaleforms.Clear();
+
+            // Fade out screen
+            await ScreenUtils.FadeOut();
+
             // Unblur screen
-            API.TransitionFromBlurred(100f);
+            API.TransitionFromBlurred(0f);
 
             // Stop anim postfx
             API.AnimpostfxStop("MP_Celeb_Win");
@@ -106,15 +127,8 @@ namespace GamemodesClient.Core
             // Show radar again
             Screen.Hud.IsRadarVisible = true;
 
-            // Clean up and remove scaleform
-            m_winnerScaleform.Dispose();
-            m_winnerScaleform = null;
-
             // Unpause game
             Game.Pause(false);
-
-            // Fade out screen
-            _ = ScreenUtils.FadeOut();
         }
 
         /// <summary>
@@ -123,14 +137,20 @@ namespace GamemodesClient.Core
         [Tick]
         private async Task OnTick()
         {
-            // Check if winner cam should be shown and scaleform exists
-            if (m_showWinnerCam && m_winnerScaleform != null)
+            // Check if winner cam should be shown
+            if (m_showWinnerCam)
             {
                 // Hide notifications
                 API.ThefeedHideThisFrame();
 
-                // Render scaleform
-                m_winnerScaleform.Render2D();
+                // Show cinematic cam
+                API.SetCinematicModeActive(true);
+
+                // Render scaleforms
+                foreach (Scaleform scaleform in m_scaleforms)
+                {
+                    scaleform.Render2D();
+                }
             }
 
             await Task.FromResult(0);

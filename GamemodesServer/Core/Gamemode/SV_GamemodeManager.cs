@@ -191,7 +191,7 @@ namespace GamemodesServer.Core.Gamemode
                     TriggerClientEvent("gamemodes:cl_sv_showprestartcam", s_curGamemode.Name, s_curGamemode.Description);
 
                     // Wait a bit
-                    await Delay(14000);
+                    await Delay(17000);
 
                     // Hide prestart cam for all clients again
                     TriggerClientEvent("gamemodes:cl_sv_hideprestartcam");
@@ -292,7 +292,7 @@ namespace GamemodesServer.Core.Gamemode
                 TriggerClientEvent("gamemodes:cl_sv_showwinnercam", (int)winnerTeam, ScoreManager.GetScore(ETeamType.TEAM_RED), ScoreManager.GetScore(ETeamType.TEAM_BLUE));
 
                 // Wait a bit again
-                await Delay(10000);
+                await Delay(13000);
 
                 // Hide winner cam
                 TriggerClientEvent("gamemodes:cl_sv_hidewinnercam");
