@@ -106,11 +106,15 @@ namespace GamemodesServer.Core
                     // Set player position to scooter position
                     _player.Character.Position = _pos;
 
-                    // Wait a bit
-                    await Delay(2000);
+                    // Attempt to spawn scooter until it actually exists
+                    while (!scooterPlayer.Scooter.Exists())
+                    {
+                        // Wait a bit
+                        await Delay(2000);
 
-                    // Spawn scooter
-                    scooterPlayer.Scooter = await EntityPool.CreateVehicle(s_scooterVehicle, _pos, _rot);
+                        // Spawn scooter
+                        scooterPlayer.Scooter = await EntityPool.CreateVehicle(s_scooterVehicle, _pos, _rot);
+                    }
 
                     // Make client aware of scooter
                     await PlayerResponseAwaiter.AwaitResponse(_player, "gamemodes:cl_sv_spawnedscooter", "gamemodes:sv_cl_gotscooter", scooterPlayer.Scooter.NetworkId);
