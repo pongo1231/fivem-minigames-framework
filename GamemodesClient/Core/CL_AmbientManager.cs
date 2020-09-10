@@ -44,6 +44,12 @@ namespace GamemodesClient.Core
             Screen.Hud.HideComponentThisFrame(HudComponent.AreaName);
             Screen.Hud.HideComponentThisFrame(HudComponent.StreetName);
 
+            // Disable handbrakes
+            Game.DisableControlThisFrame(1, Control.VehicleHandbrake);
+
+            // Disable cinematic camera
+            Game.DisableControlThisFrame(1, Control.VehicleCinCam);
+
             await Task.FromResult(0);
         }
     }

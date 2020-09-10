@@ -142,9 +142,6 @@ namespace GamemodesClient.Gamemodes
                 }
             }
 
-            // Disable cinematic camera
-            Game.DisableControlThisFrame(1, Control.VehicleCinCam);
-
             // Get scooter
             GmNetEntity<Vehicle> scooter = PlayerScooterManager.CurrentScooter;
 
@@ -155,13 +152,6 @@ namespace GamemodesClient.Gamemodes
                 if (scooter.Entity.Driver != Game.PlayerPed)
                 {
                     Game.PlayerPed.SetIntoVehicle(scooter.Entity, VehicleSeat.Driver);
-                }
-
-                // Check if prestart camera is not running
-                if (!IsGamemodePreStartRunning)
-                {
-                    // Disable handbrakes
-                    Game.DisableControlThisFrame(1, Control.VehicleHandbrake);
                 }
             }
 

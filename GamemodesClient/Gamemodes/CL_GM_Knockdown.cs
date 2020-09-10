@@ -101,9 +101,6 @@ namespace GamemodesClient.Gamemodes
                 }
             }
 
-            // Disable cinematic camera
-            Game.DisableControlThisFrame(1, Control.VehicleCinCam);
-
             // Get scooter
             GmNetEntity<Vehicle> scooter = PlayerScooterManager.CurrentScooter;
 
@@ -119,9 +116,6 @@ namespace GamemodesClient.Gamemodes
                 // Check if prestart camera is not running
                 if (!IsGamemodePreStartRunning)
                 {
-                    // Disable handbrakes
-                    Game.DisableControlThisFrame(1, Control.VehicleHandbrake);
-
                     // Check if scooter below min height or dead
                     if (PlayerScooterManager.RespawnedThisFrame)
                     {
