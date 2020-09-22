@@ -13,9 +13,9 @@
 	<TimecycleModifier strength="1"></TimecycleModifier>
 	<StartTaskSequencesOnLoad>true</StartTaskSequencesOnLoad>
 	<ReferenceCoords>
-		<X>-14.5868578</X>
-		<Y>-795.095032</Y>
-		<Z>352.618835</Z>
+		<X>-89.1345139</X>
+		<Y>-786.220581</Y>
+		<Z>352.676422</Z>
 	</ReferenceCoords>
 	<Placement>
 		<ModelHash>0x38d1fdf5</ModelHash>
@@ -23,7 +23,8 @@
 		<Dynamic>false</Dynamic>
 		<FrozenPos>true</FrozenPos>
 		<HashName>stt_prop_stunt_bblock_huge_05</HashName>
-		<InitialHandle>2060046</InitialHandle>
+		<InitialHandle>885506</InitialHandle>
+		<Tag></Tag>
 		<ObjectProperties>
 			<TextureVariation>0</TextureVariation>
 		</ObjectProperties>
@@ -45,9 +46,9 @@
 			<X>-176.589096</X>
 			<Y>-818.882507</Y>
 			<Z>352.514893</Z>
-			<Pitch>0.0395945944</Pitch>
-			<Roll>0.0395672657</Roll>
-			<Yaw>0.0395672582</Yaw>
+			<Pitch>0.0395945869</Pitch>
+			<Roll>0.0395672619</Roll>
+			<Yaw>0.0395672545</Yaw>
 		</PositionRotation>
 		<Attachment isAttached="false" />
 	</Placement>
@@ -57,7 +58,8 @@
 		<Dynamic>false</Dynamic>
 		<FrozenPos>true</FrozenPos>
 		<HashName>stt_prop_stunt_bblock_hump_01</HashName>
-		<InitialHandle>2028302</InitialHandle>
+		<InitialHandle>885762</InitialHandle>
+		<Tag></Tag>
 		<ObjectProperties>
 			<TextureVariation>0</TextureVariation>
 		</ObjectProperties>
@@ -80,7 +82,7 @@
 			<Y>-824.28009</Y>
 			<Z>373.030579</Z>
 			<Pitch>-0.0354452729</Pitch>
-			<Roll>93.9644699</Roll>
+			<Roll>93.9644623</Roll>
 			<Yaw>-90.0354156</Yaw>
 		</PositionRotation>
 		<Attachment isAttached="false" />
@@ -91,7 +93,8 @@
 		<Dynamic>false</Dynamic>
 		<FrozenPos>true</FrozenPos>
 		<HashName>stt_prop_stunt_bblock_huge_05</HashName>
-		<InitialHandle>2200078</InitialHandle>
+		<InitialHandle>886018</InitialHandle>
+		<Tag></Tag>
 		<ObjectProperties>
 			<TextureVariation>0</TextureVariation>
 		</ObjectProperties>
@@ -113,9 +116,9 @@
 			<X>-75.1891479</X>
 			<Y>-818.812683</Y>
 			<Z>352.444824</Z>
-			<Pitch>0.0395945944</Pitch>
-			<Roll>0.0395672657</Roll>
-			<Yaw>0.0395672582</Yaw>
+			<Pitch>0.0395945869</Pitch>
+			<Roll>0.0395672619</Roll>
+			<Yaw>0.0395672545</Yaw>
 		</PositionRotation>
 		<Attachment isAttached="false" />
 	</Placement>
@@ -125,7 +128,8 @@
 		<Dynamic>false</Dynamic>
 		<FrozenPos>true</FrozenPos>
 		<HashName>stt_prop_stunt_track_dwslope15</HashName>
-		<InitialHandle>1880846</InitialHandle>
+		<InitialHandle>886274</InitialHandle>
+		<Tag></Tag>
 		<ObjectProperties>
 			<TextureVariation>0</TextureVariation>
 		</ObjectProperties>
@@ -159,7 +163,8 @@
 		<Dynamic>false</Dynamic>
 		<FrozenPos>true</FrozenPos>
 		<HashName>stt_prop_stunt_track_dwturn</HashName>
-		<InitialHandle>2035214</InitialHandle>
+		<InitialHandle>886530</InitialHandle>
+		<Tag></Tag>
 		<ObjectProperties>
 			<TextureVariation>0</TextureVariation>
 		</ObjectProperties>
@@ -181,9 +186,9 @@
 			<X>39.4293861</X>
 			<Y>-761.016357</Y>
 			<Z>329.69751</Z>
-			<Pitch>0.0395945944</Pitch>
-			<Roll>0.0395672657</Roll>
-			<Yaw>0.0395672582</Yaw>
+			<Pitch>0.0395945869</Pitch>
+			<Roll>0.0395672619</Roll>
+			<Yaw>0.0395672545</Yaw>
 		</PositionRotation>
 		<Attachment isAttached="false" />
 	</Placement>
@@ -193,7 +198,8 @@
 		<Dynamic>false</Dynamic>
 		<FrozenPos>true</FrozenPos>
 		<HashName>stt_prop_stunt_tube_xs</HashName>
-		<InitialHandle>2200590</InitialHandle>
+		<InitialHandle>886786</InitialHandle>
+		<Tag></Tag>
 		<ObjectProperties>
 			<TextureVariation>0</TextureVariation>
 		</ObjectProperties>
@@ -217,7 +223,7 @@
 			<Z>367.651123</Z>
 			<Pitch>0.000598416838</Pitch>
 			<Roll>-0.0559726916</Roll>
-			<Yaw>-91.2250443</Yaw>
+			<Yaw>-91.2250366</Yaw>
 		</PositionRotation>
 		<Attachment isAttached="false" />
 	</Placement>
@@ -227,7 +233,8 @@
 		<Dynamic>false</Dynamic>
 		<FrozenPos>true</FrozenPos>
 		<HashName>stt_prop_stunt_track_dwturn</HashName>
-		<InitialHandle>2200846</InitialHandle>
+		<InitialHandle>887042</InitialHandle>
+		<Tag></Tag>
 		<ObjectProperties>
 			<TextureVariation>0</TextureVariation>
 		</ObjectProperties>
@@ -261,7 +268,8 @@
 		<Dynamic>false</Dynamic>
 		<FrozenPos>true</FrozenPos>
 		<HashName>stt_prop_stunt_track_dwslope15</HashName>
-		<InitialHandle>2123278</InitialHandle>
+		<InitialHandle>887298</InitialHandle>
+		<Tag></Tag>
 		<ObjectProperties>
 			<TextureVariation>0</TextureVariation>
 		</ObjectProperties>
@@ -295,7 +303,8 @@
 		<Dynamic>false</Dynamic>
 		<FrozenPos>true</FrozenPos>
 		<HashName>stt_prop_ramp_spiral_m</HashName>
-		<InitialHandle>2201358</InitialHandle>
+		<InitialHandle>887554</InitialHandle>
+		<Tag></Tag>
 		<ObjectProperties>
 			<TextureVariation>0</TextureVariation>
 		</ObjectProperties>
@@ -329,7 +338,8 @@
 		<Dynamic>false</Dynamic>
 		<FrozenPos>true</FrozenPos>
 		<HashName>prop_windmill_01</HashName>
-		<InitialHandle>2201614</InitialHandle>
+		<InitialHandle>887810</InitialHandle>
+		<Tag></Tag>
 		<ObjectProperties>
 			<TextureVariation>0</TextureVariation>
 		</ObjectProperties>
@@ -363,7 +373,8 @@
 		<Dynamic>false</Dynamic>
 		<FrozenPos>true</FrozenPos>
 		<HashName>prop_windmill_01</HashName>
-		<InitialHandle>2058510</InitialHandle>
+		<InitialHandle>888066</InitialHandle>
+		<Tag></Tag>
 		<ObjectProperties>
 			<TextureVariation>0</TextureVariation>
 		</ObjectProperties>
@@ -385,8 +396,8 @@
 			<X>8.76359558</X>
 			<Y>-818.246826</Y>
 			<Z>318.307129</Z>
-			<Pitch>0.0395946018</Pitch>
-			<Roll>-0.0395672657</Roll>
+			<Pitch>0.0395945944</Pitch>
+			<Roll>-0.0395672619</Roll>
 			<Yaw>179.960373</Yaw>
 		</PositionRotation>
 		<Attachment isAttached="false" />
@@ -397,7 +408,8 @@
 		<Dynamic>false</Dynamic>
 		<FrozenPos>true</FrozenPos>
 		<HashName>ar_prop_ar_jetski_ramp_01_dev</HashName>
-		<InitialHandle>2202126</InitialHandle>
+		<InitialHandle>888322</InitialHandle>
+		<Tag></Tag>
 		<ObjectProperties>
 			<TextureVariation>0</TextureVariation>
 		</ObjectProperties>
@@ -419,9 +431,9 @@
 			<X>8.59081841</X>
 			<Y>-831.616516</Y>
 			<Z>353.593994</Z>
-			<Pitch>0.0395672545</Pitch>
-			<Roll>0.0395946056</Roll>
-			<Yaw>-0.0395946018</Yaw>
+			<Pitch>0.039567247</Pitch>
+			<Roll>0.0395946018</Roll>
+			<Yaw>-0.0395945944</Yaw>
 		</PositionRotation>
 		<Attachment isAttached="false" />
 	</Placement>
@@ -431,7 +443,8 @@
 		<Dynamic>false</Dynamic>
 		<FrozenPos>true</FrozenPos>
 		<HashName>ar_prop_ar_jetski_ramp_01_dev</HashName>
-		<InitialHandle>2081294</InitialHandle>
+		<InitialHandle>888578</InitialHandle>
+		<Tag></Tag>
 		<ObjectProperties>
 			<TextureVariation>0</TextureVariation>
 		</ObjectProperties>
@@ -453,8 +466,8 @@
 			<X>8.59081841</X>
 			<Y>-806.616577</Y>
 			<Z>353.593994</Z>
-			<Pitch>0.0395672545</Pitch>
-			<Roll>-0.0395946056</Roll>
+			<Pitch>0.039567247</Pitch>
+			<Roll>-0.0395946018</Roll>
 			<Yaw>-179.960373</Yaw>
 		</PositionRotation>
 		<Attachment isAttached="false" />
@@ -465,7 +478,8 @@
 		<Dynamic>false</Dynamic>
 		<FrozenPos>true</FrozenPos>
 		<HashName>stt_prop_stunt_track_turn</HashName>
-		<InitialHandle>2195982</InitialHandle>
+		<InitialHandle>888834</InitialHandle>
+		<Tag></Tag>
 		<ObjectProperties>
 			<TextureVariation>0</TextureVariation>
 		</ObjectProperties>
@@ -499,7 +513,8 @@
 		<Dynamic>false</Dynamic>
 		<FrozenPos>true</FrozenPos>
 		<HashName>stt_prop_stunt_bblock_hump_01</HashName>
-		<InitialHandle>2198542</InitialHandle>
+		<InitialHandle>889090</InitialHandle>
+		<Tag></Tag>
 		<ObjectProperties>
 			<TextureVariation>0</TextureVariation>
 		</ObjectProperties>
@@ -533,7 +548,8 @@
 		<Dynamic>false</Dynamic>
 		<FrozenPos>true</FrozenPos>
 		<HashName>stt_prop_stunt_tube_fn_05</HashName>
-		<InitialHandle>2202638</InitialHandle>
+		<InitialHandle>889346</InitialHandle>
+		<Tag></Tag>
 		<ObjectProperties>
 			<TextureVariation>0</TextureVariation>
 		</ObjectProperties>
@@ -556,7 +572,7 @@
 			<Y>-847.56665</Y>
 			<Z>359.519348</Z>
 			<Pitch>3.638553e-12</Pitch>
-			<Roll>4.01900761e-05</Roll>
+			<Roll>4.01900725e-05</Roll>
 			<Yaw>-1.11486279e-05</Yaw>
 		</PositionRotation>
 		<Attachment isAttached="false" />
@@ -567,7 +583,8 @@
 		<Dynamic>false</Dynamic>
 		<FrozenPos>true</FrozenPos>
 		<HashName>stt_prop_stunt_bblock_qp3</HashName>
-		<InitialHandle>2038542</InitialHandle>
+		<InitialHandle>889602</InitialHandle>
+		<Tag></Tag>
 		<ObjectProperties>
 			<TextureVariation>0</TextureVariation>
 		</ObjectProperties>
@@ -601,7 +618,8 @@
 		<Dynamic>false</Dynamic>
 		<FrozenPos>true</FrozenPos>
 		<HashName>stt_prop_stunt_bblock_huge_05</HashName>
-		<InitialHandle>2122766</InitialHandle>
+		<InitialHandle>889858</InitialHandle>
+		<Tag></Tag>
 		<ObjectProperties>
 			<TextureVariation>0</TextureVariation>
 		</ObjectProperties>
@@ -623,9 +641,9 @@
 			<X>26.2108479</X>
 			<Y>-818.752747</Y>
 			<Z>352.374847</Z>
-			<Pitch>0.0395945869</Pitch>
+			<Pitch>0.0395945795</Pitch>
 			<Roll>0.0395672619</Roll>
-			<Yaw>0.0395672545</Yaw>
+			<Yaw>0.039567247</Yaw>
 		</PositionRotation>
 		<Attachment isAttached="false" />
 	</Placement>
@@ -635,7 +653,8 @@
 		<Dynamic>true</Dynamic>
 		<FrozenPos>false</FrozenPos>
 		<HashName>Avon Goon</HashName>
-		<InitialHandle>2203918</InitialHandle>
+		<InitialHandle>890114</InitialHandle>
+		<Tag></Tag>
 		<PedProperties>
 			<IsStill>true</IsStill>
 			<CanRagdoll>true</CanRagdoll>
@@ -688,9 +707,9 @@
 		<IsMeleeProof>false</IsMeleeProof>
 		<IsOnlyDamagedByPlayer>false</IsOnlyDamagedByPlayer>
 		<PositionRotation>
-			<X>24.0811157</X>
+			<X>24.0807514</X>
 			<Y>-770.761414</Y>
-			<Z>353.611542</Z>
+			<Z>353.610382</Z>
 			<Pitch>0</Pitch>
 			<Roll>-0</Roll>
 			<Yaw>154.90097</Yaw>
@@ -703,7 +722,8 @@
 		<Dynamic>true</Dynamic>
 		<FrozenPos>false</FrozenPos>
 		<HashName>Avon Goon</HashName>
-		<InitialHandle>2204174</InitialHandle>
+		<InitialHandle>890370</InitialHandle>
+		<Tag></Tag>
 		<PedProperties>
 			<IsStill>true</IsStill>
 			<CanRagdoll>true</CanRagdoll>
@@ -756,12 +776,12 @@
 		<IsMeleeProof>false</IsMeleeProof>
 		<IsOnlyDamagedByPlayer>false</IsOnlyDamagedByPlayer>
 		<PositionRotation>
-			<X>42.8611145</X>
-			<Y>-853.061035</Y>
-			<Z>353.536438</Z>
+			<X>42.8612289</X>
+			<Y>-853.060852</Y>
+			<Z>353.537628</Z>
 			<Pitch>0</Pitch>
 			<Roll>0</Roll>
-			<Yaw>57.1982307</Yaw>
+			<Yaw>57.1982269</Yaw>
 		</PositionRotation>
 		<Attachment isAttached="false" />
 	</Placement>
@@ -771,7 +791,8 @@
 		<Dynamic>true</Dynamic>
 		<FrozenPos>false</FrozenPos>
 		<HashName>Avon Goon</HashName>
-		<InitialHandle>2204430</InitialHandle>
+		<InitialHandle>890626</InitialHandle>
+		<Tag></Tag>
 		<PedProperties>
 			<IsStill>true</IsStill>
 			<CanRagdoll>true</CanRagdoll>
@@ -824,12 +845,12 @@
 		<IsMeleeProof>false</IsMeleeProof>
 		<IsOnlyDamagedByPlayer>false</IsOnlyDamagedByPlayer>
 		<PositionRotation>
-			<X>-30.7914314</X>
+			<X>-30.7910767</X>
 			<Y>-875.058167</Y>
-			<Z>353.577606</Z>
+			<Z>353.576324</Z>
 			<Pitch>0</Pitch>
 			<Roll>0</Roll>
-			<Yaw>-32.7926674</Yaw>
+			<Yaw>-32.7926636</Yaw>
 		</PositionRotation>
 		<Attachment isAttached="false" />
 	</Placement>
@@ -839,7 +860,8 @@
 		<Dynamic>true</Dynamic>
 		<FrozenPos>false</FrozenPos>
 		<HashName>Avon Goon</HashName>
-		<InitialHandle>2204686</InitialHandle>
+		<InitialHandle>890882</InitialHandle>
+		<Tag></Tag>
 		<PedProperties>
 			<IsStill>true</IsStill>
 			<CanRagdoll>true</CanRagdoll>
@@ -892,12 +914,12 @@
 		<IsMeleeProof>false</IsMeleeProof>
 		<IsOnlyDamagedByPlayer>false</IsOnlyDamagedByPlayer>
 		<PositionRotation>
-			<X>-23.6750984</X>
+			<X>-23.6754704</X>
 			<Y>-816.365051</Y>
-			<Z>353.607849</Z>
+			<Z>353.609009</Z>
 			<Pitch>0</Pitch>
 			<Roll>-0</Roll>
-			<Yaw>158.048599</Yaw>
+			<Yaw>158.048584</Yaw>
 		</PositionRotation>
 		<Attachment isAttached="false" />
 	</Placement>
@@ -907,7 +929,8 @@
 		<Dynamic>true</Dynamic>
 		<FrozenPos>false</FrozenPos>
 		<HashName>Avon Goon</HashName>
-		<InitialHandle>2205198</InitialHandle>
+		<InitialHandle>891138</InitialHandle>
+		<Tag></Tag>
 		<PedProperties>
 			<IsStill>true</IsStill>
 			<CanRagdoll>true</CanRagdoll>
@@ -960,9 +983,9 @@
 		<IsMeleeProof>false</IsMeleeProof>
 		<IsOnlyDamagedByPlayer>false</IsOnlyDamagedByPlayer>
 		<PositionRotation>
-			<X>-65.3682938</X>
-			<Y>-813.208557</Y>
-			<Z>353.64386</Z>
+			<X>-65.368103</X>
+			<Y>-813.20874</Y>
+			<Z>353.6427</Z>
 			<Pitch>0</Pitch>
 			<Roll>0</Roll>
 			<Yaw>-72.3756485</Yaw>
@@ -975,7 +998,8 @@
 		<Dynamic>true</Dynamic>
 		<FrozenPos>false</FrozenPos>
 		<HashName>Avon Goon</HashName>
-		<InitialHandle>2205454</InitialHandle>
+		<InitialHandle>891394</InitialHandle>
+		<Tag></Tag>
 		<PedProperties>
 			<IsStill>true</IsStill>
 			<CanRagdoll>true</CanRagdoll>
@@ -1028,9 +1052,9 @@
 		<IsMeleeProof>false</IsMeleeProof>
 		<IsOnlyDamagedByPlayer>false</IsOnlyDamagedByPlayer>
 		<PositionRotation>
-			<X>-92.8527222</X>
-			<Y>-764.16095</Y>
-			<Z>353.69693</Z>
+			<X>-92.8529205</X>
+			<Y>-764.161133</Y>
+			<Z>353.69574</Z>
 			<Pitch>0</Pitch>
 			<Roll>-0</Roll>
 			<Yaw>-135.776642</Yaw>
@@ -1043,7 +1067,8 @@
 		<Dynamic>true</Dynamic>
 		<FrozenPos>false</FrozenPos>
 		<HashName>Avon Goon</HashName>
-		<InitialHandle>2108686</InitialHandle>
+		<InitialHandle>891650</InitialHandle>
+		<Tag></Tag>
 		<PedProperties>
 			<IsStill>true</IsStill>
 			<CanRagdoll>true</CanRagdoll>
@@ -1096,9 +1121,9 @@
 		<IsMeleeProof>false</IsMeleeProof>
 		<IsOnlyDamagedByPlayer>false</IsOnlyDamagedByPlayer>
 		<PositionRotation>
-			<X>-142.858627</X>
-			<Y>-832.474426</Y>
-			<Z>353.684265</Z>
+			<X>-142.858536</X>
+			<Y>-832.474609</Y>
+			<Z>353.683105</Z>
 			<Pitch>0</Pitch>
 			<Roll>-0</Roll>
 			<Yaw>-90.3900528</Yaw>
@@ -1111,7 +1136,8 @@
 		<Dynamic>true</Dynamic>
 		<FrozenPos>false</FrozenPos>
 		<HashName>Avon Goon</HashName>
-		<InitialHandle>2124302</InitialHandle>
+		<InitialHandle>891906</InitialHandle>
+		<Tag></Tag>
 		<PedProperties>
 			<IsStill>true</IsStill>
 			<CanRagdoll>true</CanRagdoll>
@@ -1164,9 +1190,9 @@
 		<IsMeleeProof>false</IsMeleeProof>
 		<IsOnlyDamagedByPlayer>false</IsOnlyDamagedByPlayer>
 		<PositionRotation>
-			<X>-146.584854</X>
-			<Y>-862.872437</Y>
-			<Z>353.660583</Z>
+			<X>-146.584763</X>
+			<Y>-862.87262</Y>
+			<Z>353.661743</Z>
 			<Pitch>0</Pitch>
 			<Roll>-0</Roll>
 			<Yaw>-90.6505356</Yaw>
@@ -1179,7 +1205,8 @@
 		<Dynamic>true</Dynamic>
 		<FrozenPos>false</FrozenPos>
 		<HashName>Avon Goon</HashName>
-		<InitialHandle>2155022</InitialHandle>
+		<InitialHandle>892162</InitialHandle>
+		<Tag></Tag>
 		<PedProperties>
 			<IsStill>true</IsStill>
 			<CanRagdoll>true</CanRagdoll>
@@ -1232,12 +1259,12 @@
 		<IsMeleeProof>false</IsMeleeProof>
 		<IsOnlyDamagedByPlayer>false</IsOnlyDamagedByPlayer>
 		<PositionRotation>
-			<X>-77.10215</X>
+			<X>-77.1017685</X>
 			<Y>-878.816162</Y>
-			<Z>353.606873</Z>
+			<Z>353.605682</Z>
 			<Pitch>0</Pitch>
 			<Roll>0</Roll>
-			<Yaw>-12.3499489</Yaw>
+			<Yaw>-12.3499479</Yaw>
 		</PositionRotation>
 		<Attachment isAttached="false" />
 	</Placement>
@@ -1247,7 +1274,8 @@
 		<Dynamic>true</Dynamic>
 		<FrozenPos>false</FrozenPos>
 		<HashName>Avon Goon</HashName>
-		<InitialHandle>2206222</InitialHandle>
+		<InitialHandle>892418</InitialHandle>
+		<Tag></Tag>
 		<PedProperties>
 			<IsStill>true</IsStill>
 			<CanRagdoll>true</CanRagdoll>
@@ -1300,9 +1328,9 @@
 		<IsMeleeProof>false</IsMeleeProof>
 		<IsOnlyDamagedByPlayer>false</IsOnlyDamagedByPlayer>
 		<PositionRotation>
-			<X>-44.1262054</X>
-			<Y>-850.9198</Y>
-			<Z>353.598389</Z>
+			<X>-44.1259918</X>
+			<Y>-850.919983</Y>
+			<Z>353.599457</Z>
 			<Pitch>0</Pitch>
 			<Roll>0</Roll>
 			<Yaw>-68.1305542</Yaw>
@@ -1315,7 +1343,8 @@
 		<Dynamic>true</Dynamic>
 		<FrozenPos>false</FrozenPos>
 		<HashName>Avon Goon</HashName>
-		<InitialHandle>2206478</InitialHandle>
+		<InitialHandle>892674</InitialHandle>
+		<Tag></Tag>
 		<PedProperties>
 			<IsStill>true</IsStill>
 			<CanRagdoll>true</CanRagdoll>
@@ -1368,9 +1397,9 @@
 		<IsMeleeProof>false</IsMeleeProof>
 		<IsOnlyDamagedByPlayer>false</IsOnlyDamagedByPlayer>
 		<PositionRotation>
-			<X>38.8063011</X>
-			<Y>-786.171387</Y>
-			<Z>353.59082</Z>
+			<X>38.806221</X>
+			<Y>-786.171204</Y>
+			<Z>353.58963</Z>
 			<Pitch>0</Pitch>
 			<Roll>0</Roll>
 			<Yaw>86.8230209</Yaw>
@@ -1383,7 +1412,8 @@
 		<Dynamic>true</Dynamic>
 		<FrozenPos>false</FrozenPos>
 		<HashName>Avon Goon</HashName>
-		<InitialHandle>2109966</InitialHandle>
+		<InitialHandle>892930</InitialHandle>
+		<Tag></Tag>
 		<PedProperties>
 			<IsStill>true</IsStill>
 			<CanRagdoll>true</CanRagdoll>
@@ -1436,9 +1466,9 @@
 		<IsMeleeProof>false</IsMeleeProof>
 		<IsOnlyDamagedByPlayer>false</IsOnlyDamagedByPlayer>
 		<PositionRotation>
-			<X>39.7594872</X>
-			<Y>-871.786499</Y>
-			<Z>353.530823</Z>
+			<X>39.7597961</X>
+			<Y>-871.786316</Y>
+			<Z>353.529663</Z>
 			<Pitch>0</Pitch>
 			<Roll>0</Roll>
 			<Yaw>18.7959309</Yaw>
@@ -1451,7 +1481,8 @@
 		<Dynamic>true</Dynamic>
 		<FrozenPos>false</FrozenPos>
 		<HashName>Avon Goon</HashName>
-		<InitialHandle>2206990</InitialHandle>
+		<InitialHandle>893186</InitialHandle>
+		<Tag></Tag>
 		<PedProperties>
 			<IsStill>true</IsStill>
 			<CanRagdoll>true</CanRagdoll>
@@ -1504,9 +1535,9 @@
 		<IsMeleeProof>false</IsMeleeProof>
 		<IsOnlyDamagedByPlayer>false</IsOnlyDamagedByPlayer>
 		<PositionRotation>
-			<X>11.5813131</X>
-			<Y>-884.371521</Y>
-			<Z>353.541504</Z>
+			<X>11.5812225</X>
+			<Y>-884.371338</Y>
+			<Z>353.540375</Z>
 			<Pitch>0</Pitch>
 			<Roll>0</Roll>
 			<Yaw>89.9051361</Yaw>
@@ -1519,7 +1550,8 @@
 		<Dynamic>true</Dynamic>
 		<FrozenPos>false</FrozenPos>
 		<HashName>Avon Goon</HashName>
-		<InitialHandle>2070286</InitialHandle>
+		<InitialHandle>893442</InitialHandle>
+		<Tag></Tag>
 		<PedProperties>
 			<IsStill>true</IsStill>
 			<CanRagdoll>true</CanRagdoll>
@@ -1572,9 +1604,9 @@
 		<IsMeleeProof>false</IsMeleeProof>
 		<IsOnlyDamagedByPlayer>false</IsOnlyDamagedByPlayer>
 		<PositionRotation>
-			<X>-29.0285378</X>
+			<X>-29.0282364</X>
 			<Y>-849.131531</Y>
-			<Z>353.594147</Z>
+			<Z>353.592957</Z>
 			<Pitch>0</Pitch>
 			<Roll>0</Roll>
 			<Yaw>-50.496006</Yaw>
@@ -1587,7 +1619,8 @@
 		<Dynamic>true</Dynamic>
 		<FrozenPos>false</FrozenPos>
 		<HashName>Avon Goon</HashName>
-		<InitialHandle>2029070</InitialHandle>
+		<InitialHandle>893698</InitialHandle>
+		<Tag></Tag>
 		<PedProperties>
 			<IsStill>true</IsStill>
 			<CanRagdoll>true</CanRagdoll>
@@ -1640,12 +1673,12 @@
 		<IsMeleeProof>false</IsMeleeProof>
 		<IsOnlyDamagedByPlayer>false</IsOnlyDamagedByPlayer>
 		<PositionRotation>
-			<X>-52.5647507</X>
-			<Y>-753.482788</Y>
-			<Z>353.676208</Z>
+			<X>-52.5651054</X>
+			<Y>-753.482971</Y>
+			<Z>353.675079</Z>
 			<Pitch>0</Pitch>
 			<Roll>-0</Roll>
-			<Yaw>-175.046768</Yaw>
+			<Yaw>-175.046753</Yaw>
 		</PositionRotation>
 		<Attachment isAttached="false" />
 	</Placement>
@@ -1655,7 +1688,8 @@
 		<Dynamic>true</Dynamic>
 		<FrozenPos>false</FrozenPos>
 		<HashName>Avon Goon</HashName>
-		<InitialHandle>1974030</InitialHandle>
+		<InitialHandle>893954</InitialHandle>
+		<Tag></Tag>
 		<PedProperties>
 			<IsStill>true</IsStill>
 			<CanRagdoll>true</CanRagdoll>
@@ -1708,12 +1742,12 @@
 		<IsMeleeProof>false</IsMeleeProof>
 		<IsOnlyDamagedByPlayer>false</IsOnlyDamagedByPlayer>
 		<PositionRotation>
-			<X>6.29618692</X>
-			<Y>-761.098206</Y>
-			<Z>353.630493</Z>
+			<X>6.29584026</X>
+			<Y>-761.098389</Y>
+			<Z>353.629333</Z>
 			<Pitch>0</Pitch>
 			<Roll>-0</Roll>
-			<Yaw>-172.534119</Yaw>
+			<Yaw>-172.534103</Yaw>
 		</PositionRotation>
 		<Attachment isAttached="false" />
 	</Placement>
@@ -1723,7 +1757,8 @@
 		<Dynamic>true</Dynamic>
 		<FrozenPos>false</FrozenPos>
 		<HashName>Avon Goon</HashName>
-		<InitialHandle>2116622</InitialHandle>
+		<InitialHandle>894210</InitialHandle>
+		<Tag></Tag>
 		<PedProperties>
 			<IsStill>true</IsStill>
 			<CanRagdoll>true</CanRagdoll>
@@ -1776,12 +1811,12 @@
 		<IsMeleeProof>false</IsMeleeProof>
 		<IsOnlyDamagedByPlayer>false</IsOnlyDamagedByPlayer>
 		<PositionRotation>
-			<X>-30.4446831</X>
-			<Y>-783.336975</Y>
-			<Z>353.640778</Z>
+			<X>-30.4448261</X>
+			<Y>-783.337158</Y>
+			<Z>353.639465</Z>
 			<Pitch>0</Pitch>
 			<Roll>-0</Roll>
-			<Yaw>-126.887665</Yaw>
+			<Yaw>-126.887657</Yaw>
 		</PositionRotation>
 		<Attachment isAttached="false" />
 	</Placement>
@@ -1791,7 +1826,8 @@
 		<Dynamic>true</Dynamic>
 		<FrozenPos>false</FrozenPos>
 		<HashName>Avon Goon</HashName>
-		<InitialHandle>2208014</InitialHandle>
+		<InitialHandle>894466</InitialHandle>
+		<Tag></Tag>
 		<PedProperties>
 			<IsStill>true</IsStill>
 			<CanRagdoll>true</CanRagdoll>
@@ -1844,12 +1880,12 @@
 		<IsMeleeProof>false</IsMeleeProof>
 		<IsOnlyDamagedByPlayer>false</IsOnlyDamagedByPlayer>
 		<PositionRotation>
-			<X>-142.985031</X>
-			<Y>-756.019836</Y>
-			<Z>353.736786</Z>
+			<X>-143.155121</X>
+			<Y>-755.884216</Y>
+			<Z>353.734741</Z>
 			<Pitch>0</Pitch>
 			<Roll>-0</Roll>
-			<Yaw>-139.793854</Yaw>
+			<Yaw>-140.0271</Yaw>
 		</PositionRotation>
 		<Attachment isAttached="false" />
 	</Placement>
@@ -1859,7 +1895,8 @@
 		<Dynamic>true</Dynamic>
 		<FrozenPos>false</FrozenPos>
 		<HashName>Avon Goon</HashName>
-		<InitialHandle>2208270</InitialHandle>
+		<InitialHandle>894722</InitialHandle>
+		<Tag></Tag>
 		<PedProperties>
 			<IsStill>true</IsStill>
 			<CanRagdoll>true</CanRagdoll>
@@ -1912,12 +1949,12 @@
 		<IsMeleeProof>false</IsMeleeProof>
 		<IsOnlyDamagedByPlayer>false</IsOnlyDamagedByPlayer>
 		<PositionRotation>
-			<X>-111.819611</X>
-			<Y>-773.75531</Y>
-			<Z>353.703491</Z>
+			<X>-112.147591</X>
+			<Y>-773.786377</Y>
+			<Z>353.700928</Z>
 			<Pitch>0</Pitch>
 			<Roll>-0</Roll>
-			<Yaw>166.592773</Yaw>
+			<Yaw>166.233521</Yaw>
 		</PositionRotation>
 		<Attachment isAttached="false" />
 	</Placement>
@@ -1927,7 +1964,8 @@
 		<Dynamic>true</Dynamic>
 		<FrozenPos>false</FrozenPos>
 		<HashName>Avon Goon</HashName>
-		<InitialHandle>2099214</InitialHandle>
+		<InitialHandle>894978</InitialHandle>
+		<Tag></Tag>
 		<PedProperties>
 			<IsStill>true</IsStill>
 			<CanRagdoll>true</CanRagdoll>
@@ -1980,12 +2018,12 @@
 		<IsMeleeProof>false</IsMeleeProof>
 		<IsOnlyDamagedByPlayer>false</IsOnlyDamagedByPlayer>
 		<PositionRotation>
-			<X>-188.326202</X>
-			<Y>-901.09021</Y>
-			<Z>353.668396</Z>
+			<X>-188.326111</X>
+			<Y>-901.090393</Y>
+			<Z>353.667206</Z>
 			<Pitch>0</Pitch>
 			<Roll>0</Roll>
-			<Yaw>-87.0137405</Yaw>
+			<Yaw>-87.0137329</Yaw>
 		</PositionRotation>
 		<Attachment isAttached="false" />
 	</Placement>
@@ -1995,7 +2033,8 @@
 		<Dynamic>true</Dynamic>
 		<FrozenPos>false</FrozenPos>
 		<HashName>Avon Goon</HashName>
-		<InitialHandle>2105614</InitialHandle>
+		<InitialHandle>895234</InitialHandle>
+		<Tag></Tag>
 		<PedProperties>
 			<IsStill>true</IsStill>
 			<CanRagdoll>true</CanRagdoll>
@@ -2048,12 +2087,12 @@
 		<IsMeleeProof>false</IsMeleeProof>
 		<IsOnlyDamagedByPlayer>false</IsOnlyDamagedByPlayer>
 		<PositionRotation>
-			<X>-199.49852</X>
-			<Y>-817.804871</Y>
-			<Z>353.733612</Z>
+			<X>-199.284363</X>
+			<Y>-818.058167</Y>
+			<Z>353.730621</Z>
 			<Pitch>0</Pitch>
 			<Roll>-0</Roll>
-			<Yaw>-147.98938</Yaw>
+			<Yaw>-148.230469</Yaw>
 		</PositionRotation>
 		<Attachment isAttached="false" />
 	</Placement>
@@ -2063,7 +2102,8 @@
 		<Dynamic>true</Dynamic>
 		<FrozenPos>false</FrozenPos>
 		<HashName>Avon Goon</HashName>
-		<InitialHandle>2224654</InitialHandle>
+		<InitialHandle>895490</InitialHandle>
+		<Tag></Tag>
 		<PedProperties>
 			<IsStill>true</IsStill>
 			<CanRagdoll>true</CanRagdoll>
@@ -2116,12 +2156,12 @@
 		<IsMeleeProof>false</IsMeleeProof>
 		<IsOnlyDamagedByPlayer>false</IsOnlyDamagedByPlayer>
 		<PositionRotation>
-			<X>-14.3030233</X>
-			<Y>-789.231384</Y>
-			<Z>353.625366</Z>
+			<X>-14.303297</X>
+			<Y>-789.231567</Y>
+			<Z>353.624207</Z>
 			<Pitch>0</Pitch>
 			<Roll>-0</Roll>
-			<Yaw>-151.45256</Yaw>
+			<Yaw>-151.452545</Yaw>
 		</PositionRotation>
 		<Attachment isAttached="false" />
 	</Placement>
@@ -2131,7 +2171,8 @@
 		<Dynamic>true</Dynamic>
 		<FrozenPos>false</FrozenPos>
 		<HashName>Avon Goon</HashName>
-		<InitialHandle>2224910</InitialHandle>
+		<InitialHandle>895746</InitialHandle>
+		<Tag></Tag>
 		<PedProperties>
 			<IsStill>true</IsStill>
 			<CanRagdoll>true</CanRagdoll>
@@ -2184,8 +2225,8 @@
 		<IsMeleeProof>false</IsMeleeProof>
 		<IsOnlyDamagedByPlayer>false</IsOnlyDamagedByPlayer>
 		<PositionRotation>
-			<X>56.9326286</X>
-			<Y>-816.055908</Y>
+			<X>56.9325371</X>
+			<Y>-816.055725</Y>
 			<Z>353.554962</Z>
 			<Pitch>0</Pitch>
 			<Roll>0</Roll>
@@ -2199,7 +2240,8 @@
 		<Dynamic>true</Dynamic>
 		<FrozenPos>false</FrozenPos>
 		<HashName>Avon Goon</HashName>
-		<InitialHandle>2158862</InitialHandle>
+		<InitialHandle>896002</InitialHandle>
+		<Tag></Tag>
 		<PedProperties>
 			<IsStill>true</IsStill>
 			<CanRagdoll>true</CanRagdoll>
@@ -2252,9 +2294,9 @@
 		<IsMeleeProof>false</IsMeleeProof>
 		<IsOnlyDamagedByPlayer>false</IsOnlyDamagedByPlayer>
 		<PositionRotation>
-			<X>39.1152306</X>
-			<Y>-815.324097</Y>
-			<Z>353.570404</Z>
+			<X>39.1150475</X>
+			<Y>-815.323914</Y>
+			<Z>353.569244</Z>
 			<Pitch>0</Pitch>
 			<Roll>-0</Roll>
 			<Yaw>105.388908</Yaw>
@@ -2267,7 +2309,8 @@
 		<Dynamic>false</Dynamic>
 		<FrozenPos>true</FrozenPos>
 		<HashName>bkr_prop_biker_bblock_lrg1</HashName>
-		<InitialHandle>2082574</InitialHandle>
+		<InitialHandle>896258</InitialHandle>
+		<Tag></Tag>
 		<ObjectProperties>
 			<TextureVariation>0</TextureVariation>
 		</ObjectProperties>
@@ -2289,7 +2332,7 @@
 			<X>5.2880168</X>
 			<Y>-892.072449</Y>
 			<Z>395.222412</Z>
-			<Pitch>0.0172298979</Pitch>
+			<Pitch>0.017229896</Pitch>
 			<Roll>50.9840965</Roll>
 			<Yaw>90.0361252</Yaw>
 		</PositionRotation>
@@ -2301,7 +2344,8 @@
 		<Dynamic>false</Dynamic>
 		<FrozenPos>true</FrozenPos>
 		<HashName>stt_prop_stunt_bowlpin_stand</HashName>
-		<InitialHandle>2186766</InitialHandle>
+		<InitialHandle>896514</InitialHandle>
+		<Tag></Tag>
 		<ObjectProperties>
 			<TextureVariation>0</TextureVariation>
 		</ObjectProperties>
@@ -2325,7 +2369,7 @@
 			<Z>352.720886</Z>
 			<Pitch>0</Pitch>
 			<Roll>-0</Roll>
-			<Yaw>-179.999954</Yaw>
+			<Yaw>-179.999939</Yaw>
 		</PositionRotation>
 		<Attachment isAttached="false" />
 	</Placement>
@@ -2335,7 +2379,8 @@
 		<Dynamic>false</Dynamic>
 		<FrozenPos>true</FrozenPos>
 		<HashName>stt_prop_stunt_bblock_huge_05</HashName>
-		<InitialHandle>2218254</InitialHandle>
+		<InitialHandle>896770</InitialHandle>
+		<Tag></Tag>
 		<ObjectProperties>
 			<TextureVariation>0</TextureVariation>
 		</ObjectProperties>
@@ -2358,7 +2403,7 @@
 			<Y>-818.9151</Y>
 			<Z>403.306152</Z>
 			<Pitch>6.51377563e-12</Pitch>
-			<Roll>-90.0000229</Roll>
+			<Roll>-90.0000153</Roll>
 			<Yaw>-179.999893</Yaw>
 		</PositionRotation>
 		<Attachment isAttached="false" />
@@ -2369,7 +2414,8 @@
 		<Dynamic>false</Dynamic>
 		<FrozenPos>true</FrozenPos>
 		<HashName>stt_prop_stunt_bblock_huge_05</HashName>
-		<InitialHandle>2218510</InitialHandle>
+		<InitialHandle>897026</InitialHandle>
+		<Tag></Tag>
 		<ObjectProperties>
 			<TextureVariation>0</TextureVariation>
 		</ObjectProperties>
@@ -2393,7 +2439,7 @@
 			<Z>403.186035</Z>
 			<Pitch>6.7682201e-12</Pitch>
 			<Roll>-90.0000076</Roll>
-			<Yaw>-2.12059786e-05</Yaw>
+			<Yaw>-2.12059767e-05</Yaw>
 		</PositionRotation>
 		<Attachment isAttached="false" />
 	</Placement>
@@ -2403,7 +2449,8 @@
 		<Dynamic>false</Dynamic>
 		<FrozenPos>true</FrozenPos>
 		<HashName>stt_prop_stunt_bblock_huge_05</HashName>
-		<InitialHandle>2217230</InitialHandle>
+		<InitialHandle>897282</InitialHandle>
+		<Tag></Tag>
 		<ObjectProperties>
 			<TextureVariation>0</TextureVariation>
 		</ObjectProperties>
@@ -2425,9 +2472,9 @@
 			<X>-21.3236942</X>
 			<Y>-720.345276</Y>
 			<Z>403.216156</Z>
-			<Pitch>3.01516537e-12</Pitch>
+			<Pitch>3.01516516e-12</Pitch>
 			<Roll>-90.0000076</Roll>
-			<Yaw>90.0000153</Yaw>
+			<Yaw>90.0000076</Yaw>
 		</PositionRotation>
 		<Attachment isAttached="false" />
 	</Placement>
@@ -2437,7 +2484,8 @@
 		<Dynamic>false</Dynamic>
 		<FrozenPos>true</FrozenPos>
 		<HashName>stt_prop_stunt_bblock_huge_05</HashName>
-		<InitialHandle>1828878</InitialHandle>
+		<InitialHandle>897538</InitialHandle>
+		<Tag></Tag>
 		<ObjectProperties>
 			<TextureVariation>0</TextureVariation>
 		</ObjectProperties>
@@ -2459,9 +2507,9 @@
 			<X>-215.3237</X>
 			<Y>-720.545288</Y>
 			<Z>403.316162</Z>
-			<Pitch>7.30255353e-12</Pitch>
+			<Pitch>7.30255266e-12</Pitch>
 			<Roll>-90.0000076</Roll>
-			<Yaw>-89.9999542</Yaw>
+			<Yaw>-89.9999466</Yaw>
 		</PositionRotation>
 		<Attachment isAttached="false" />
 	</Placement>
@@ -2471,7 +2519,8 @@
 		<Dynamic>false</Dynamic>
 		<FrozenPos>true</FrozenPos>
 		<HashName>stt_prop_stunt_bblock_huge_05</HashName>
-		<InitialHandle>2217486</InitialHandle>
+		<InitialHandle>897794</InitialHandle>
+		<Tag></Tag>
 		<ObjectProperties>
 			<TextureVariation>0</TextureVariation>
 		</ObjectProperties>
@@ -2505,7 +2554,8 @@
 		<Dynamic>false</Dynamic>
 		<FrozenPos>true</FrozenPos>
 		<HashName>stt_prop_stunt_bblock_huge_05</HashName>
-		<InitialHandle>2203150</InitialHandle>
+		<InitialHandle>898050</InitialHandle>
+		<Tag></Tag>
 		<ObjectProperties>
 			<TextureVariation>0</TextureVariation>
 		</ObjectProperties>
@@ -2539,7 +2589,8 @@
 		<Dynamic>false</Dynamic>
 		<FrozenPos>true</FrozenPos>
 		<HashName>lts_prop_lts_ramp_03</HashName>
-		<InitialHandle>2128654</InitialHandle>
+		<InitialHandle>898306</InitialHandle>
+		<Tag></Tag>
 		<ObjectProperties>
 			<TextureVariation>0</TextureVariation>
 		</ObjectProperties>
@@ -2573,7 +2624,8 @@
 		<Dynamic>false</Dynamic>
 		<FrozenPos>true</FrozenPos>
 		<HashName>stt_prop_stunt_bblock_qp3</HashName>
-		<InitialHandle>2081038</InitialHandle>
+		<InitialHandle>898562</InitialHandle>
+		<Tag></Tag>
 		<ObjectProperties>
 			<TextureVariation>0</TextureVariation>
 		</ObjectProperties>
@@ -2595,8 +2647,8 @@
 			<X>-205.988388</X>
 			<Y>-720.499573</Y>
 			<Z>374.602051</Z>
-			<Pitch>0.0395672619</Pitch>
-			<Roll>-0.0395946167</Roll>
+			<Pitch>0.0395672582</Pitch>
+			<Roll>-0.0395946093</Roll>
 			<Yaw>-179.960373</Yaw>
 		</PositionRotation>
 		<Attachment isAttached="false" />
@@ -2607,7 +2659,8 @@
 		<Dynamic>false</Dynamic>
 		<FrozenPos>true</FrozenPos>
 		<HashName>stt_prop_track_speedup_t2</HashName>
-		<InitialHandle>2042894</InitialHandle>
+		<InitialHandle>898818</InitialHandle>
+		<Tag></Tag>
 		<ObjectProperties>
 			<TextureVariation>0</TextureVariation>
 		</ObjectProperties>
@@ -2629,8 +2682,8 @@
 			<X>-223.524445</X>
 			<Y>-731.070801</Y>
 			<Z>375.928223</Z>
-			<Pitch>0.0116306711</Pitch>
-			<Roll>-66.0154114</Roll>
+			<Pitch>0.0116306692</Pitch>
+			<Roll>-66.0154037</Roll>
 			<Yaw>-179.945236</Yaw>
 		</PositionRotation>
 		<Attachment isAttached="false" />
@@ -2641,7 +2694,8 @@
 		<Dynamic>false</Dynamic>
 		<FrozenPos>true</FrozenPos>
 		<HashName>bkr_prop_biker_tube_crn2</HashName>
-		<InitialHandle>2219790</InitialHandle>
+		<InitialHandle>899074</InitialHandle>
+		<Tag></Tag>
 		<ObjectProperties>
 			<TextureVariation>0</TextureVariation>
 		</ObjectProperties>
@@ -2663,9 +2717,9 @@
 			<X>-216.164337</X>
 			<Y>-730.739258</Y>
 			<Z>401.466797</Z>
-			<Pitch>-76.0262604</Pitch>
+			<Pitch>-76.0262909</Pitch>
 			<Roll>90.1840134</Roll>
-			<Yaw>-89.8159637</Yaw>
+			<Yaw>-89.8159561</Yaw>
 		</PositionRotation>
 		<Attachment isAttached="false" />
 	</Placement>
@@ -2675,7 +2729,8 @@
 		<Dynamic>false</Dynamic>
 		<FrozenPos>true</FrozenPos>
 		<HashName>stt_prop_track_speedup_t2</HashName>
-		<InitialHandle>2088718</InitialHandle>
+		<InitialHandle>899330</InitialHandle>
+		<Tag></Tag>
 		<ObjectProperties>
 			<TextureVariation>0</TextureVariation>
 		</ObjectProperties>
@@ -2697,9 +2752,9 @@
 			<X>-226.644226</X>
 			<Y>-731.070801</Y>
 			<Z>386.828125</Z>
-			<Pitch>0.00391036971</Pitch>
+			<Pitch>0.00391036877</Pitch>
 			<Roll>-81.9883194</Roll>
-			<Yaw>-179.944138</Yaw>
+			<Yaw>-179.944122</Yaw>
 		</PositionRotation>
 		<Attachment isAttached="false" />
 	</Placement>
@@ -2709,7 +2764,8 @@
 		<Dynamic>false</Dynamic>
 		<FrozenPos>true</FrozenPos>
 		<HashName>stt_prop_track_speedup_t2</HashName>
-		<InitialHandle>2039822</InitialHandle>
+		<InitialHandle>899586</InitialHandle>
+		<Tag></Tag>
 		<ObjectProperties>
 			<TextureVariation>0</TextureVariation>
 		</ObjectProperties>
@@ -2731,9 +2787,9 @@
 			<X>-227.164398</X>
 			<Y>-731.070801</Y>
 			<Z>398.328125</Z>
-			<Pitch>-1.66752621e-08</Pitch>
-			<Roll>-90.0000229</Roll>
-			<Yaw>-179.944</Yaw>
+			<Pitch>-1.66752603e-08</Pitch>
+			<Roll>-90.0000153</Roll>
+			<Yaw>-179.943985</Yaw>
 		</PositionRotation>
 		<Attachment isAttached="false" />
 	</Placement>
@@ -2743,7 +2799,8 @@
 		<Dynamic>false</Dynamic>
 		<FrozenPos>true</FrozenPos>
 		<HashName>stt_prop_stunt_bblock_huge_05</HashName>
-		<InitialHandle>5921806</InitialHandle>
+		<InitialHandle>899842</InitialHandle>
+		<Tag></Tag>
 		<ObjectProperties>
 			<TextureVariation>0</TextureVariation>
 		</ObjectProperties>
@@ -2765,9 +2822,9 @@
 			<X>92.9263153</X>
 			<Y>-771.715149</Y>
 			<Z>403.186035</Z>
-			<Pitch>5.33605444e-08</Pitch>
+			<Pitch>5.33604414e-08</Pitch>
 			<Roll>-90</Roll>
-			<Yaw>49.9999504</Yaw>
+			<Yaw>49.9999466</Yaw>
 		</PositionRotation>
 		<Attachment isAttached="false" />
 	</Placement>
@@ -2777,7 +2834,8 @@
 		<Dynamic>false</Dynamic>
 		<FrozenPos>true</FrozenPos>
 		<HashName>stt_prop_stunt_bblock_huge_05</HashName>
-		<InitialHandle>9370382</InitialHandle>
+		<InitialHandle>900098</InitialHandle>
+		<Tag></Tag>
 		<ObjectProperties>
 			<TextureVariation>0</TextureVariation>
 		</ObjectProperties>
@@ -2801,7 +2859,182 @@
 			<Z>403.186035</Z>
 			<Pitch>5.33610525e-08</Pitch>
 			<Roll>-90</Roll>
-			<Yaw>-51.9999695</Yaw>
+			<Yaw>-51.9999657</Yaw>
+		</PositionRotation>
+		<Attachment isAttached="false" />
+	</Placement>
+	<Placement>
+		<ModelHash>0xb1470e04</ModelHash>
+		<Type>3</Type>
+		<Dynamic>false</Dynamic>
+		<FrozenPos>true</FrozenPos>
+		<HashName>ch_prop_track_paddock_01</HashName>
+		<InitialHandle>4149762</InitialHandle>
+		<Tag></Tag>
+		<ObjectProperties>
+			<TextureVariation>0</TextureVariation>
+		</ObjectProperties>
+		<OpacityLevel>255</OpacityLevel>
+		<LodDistance>16960</LodDistance>
+		<IsVisible>true</IsVisible>
+		<MaxHealth>1000</MaxHealth>
+		<Health>1000</Health>
+		<HasGravity>true</HasGravity>
+		<IsOnFire>false</IsOnFire>
+		<IsInvincible>false</IsInvincible>
+		<IsBulletProof>false</IsBulletProof>
+		<IsCollisionProof>false</IsCollisionProof>
+		<IsExplosionProof>false</IsExplosionProof>
+		<IsFireProof>false</IsFireProof>
+		<IsMeleeProof>false</IsMeleeProof>
+		<IsOnlyDamagedByPlayer>false</IsOnlyDamagedByPlayer>
+		<PositionRotation>
+			<X>-214.965439</X>
+			<Y>-761.9552</Y>
+			<Z>352.782013</Z>
+			<Pitch>0</Pitch>
+			<Roll>0</Roll>
+			<Yaw>89.5532455</Yaw>
+		</PositionRotation>
+		<Attachment isAttached="false" />
+	</Placement>
+	<Placement>
+		<ModelHash>0xa8b59980</ModelHash>
+		<Type>3</Type>
+		<Dynamic>false</Dynamic>
+		<FrozenPos>true</FrozenPos>
+		<HashName>stt_prop_wallride_04</HashName>
+		<InitialHandle>1583108</InitialHandle>
+		<Tag></Tag>
+		<ObjectProperties>
+			<TextureVariation>0</TextureVariation>
+		</ObjectProperties>
+		<OpacityLevel>255</OpacityLevel>
+		<LodDistance>16960</LodDistance>
+		<IsVisible>true</IsVisible>
+		<MaxHealth>1000</MaxHealth>
+		<Health>1000</Health>
+		<HasGravity>true</HasGravity>
+		<IsOnFire>false</IsOnFire>
+		<IsInvincible>false</IsInvincible>
+		<IsBulletProof>false</IsBulletProof>
+		<IsCollisionProof>false</IsCollisionProof>
+		<IsExplosionProof>false</IsExplosionProof>
+		<IsFireProof>false</IsFireProof>
+		<IsMeleeProof>false</IsMeleeProof>
+		<IsOnlyDamagedByPlayer>false</IsOnlyDamagedByPlayer>
+		<PositionRotation>
+			<X>-142.574615</X>
+			<Y>-781.946228</Y>
+			<Z>361.877563</Z>
+			<Pitch>0</Pitch>
+			<Roll>-0</Roll>
+			<Yaw>90.4788971</Yaw>
+		</PositionRotation>
+		<Attachment isAttached="false" />
+	</Placement>
+	<Placement>
+		<ModelHash>0x285a9fe7</ModelHash>
+		<Type>3</Type>
+		<Dynamic>false</Dynamic>
+		<FrozenPos>true</FrozenPos>
+		<HashName>stt_prop_ramp_jump_s</HashName>
+		<InitialHandle>7560452</InitialHandle>
+		<Tag></Tag>
+		<ObjectProperties>
+			<TextureVariation>0</TextureVariation>
+		</ObjectProperties>
+		<OpacityLevel>255</OpacityLevel>
+		<LodDistance>16960</LodDistance>
+		<IsVisible>true</IsVisible>
+		<MaxHealth>1000</MaxHealth>
+		<Health>1000</Health>
+		<HasGravity>true</HasGravity>
+		<IsOnFire>false</IsOnFire>
+		<IsInvincible>false</IsInvincible>
+		<IsBulletProof>false</IsBulletProof>
+		<IsCollisionProof>false</IsCollisionProof>
+		<IsExplosionProof>false</IsExplosionProof>
+		<IsFireProof>false</IsFireProof>
+		<IsMeleeProof>false</IsMeleeProof>
+		<IsOnlyDamagedByPlayer>false</IsOnlyDamagedByPlayer>
+		<PositionRotation>
+			<X>-103.929214</X>
+			<Y>-800.587097</Y>
+			<Z>352.687592</Z>
+			<Pitch>-1.07855622e-05</Pitch>
+			<Roll>1.25169745e-05</Roll>
+			<Yaw>88.5369873</Yaw>
+		</PositionRotation>
+		<Attachment isAttached="false" />
+	</Placement>
+	<Placement>
+		<ModelHash>0xda6ee30a</ModelHash>
+		<Type>3</Type>
+		<Dynamic>false</Dynamic>
+		<FrozenPos>true</FrozenPos>
+		<HashName>bkr_prop_biker_bblock_sml1</HashName>
+		<InitialHandle>1826566</InitialHandle>
+		<Tag></Tag>
+		<ObjectProperties>
+			<TextureVariation>0</TextureVariation>
+		</ObjectProperties>
+		<OpacityLevel>255</OpacityLevel>
+		<LodDistance>16960</LodDistance>
+		<IsVisible>true</IsVisible>
+		<MaxHealth>1000</MaxHealth>
+		<Health>1000</Health>
+		<HasGravity>true</HasGravity>
+		<IsOnFire>false</IsOnFire>
+		<IsInvincible>false</IsInvincible>
+		<IsBulletProof>false</IsBulletProof>
+		<IsCollisionProof>false</IsCollisionProof>
+		<IsExplosionProof>false</IsExplosionProof>
+		<IsFireProof>false</IsFireProof>
+		<IsMeleeProof>false</IsMeleeProof>
+		<IsOnlyDamagedByPlayer>false</IsOnlyDamagedByPlayer>
+		<PositionRotation>
+			<X>-103.744171</X>
+			<Y>-801.365417</Y>
+			<Z>355.147278</Z>
+			<Pitch>35.9999771</Pitch>
+			<Roll>-21.0000038</Roll>
+			<Yaw>-2.10112286</Yaw>
+		</PositionRotation>
+		<Attachment isAttached="false" />
+	</Placement>
+	<Placement>
+		<ModelHash>0xfc0d2f15</ModelHash>
+		<Type>3</Type>
+		<Dynamic>false</Dynamic>
+		<FrozenPos>true</FrozenPos>
+		<HashName>stt_prop_track_speedup_t2</HashName>
+		<InitialHandle>7953414</InitialHandle>
+		<Tag></Tag>
+		<ObjectProperties>
+			<TextureVariation>0</TextureVariation>
+		</ObjectProperties>
+		<OpacityLevel>255</OpacityLevel>
+		<LodDistance>16960</LodDistance>
+		<IsVisible>true</IsVisible>
+		<MaxHealth>1000</MaxHealth>
+		<Health>1000</Health>
+		<HasGravity>true</HasGravity>
+		<IsOnFire>false</IsOnFire>
+		<IsInvincible>false</IsInvincible>
+		<IsBulletProof>false</IsBulletProof>
+		<IsCollisionProof>false</IsCollisionProof>
+		<IsExplosionProof>false</IsExplosionProof>
+		<IsFireProof>false</IsFireProof>
+		<IsMeleeProof>false</IsMeleeProof>
+		<IsOnlyDamagedByPlayer>false</IsOnlyDamagedByPlayer>
+		<PositionRotation>
+			<X>-105.171364</X>
+			<Y>-778.901245</Y>
+			<Z>365.084808</Z>
+			<Pitch>-90</Pitch>
+			<Roll>-114.111542</Roll>
+			<Yaw>0</Yaw>
 		</PositionRotation>
 		<Attachment isAttached="false" />
 	</Placement>

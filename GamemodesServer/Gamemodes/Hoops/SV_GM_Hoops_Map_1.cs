@@ -43,6 +43,12 @@ namespace GamemodesServer.Gamemodes.Hoops
                 // Track
                 new Hoop(67.7f, -818f, 381.5f),
 
+                // Left Yeet off Track
+                new Hoop(24f, -759f, 375f),
+
+                // Right Yeet off Track
+                new Hoop(36f, -857f, 368f),
+
                 // Tilted Track
                 new Hoop(27f, -754f, 366f),
 
@@ -68,7 +74,13 @@ namespace GamemodesServer.Gamemodes.Hoops
                 new Hoop(-196f, -730.7f, 411f),
 
                 // Speed Tunnel Blind Launch
-                new Hoop(-173f, -740f, 376f)
+                new Hoop(-173f, -740f, 376f),
+
+                // Wallride
+                new Hoop(-121f, -762f, 366f),
+
+                // Wallride end
+                new Hoop(-182f, -799f, 366f, true)
             };
         }
     }
