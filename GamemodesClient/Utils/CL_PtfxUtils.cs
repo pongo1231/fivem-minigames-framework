@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 namespace GamemodesClient.Utils
 {
     /// <summary>
-    /// Ptfx utils class
+    /// Ptfx utils
     /// </summary>
     public static class PtfxUtils
     {

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace GamemodesServer.Core.Map
 {
     /// <summary>
-    /// Gamemode map class
+    /// Gamemode map base script
     /// </summary>
     public abstract class GamemodeMap : GmScript
     {

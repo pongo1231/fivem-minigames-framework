@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace GamemodesServer.Core.Gamemode
 {
     /// <summary>
-    /// Gamemode script class
+    /// Gamemode script
     /// </summary>
     /// <typeparam name="MapType">Type of map class that corresponds to this gamemode</typeparam>
     public abstract class GamemodeScript<MapType> : GamemodeBaseScript where MapType : GamemodeMap

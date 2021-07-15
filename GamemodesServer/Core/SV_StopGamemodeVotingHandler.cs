@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace GamemodesServer.Core
 {
     /// <summary>
-    /// Stop gamemode voting handler
+    /// Handler for gamemode stop votes by players (temporary until stable release)
     /// </summary>
     public class StopGamemodeVotingHandler : GmScript
     {
@@ -62,7 +62,7 @@ namespace GamemodesServer.Core
             m_voteTimeoutTimestamp = API.GetGameTimer() + 30000;
 
             // Add all currently loaded in players to list (except voter)
-            foreach (Player player in PlayerLoadStateManager.GetLoadedInPlayers().Where(pplayer => pplayer != _player))
+            foreach (Player player in PlayerEnrollStateManager.GetLoadedInPlayers().Where(pplayer => pplayer != _player))
             {
                 m_votingPlayers.Add(player);
             }

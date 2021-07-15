@@ -10,6 +10,9 @@ client_scripts {
     "GamemodesClientPrivate.net.dll"
 }
 
-server_script "GamemodesServer.net.dll"
+server_scripts {
+    "GamemodesServer.net.dll",
+    "GamemodesServerPrivate.net.dll"
+}
 
 shared_script "GamemodesShared.net.dll"

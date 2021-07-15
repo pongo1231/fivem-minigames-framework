@@ -7,12 +7,11 @@ using GamemodesShared;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Threading.Tasks;
-using Font = CitizenFX.Core.UI.Font;
 
 namespace GamemodesClient.Gamemodes
 {
     /// <summary>
-    /// Hoops gamemode class
+    /// Hoops gamemode
     /// </summary>
     public class Hoops : GamemodeScript
     {

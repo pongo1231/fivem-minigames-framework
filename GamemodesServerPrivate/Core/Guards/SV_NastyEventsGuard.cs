@@ -1,10 +1,11 @@
 ﻿using CitizenFX.Core;
+using GamemodesServer.Core;
 using System;
 
-namespace GamemodesServer.Core.Guards
+namespace GamemodesServerPrivate.Core.Guards
 {
     /// <summary>
-    /// Nasty events guard
+    /// Guard for events which are blacklisted
     /// </summary>
     public class NastyEventsGuard : GmScript
     {

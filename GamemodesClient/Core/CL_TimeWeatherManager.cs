@@ -4,7 +4,7 @@ using CitizenFX.Core.Native;
 namespace GamemodesClient.Core
 {
     /// <summary>
-    /// Time and Weather manager class
+    /// Manager of local time and weather
     /// </summary>
     public class TimeWeatherManager : GmScript
     {

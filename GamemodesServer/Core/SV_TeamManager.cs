@@ -1,14 +1,13 @@
 ﻿using CitizenFX.Core;
 using GamemodesShared;
 using GamemodesShared.Utils;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace GamemodesServer.Core
 {
     /// <summary>
-    /// Team manager class
+    /// Manager of player teams
     /// </summary>
     public class TeamManager : GmScript
     {
@@ -82,7 +81,7 @@ namespace GamemodesServer.Core
             List<Player> m_toSortIntoTeams = new List<Player>();
 
             // Iterate through all loaded in players
-            foreach (Player player in PlayerLoadStateManager.GetLoadedInPlayers())
+            foreach (Player player in PlayerEnrollStateManager.GetLoadedInPlayers())
             {
                 // Check whether this player doesn't have a team assigned to them yet
                 if (s_teamPlayers.Find(teamPlayer => teamPlayer.Player == player) == null)

@@ -8,7 +8,7 @@ using System.Xml;
 namespace GamemodesServer.Core
 {
     /// <summary>
-    /// Map loader class
+    /// Manager for map loading
     /// </summary>
     public class MapLoader : GmScript
     {
@@ -224,7 +224,7 @@ namespace GamemodesServer.Core
             }
 
             // Iterate through all loaded in players
-            foreach (Player player in PlayerLoadStateManager.GetLoadedInPlayers())
+            foreach (Player player in PlayerEnrollStateManager.GetLoadedInPlayers())
             {
                 // Check if player hasn't been made aware of map yet
                 if (!s_mapPlayers.Contains(player))

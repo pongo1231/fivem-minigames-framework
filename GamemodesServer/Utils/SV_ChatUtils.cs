@@ -1,11 +1,10 @@
 ﻿using CitizenFX.Core;
 using GamemodesServer.Core;
-using System.Drawing;
 
 namespace GamemodesServer.Utils
 {
     /// <summary>
-    /// Chat utils class
+    /// Utils for chat
     /// </summary>
     public static class ChatUtils
     {
@@ -32,7 +31,7 @@ namespace GamemodesServer.Utils
         /// <param name="_color">Message color</param>
         public static void SendMessage(string _message)
         {
-            foreach (Player player in PlayerLoadStateManager.GetLoadedInPlayers())
+            foreach (Player player in PlayerEnrollStateManager.GetLoadedInPlayers())
             {
                 player.SendMessage(_message);
             }

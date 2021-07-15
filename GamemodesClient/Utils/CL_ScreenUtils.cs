@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 namespace GamemodesClient.Utils
 {
     /// <summary>
-    /// Screen utils class
+    /// Screen utils
     /// </summary>
     public static class ScreenUtils
     {

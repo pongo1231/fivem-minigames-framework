@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace GamemodesClient.Core
 {
     /// <summary>
-    /// Team manager class
+    /// Manager of every player's team
     /// </summary>
     public class TeamManager : GmScript
     {

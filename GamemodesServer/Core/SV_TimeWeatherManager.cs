@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 namespace GamemodesServer.Core
 {
     /// <summary>
-    /// Time and weather manager class
+    /// Manager for time and weather for every player
     /// </summary>
     public class TimeWeatherManager : GmScript
     {

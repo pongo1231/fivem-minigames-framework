@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace GamemodesClient.Core
 {
     /// <summary>
-    /// Boost manager class
+    /// Manager for player vehicle boost
     /// </summary>
     public class BoostManager : GmScript
     {

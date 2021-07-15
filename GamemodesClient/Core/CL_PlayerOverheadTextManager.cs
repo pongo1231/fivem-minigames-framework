@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace GamemodesClient.Core
 {
     /// <summary>
-    /// Player names manager class
+    /// Manager for overhead texts of every player
     /// </summary>
     public class PlayerOverheadTextManager : GmScript
     {

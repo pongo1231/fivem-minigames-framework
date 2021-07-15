@@ -3,7 +3,7 @@
 namespace GamemodesShared.Utils
 {
     /// <summary>
-    /// Random utils class
+    /// Utils for Random related stuff
     /// </summary>
     public static class RandomUtils
     {

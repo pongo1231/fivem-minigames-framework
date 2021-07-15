@@ -25,7 +25,7 @@ namespace GamemodesServer.Core
     }
 
     /// <summary>
-    /// Script class
+    /// Base Script
     /// </summary>
     public abstract class GmScript : BaseScript
     {

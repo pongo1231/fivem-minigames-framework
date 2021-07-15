@@ -72,8 +72,7 @@
     <Compile Include="Core\SV_EntityPool.cs" />
     <Compile Include="Core\Guards\SV_EntityGuard.cs" />
     <Compile Include="Core\Guards\SV_ExplosionsGuard.cs" />
-    <Compile Include="Core\Guards\SV_NastyEventsGuard.cs" />
-    <Compile Include="Core\SV_PlayerLoadStateManager.cs" />
+    <Compile Include="Core\SV_PlayerEnrollManager.cs" />
     <Compile Include="Core\SV_PlayerResponseAwaiter.cs" />
     <Compile Include="Core\SV_Main.cs" />
     <Compile Include="Core\SV_MapLoader.cs" />

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace GamemodesServer.Core
 {
     /// <summary>
-    /// Player response awaiter class
+    /// Manager for awaiting player event response to sent event
     /// </summary>
     public class PlayerResponseAwaiter : GmScript
     {
@@ -66,7 +66,7 @@ namespace GamemodesServer.Core
                 if (lastTimeStamp < curTimeStamp - 5000)
                 {
                     // Check whether client is still in the game
-                    if (!PlayerLoadStateManager.GetLoadedInPlayers().Contains(_player))
+                    if (!PlayerEnrollStateManager.GetLoadedInPlayers().Contains(_player))
                     {
                         // Set as completed if client is gone
                         hasCompleted = true;
@@ -119,7 +119,7 @@ namespace GamemodesServer.Core
         public static async Task AwaitResponse(string _serverClientEventName, string _clientServerEventName, params object[] _serverClientEventArgs)
         {
             // Return if there are no loaded in players
-            if (PlayerLoadStateManager.GetLoadedInPlayers().Length == 0)
+            if (PlayerEnrollStateManager.GetLoadedInPlayers().Length == 0)
             {
                 return;
             }
@@ -128,7 +128,7 @@ namespace GamemodesServer.Core
             List<Task> responseAwaits = new List<Task>();
 
             // Add a waiting task for each player
-            foreach (Player player in PlayerLoadStateManager.GetLoadedInPlayers())
+            foreach (Player player in PlayerEnrollStateManager.GetLoadedInPlayers())
             {
                 responseAwaits.Add(AwaitResponse(player, _serverClientEventName, _clientServerEventName, _serverClientEventArgs));
             }

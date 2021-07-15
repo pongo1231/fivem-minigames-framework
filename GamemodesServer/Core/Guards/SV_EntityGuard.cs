@@ -4,7 +4,7 @@ using CitizenFX.Core.Native;
 namespace GamemodesServer.Core.Guards
 {
     /// <summary>
-    /// Entity guard class
+    /// Guard to prevent unauthorized entity creations
     /// </summary>
     public class EntityGuard : GmScript
     {

@@ -1,6 +1,5 @@
 ﻿using CitizenFX.Core;
 using CitizenFX.Core.Native;
-using CitizenFX.Core.UI;
 using GamemodesClient.Core;
 using GamemodesClient.Core.Gamemode;
 using GamemodesClient.Utils;
@@ -8,14 +7,12 @@ using GamemodesShared;
 using GamemodesShared.Utils;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Threading.Tasks;
-using Font = CitizenFX.Core.UI.Font;
 
 namespace GamemodesClient.Gamemodes
 {
     /// <summary>
-    /// Knockdown gamemode class
+    /// Knockdown gamemode
     /// </summary>
     public class Knockdown : GamemodeScript
     {

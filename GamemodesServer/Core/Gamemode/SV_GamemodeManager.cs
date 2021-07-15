@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace GamemodesServer.Core.Gamemode
 {
     /// <summary>
-    /// Gamemode manager class
+    /// Manager for choosing and running gamemodes
     /// </summary>
     public class GamemodeManager : GmScript
     {
@@ -73,7 +73,7 @@ namespace GamemodesServer.Core.Gamemode
         public async Task OnTickGamemodeHandle()
         {
             // Check if no players are left
-            if (PlayerLoadStateManager.GetLoadedInPlayers().Length == 0)
+            if (PlayerEnrollStateManager.GetLoadedInPlayers().Length == 0)
             {
                 // Stop gamemode if one is running right now
                 if (s_curGamemode != null)
@@ -162,7 +162,7 @@ namespace GamemodesServer.Core.Gamemode
             else
             {
                 // Iterate through all loaded in players
-                foreach (Player player in PlayerLoadStateManager.GetLoadedInPlayers())
+                foreach (Player player in PlayerEnrollStateManager.GetLoadedInPlayers())
                 {
                     // Check if player wasn't made aware of gamemode yet
                     if (!m_gamemodePlayers.Contains(player))
@@ -274,7 +274,7 @@ namespace GamemodesServer.Core.Gamemode
             // Prestop gamemode
             await s_curGamemode.PreStop();
 
-            if (PlayerLoadStateManager.GetLoadedInPlayers().Length > 0)
+            if (PlayerEnrollStateManager.GetLoadedInPlayers().Length > 0)
             {
                 // Wait for all clients to be made aware of this
                 await PlayerResponseAwaiter.AwaitResponse($"gamemodes:cl_sv_{s_curGamemode.EventName}_prestop", "gamemodes:sv_cl_prestoppedgamemode");
@@ -302,7 +302,7 @@ namespace GamemodesServer.Core.Gamemode
             // Stop gamemode
             await s_curGamemode.Stop();
 
-            if (PlayerLoadStateManager.GetLoadedInPlayers().Length > 0)
+            if (PlayerEnrollStateManager.GetLoadedInPlayers().Length > 0)
             {
                 // Wait for all clients to stop gamemode
                 await PlayerResponseAwaiter.AwaitResponse($"gamemodes:cl_sv_{s_curGamemode.EventName}_stop", "gamemodes:sv_cl_stoppedgamemode");

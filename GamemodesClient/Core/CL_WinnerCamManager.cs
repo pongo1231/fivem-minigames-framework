@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace GamemodesClient.Core
 {
     /// <summary>
-    /// Winner cam manager class
+    /// Manager for camera on gamemode stop
     /// </summary>
     public class WinnerCamManager : GmScript
     {

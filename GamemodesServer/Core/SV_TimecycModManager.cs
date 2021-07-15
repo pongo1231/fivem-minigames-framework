@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 namespace GamemodesServer.Core
 {
     /// <summary>
-    /// Timecycle Modifications Manager class
+    /// Manager of timecycle for all players
     /// </summary>
     public class TimecycModManager : GmScript
     {

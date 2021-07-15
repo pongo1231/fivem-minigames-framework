@@ -4,7 +4,7 @@ using GamemodesServer.Utils;
 namespace GamemodesServer.Core
 {
     /// <summary>
-    /// Main class
+    /// Entry point for gamemode
     /// </summary>
     public class Main : GmScript
     {

@@ -3,7 +3,7 @@
 namespace GamemodesServer.Utils
 {
     /// <summary>
-    /// Log class
+    /// Holder of Log related functions
     /// </summary>
     public static class Log
     {

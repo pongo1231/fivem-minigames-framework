@@ -6,7 +6,7 @@ using GamemodesClient.Utils;
 namespace GamemodesClient.Core
 {
     /// <summary>
-    /// Main class
+    /// Entry point of the gamemode on client join
     /// </summary>
     public class Main : GmScript
     {
@@ -30,10 +30,10 @@ namespace GamemodesClient.Core
             }
 
             // Add extra delay for safety
-            await Delay(5000);
+            await Delay(500);
 
-            // Fade out screen
-            await ScreenUtils.FadeOut();
+            // Fade in screen for safety
+            await ScreenUtils.FadeIn();
 
             // Unpause game if it was paused from previous resource restart
             Game.Pause(false);
@@ -50,8 +50,21 @@ namespace GamemodesClient.Core
             // Reset camera
             API.RenderScriptCams(false, false, 0, false, false);
 
+            // Clear timecyc mods
+            TimecycModManager.ClearTimecycMods();
+
+            // Ask server for rollin
+            TriggerServerEvent("gamemodes:sv_cl_request_roll_in");
+        }
+
+        [EventHandler("gamemodes:cl_sv_accepted_roll_in")]
+        private async void OnServerAcceptedRollIn()
+        {
+            // Fade out screen
+            await ScreenUtils.FadeOut();
+
             // Indicate to server we fully loaded in and are ready for gamemodes
-            TriggerServerEvent("gamemodes:sv_cl_loadedin");
+            TriggerServerEvent("gamemodes:sv_cl_prepared_for_roll_in");
         }
     }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace GamemodesClient.Core
 {
     /// <summary>
-    /// Spawn manager class
+    /// Manager for player (re-)spawning
     /// </summary>
     public class SpawnManager : GmScript
     {

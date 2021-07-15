@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace GamemodesClient.Core
 {
     /// <summary>
-    /// Map manager class
+    /// Manager for loading and unloading gamemode maps
     /// </summary>
     public class MapManager : GmScript
     {

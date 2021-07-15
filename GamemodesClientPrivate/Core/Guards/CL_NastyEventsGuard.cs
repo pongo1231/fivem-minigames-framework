@@ -4,7 +4,7 @@ using System;
 namespace GamemodesClientPrivate.Core.Guards
 {
     /// <summary>
-    /// Illegal event manager class
+    /// Guard to ban players who send a blacklisted event
     /// </summary>
     public class NastyEventsGuard : GmScript
     {

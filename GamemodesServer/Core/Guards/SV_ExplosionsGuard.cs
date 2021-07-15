@@ -4,7 +4,7 @@ using CitizenFX.Core.Native;
 namespace GamemodesServer.Core.Guards
 {
     /// <summary>
-    /// Explosions guard class
+    /// Guard for unauthorized explosions
     /// </summary>
     public class ExplosionsGuard : GmScript
     {

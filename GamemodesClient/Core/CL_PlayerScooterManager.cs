@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace GamemodesClient.Core
 {
     /// <summary>
-    /// Scooter manager class
+    /// Manager of this player's vehicle
     /// </summary>
     public class PlayerScooterManager : GmScript
     {

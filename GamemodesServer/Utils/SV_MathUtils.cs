@@ -4,6 +4,9 @@ using System;
 
 namespace GamemodesServer.Utils
 {
+    /// <summary>
+    /// Utils for math stuff
+    /// </summary>
     public static class MathUtils
     {
         /// <summary>

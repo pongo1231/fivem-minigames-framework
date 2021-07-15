@@ -8,7 +8,7 @@ using Font = CitizenFX.Core.UI.Font;
 namespace GamemodesClient.Core
 {
     /// <summary>
-    /// Prestart countdown manager class
+    /// Manager for countdown before gamemode start
     /// </summary>
     public class PrestartCountdownManager : GmScript
     {

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 namespace GamemodesServer.Core.Gamemode
 {
     /// <summary>
-    /// Gamemode base script class
+    /// Gamemode base script
     /// </summary>
     public abstract class GamemodeBaseScript : GmScript
     {

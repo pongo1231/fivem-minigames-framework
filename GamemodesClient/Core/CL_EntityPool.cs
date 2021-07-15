@@ -1,13 +1,12 @@
 ﻿using CitizenFX.Core;
 using CitizenFX.Core.Native;
-using GamemodesClient.Utils;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace GamemodesClient.Core
 {
     /// <summary>
-    /// Entity pool class
+    /// Holder of entity pool functions
     /// </summary>
     public static class EntityPool
     {

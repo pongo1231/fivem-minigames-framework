@@ -3,7 +3,7 @@
 namespace GamemodesClient.Utils
 {
     /// <summary>
-    /// Audio utils class
+    /// Audio utils
     /// </summary>
     public static class AudioUtils
     {

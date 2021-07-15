@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 namespace GamemodesClient.Core
 {
     /// <summary>
-    /// Radar manager class
+    /// Manager for minimap
     /// </summary>
     public class RadarManager : GmScript
     {

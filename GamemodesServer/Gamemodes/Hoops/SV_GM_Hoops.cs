@@ -103,7 +103,7 @@ namespace GamemodesServer.Gamemodes.Hoops
             long curTimestamp = API.GetGameTimer();
 
             // Iterate through each player
-            foreach (Player player in PlayerLoadStateManager.GetLoadedInPlayers())
+            foreach (Player player in PlayerEnrollStateManager.GetLoadedInPlayers())
             {
                 // Get player position
                 Vector3 playerPos = player.Character.Position;

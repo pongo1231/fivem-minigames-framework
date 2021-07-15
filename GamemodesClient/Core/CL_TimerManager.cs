@@ -8,7 +8,7 @@ using Font = CitizenFX.Core.UI.Font;
 namespace GamemodesClient.Core
 {
     /// <summary>
-    /// Timer manager class
+    /// Manager of shown timer
     /// </summary>
     public class TimerManager : GmScript
     {

@@ -7,7 +7,7 @@ using Font = CitizenFX.Core.UI.Font;
 namespace GamemodesClient.Core
 {
     /// <summary>
-    /// Scores manager class
+    /// Manager for shown scores
     /// </summary>
     public class ScoreManager : GmScript
     {

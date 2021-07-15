@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace GamemodesClient.Core
 {
     /// <summary>
-    /// Prestart cam manager
+    /// Manager for camera stuff before gamemode start
     /// </summary>
     public class PrestartCamManager : GmScript
     {

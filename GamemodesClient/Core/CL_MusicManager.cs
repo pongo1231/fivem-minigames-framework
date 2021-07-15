@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace GamemodesClient.Core
 {
     /// <summary>
-    /// Music event manager class
+    /// Manager for music events
     /// </summary>
     public class MusicManager : GmScript
     {

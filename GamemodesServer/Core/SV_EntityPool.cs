@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace GamemodesServer.Core
 {
     /// <summary>
-    /// Entity pool class
+    /// Holder of entity pool functions
     /// </summary>
     public static class EntityPool
     {

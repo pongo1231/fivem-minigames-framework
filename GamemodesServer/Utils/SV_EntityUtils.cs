@@ -4,7 +4,7 @@ using CitizenFX.Core.Native;
 namespace GamemodesServer.Utils
 {
     /// <summary>
-    /// Entity utils class
+    /// Utils for entity stuff
     /// </summary>
     public static class EntityUtils
     {

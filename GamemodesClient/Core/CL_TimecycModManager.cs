@@ -4,7 +4,7 @@ using CitizenFX.Core.Native;
 namespace GamemodesClient.Core
 {
     /// <summary>
-    /// Timecycle modifications Manager
+    /// Manager for timecycle
     /// </summary>
     public class TimecycModManager : GmScript
     {
@@ -30,6 +30,15 @@ namespace GamemodesClient.Core
 
             // Apply timecycle modifiers
             API.PushTimecycleModifier();
+        }
+
+        /// <summary>
+        /// Clear all timecycle modifiers
+        /// </summary>
+        public static void ClearTimecycMods()
+        {
+            API.ClearTimecycleModifier();
+            API.ClearExtraTimecycleModifier();
         }
     }
 }

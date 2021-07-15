@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 namespace GamemodesServer.Core
 {
     /// <summary>
-    /// Timer manager class
+    /// Manager of timer for all players
     /// </summary>
     public class TimerManager : GmScript
     {

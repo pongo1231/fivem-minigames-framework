@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace GamemodesClient.Core
 {
     /// <summary>
-    /// Ambient stuff manager class
+    /// Manager for all states that should be set at all times
     /// </summary>
     public class AmbientManager : GmScript
     {

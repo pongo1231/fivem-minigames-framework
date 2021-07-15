@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace GamemodesClient.Core.Gamemode
 {
     /// <summary>
-    /// Gamemode Script
+    /// Base Gamemode Script
     /// </summary>
     public abstract class GamemodeScript : GmScript
     {
@@ -266,9 +266,8 @@ namespace GamemodesClient.Core.Gamemode
         /// </summary>
         private async void OnStop()
         {
-            // Clear all timecycle modifiers
-            API.ClearTimecycleModifier();
-            API.ClearExtraTimecycleModifier();
+            // Cleanup timecyc mod
+            TimecycModManager.ClearTimecycMods();
 
             // Cleanup scooter
             PlayerScooterManager.Cleanup();

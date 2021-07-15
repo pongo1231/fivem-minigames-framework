@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 namespace GamemodesClient.Core
 {
     /// <summary>
-    /// Player control manager class
+    /// Manager for setting player control
     /// </summary>
     public class PlayerControlManager : GmScript
     {

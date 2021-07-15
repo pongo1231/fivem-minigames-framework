@@ -1,7 +1,7 @@
 ﻿namespace GamemodesShared.Utils
 {
     /// <summary>
-    /// Math utils class
+    /// Utils for math related stuff
     /// </summary>
     public static class MathUtils
     {

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 namespace GamemodesServer.Core
 {
     /// <summary>
-    /// Scores manager class
+    /// Manager of scores for current gamemode
     /// </summary>
     public class ScoreManager : GmScript
     {

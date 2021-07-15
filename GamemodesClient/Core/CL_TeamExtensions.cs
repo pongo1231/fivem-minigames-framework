@@ -3,6 +3,9 @@ using GamemodesShared;
 
 namespace GamemodesClient.Core
 {
+    /// <summary>
+    /// Extensions to player class for Team-related things
+    /// </summary>
     public static class TeamExtensions
     {
         /// <summary>

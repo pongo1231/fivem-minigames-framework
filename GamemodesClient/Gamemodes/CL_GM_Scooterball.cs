@@ -8,12 +8,11 @@ using GamemodesShared;
 using System;
 using System.Drawing;
 using System.Threading.Tasks;
-using Font = CitizenFX.Core.UI.Font;
 
 namespace GamemodesClient.Gamemodes
 {
     /// <summary>
-    /// Scooterball gamemode class
+    /// Scooterball gamemode
     /// </summary>
     public class Scooterball : GamemodeScript
     {
