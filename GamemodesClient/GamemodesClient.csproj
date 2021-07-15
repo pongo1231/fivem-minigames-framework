@@ -25,18 +25,18 @@
     <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>embedded</DebugType>
+    <DebugType>none</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\bin\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DebugSymbols>true</DebugSymbols>
+    <DebugSymbols>false</DebugSymbols>
     <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CitizenFX.Core.Client, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CitizenFX.Core.Client.1.0.2896\lib\net45\CitizenFX.Core.Client.dll</HintPath>
+      <HintPath>..\packages\CitizenFX.Core.Client.1.0.4209\lib\net45\CitizenFX.Core.Client.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -58,7 +58,6 @@
     <Compile Include="Core\CL_RadarManager.cs" />
     <Compile Include="Core\CL_ScoreManager.cs" />
     <Compile Include="Core\CL_TeamExtensions.cs" />
-    <Compile Include="Core\Guards\CL_NastyEventsGuard.cs" />
     <Compile Include="Core\CL_PlayerControlManager.cs" />
     <Compile Include="Core\CL_PlayerOverheadTextManager.cs" />
     <Compile Include="Core\CL_PrestartCamManager.cs" />
@@ -84,6 +83,7 @@
     <ProjectReference Include="..\GamemodesShared\GamemodesShared.csproj">
       <Project>{3f7964c1-f081-406a-8869-f0b5648840a6}</Project>
       <Name>GamemodesShared</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

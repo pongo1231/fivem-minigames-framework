@@ -1,6 +1,7 @@
-﻿using System;
+﻿using GamemodesClient.Core;
+using System;
 
-namespace GamemodesClient.Core.Guards
+namespace GamemodesClientPrivate.Core.Guards
 {
     /// <summary>
     /// Illegal event manager class

@@ -3,7 +3,6 @@ using CitizenFX.Core.Native;
 using GamemodesServer.Utils;
 using GamemodesShared;
 using GamemodesShared.Utils;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;

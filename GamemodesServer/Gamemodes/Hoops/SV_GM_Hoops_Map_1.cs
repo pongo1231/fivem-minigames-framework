@@ -27,7 +27,8 @@ namespace GamemodesServer.Gamemodes.Hoops
             FallOffHeight = 343f;
 
             // List of hoops
-            Hoops = new Hoop[] {
+            Hoops = new Hoop[]
+            {
                 // Loop
                 new Hoop(-68f, -814f, 377.5f),
 
