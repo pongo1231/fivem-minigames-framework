@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GamemodesClientPrivate", "G
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GamemodesServerPrivate", "GamemodesServerPrivate\GamemodesServerPrivate.csproj", "{9C0AF414-E264-49E0-AE28-6AA02DC2FA58}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GamemodesClientMenuBase", "GamemodesMenuBase\GamemodesClientMenuBase.csproj", "{607A2A32-F1C5-486E-9C73-7E0576BC3A8E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{9C0AF414-E264-49E0-AE28-6AA02DC2FA58}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C0AF414-E264-49E0-AE28-6AA02DC2FA58}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9C0AF414-E264-49E0-AE28-6AA02DC2FA58}.Release|Any CPU.Build.0 = Release|Any CPU
+		{607A2A32-F1C5-486E-9C73-7E0576BC3A8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{607A2A32-F1C5-486E-9C73-7E0576BC3A8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{607A2A32-F1C5-486E-9C73-7E0576BC3A8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{607A2A32-F1C5-486E-9C73-7E0576BC3A8E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -80,6 +80,11 @@
     <Compile Include="Utils\CL_EntityUtils.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\GamemodesMenuBase\GamemodesClientMenuBase.csproj">
+      <Project>{607a2a32-f1c5-486e-9c73-7e0576bc3a8e}</Project>
+      <Name>GamemodesClientMenuBase</Name>
+      <Private>False</Private>
+    </ProjectReference>
     <ProjectReference Include="..\GamemodesShared\GamemodesShared.csproj">
       <Project>{3f7964c1-f081-406a-8869-f0b5648840a6}</Project>
       <Name>GamemodesShared</Name>
