@@ -48,10 +48,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Menu\CL_GamemodeTitledUserMenu.cs" />
-    <Compile Include="Menu\CL_GamemodeToggleableBaseMenu.cs" />
-    <Compile Include="Menu\CL_GamemodeBaseMenu.cs" />
-    <Compile Include="Menu\CL_GamemodeMenuItem.cs" />
+    <Compile Include="Menu\CL_GmMenuAwareBaseMenu.cs" />
+    <Compile Include="Menu\CL_GmUserMenu.cs" />
+    <Compile Include="Menu\CL_GmToggleableBaseMenu.cs" />
+    <Compile Include="Menu\CL_GmBaseMenu.cs" />
+    <Compile Include="Menu\CL_GmMenuItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

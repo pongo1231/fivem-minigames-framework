@@ -10,14 +10,14 @@ namespace GamemodesClientMenuBase.Menu
     /// <summary>
     /// Menu item base
     /// </summary>
-    public class GamemodeMenuItem
+    public class GmMenuItem
     {
         /// <summary>
         /// On Item Click action
         /// </summary>
         /// <param name="_idx">Index of selected item</param>
         /// <param name="_label">Label of selected item</param>
-        public delegate void GamemodeMenuItemClick(int _idx, string _label);
+        public delegate void GmMenuItemClick(int _idx, string _label);
 
         /// <summary>
         /// X position
@@ -37,7 +37,7 @@ namespace GamemodesClientMenuBase.Menu
         /// <summary>
         /// On Click action
         /// </summary>
-        public GamemodeMenuItemClick OnClick { get; private set; } = null;
+        public GmMenuItemClick OnClick { get; private set; } = null;
 
         /// <summary>
         /// Label to show
@@ -71,7 +71,7 @@ namespace GamemodesClientMenuBase.Menu
         /// <param name="_height">Height</param>
         /// <param name="_label">Label of item</param>
         /// <param name="_onClickAction">Action to execute on click</param>
-        public GamemodeMenuItem(int _width, int _height, string _label, GamemodeMenuItemClick _onClickAction = null)
+        public GmMenuItem(int _width, int _height, string _label, GmMenuItemClick _onClickAction = null)
         {
             m_rect = new Rectangle(new PointF(), new SizeF(_width, _height), Color, true);
 
@@ -89,7 +89,7 @@ namespace GamemodesClientMenuBase.Menu
         /// <summary>
         /// Draw this item
         /// </summary>
-        public void Draw()
+        public virtual void Draw()
         {
             // Assign rect pos
             m_rect.Position = new PointF(X, Y);

@@ -10,7 +10,7 @@ namespace GamemodesClientMenuBase.Menu
     /// <summary>
     /// User menu with title bar
     /// </summary>
-    public class GamemodeTitledUserMenu : GamemodeToggleableBaseMenu
+    public abstract class GmUserMenu : GmToggleableBaseMenu
     {
         /// <summary>
         /// Label to display in title bar
@@ -31,33 +31,40 @@ namespace GamemodesClientMenuBase.Menu
         /// Constructor
         /// </summary>
         /// <param name="_title">Label to show in title bar</param>
-        public GamemodeTitledUserMenu(string _title)
+        public GmUserMenu(string _title)
         {
             Title = _title;
         }
 
         /// <summary>
-        /// Update function
+        /// Tick function to add menu items and run custom logic
         /// </summary>
-        /// <param name="_posX">Starting X position to use for menu</param>
-        /// <param name="_posY">Starting Y position to use for menu</param>
-        protected override void _Update(ref int _posX, ref int _posY)
-        {
-            int posX = m_posX;
-            int posY = m_posY;
+        protected abstract void Tick();
 
-            Rectangle titleRect = new Rectangle(new PointF(posX, posY), new SizeF(m_itemWidth, m_headerHeight), m_headerColor, true);
+        /// <summary>
+        /// Menu tick function
+        /// Override Tick instead of this method
+        /// </summary>
+        protected sealed override bool MenuTick()
+        {
+            if (!base.MenuTick())
+            {
+                return false;
+            }
+
+            Rectangle titleRect = new Rectangle(new PointF(PosX, PosY), new SizeF(m_itemWidth, m_headerHeight), m_headerColor, true);
             titleRect.Draw();
 
             Text titleText = new Text(Title,
-                new PointF(posX, posY - m_headerHeight * 0.5f), 1f, Color.FromArgb(255, 255, 255), Font.Monospace, Alignment.Center, true, true);
+                new PointF(PosX, PosY - m_headerHeight * 0.5f), 1f, Color.FromArgb(255, 255, 255), Font.Monospace, Alignment.Center, true, true);
             titleText.Draw();
 
             // Take title bar in consideration for Y position
-            posY += (int)(m_headerHeight - m_itemHeight * 0.5f);
+            PosY += (int)(m_headerHeight - m_itemHeight * 0.5f);
 
-            _posX = posX;
-            _posY = posY;
+            Tick();
+
+            return true;
         }
     }
 }

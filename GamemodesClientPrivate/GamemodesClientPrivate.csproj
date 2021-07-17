@@ -45,7 +45,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\MapEditor\CL_TestMenu.cs" />
+    <Compile Include="Core\MapEditor\CL_MapMenuManager.cs" />
+    <Compile Include="Core\MapEditor\Menus\CL_MapAboutMenu.cs" />
+    <Compile Include="Core\MapEditor\Menus\CL_MapMainMenu.cs" />
     <Compile Include="Core\Guards\CL_NastyEventsGuard.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -64,8 +66,6 @@
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Core\MapEditor\Menus\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
