@@ -7,7 +7,7 @@ namespace GamemodesClientPrivate.Core
 {
     public class TestMenu : GmScript
     {
-        private readonly GamemodeMenu m_menu = new GamemodeMenu("Test");
+        private readonly GamemodeTitledUserMenu m_menu = new GamemodeTitledUserMenu("Test");
 
         [Tick]
         private async Task OnTick()

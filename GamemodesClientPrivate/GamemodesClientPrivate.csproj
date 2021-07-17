@@ -45,7 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\CL_TestMenu.cs" />
+    <Compile Include="Core\MapEditor\CL_TestMenu.cs" />
     <Compile Include="Core\Guards\CL_NastyEventsGuard.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -63,6 +63,9 @@
       <Name>GamemodesClientMenuBase</Name>
       <Private>False</Private>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Core\MapEditor\Menus\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
