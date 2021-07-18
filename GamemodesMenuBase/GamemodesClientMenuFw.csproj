@@ -48,11 +48,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Menu\CL_GmMenuAwareBaseMenu.cs" />
-    <Compile Include="Menu\CL_GmUserMenu.cs" />
-    <Compile Include="Menu\CL_GmToggleableBaseMenu.cs" />
-    <Compile Include="Menu\CL_GmBaseMenu.cs" />
-    <Compile Include="Menu\CL_GmMenuItem.cs" />
+    <Compile Include="GmMenuFw\Menu\Base\CL_GmMenuAwareBaseMenu.cs" />
+    <Compile Include="GmMenuFw\Item\CL_GmMenuActionItem.cs" />
+    <Compile Include="GmMenuFw\Item\CL_GmMenuLabelItem.cs" />
+    <Compile Include="GmMenuFw\Menu\CL_GmUserMenu.cs" />
+    <Compile Include="GmMenuFw\Menu\CL_GmToggleableBaseMenu.cs" />
+    <Compile Include="GmMenuFw\Menu\Base\CL_GmBaseMenu.cs" />
+    <Compile Include="GmMenuFw\Item\Base\CL_GmMenuBaseItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

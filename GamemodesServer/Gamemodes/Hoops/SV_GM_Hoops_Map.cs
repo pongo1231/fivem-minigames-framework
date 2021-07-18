@@ -6,7 +6,7 @@ namespace GamemodesServer.Gamemodes.Hoops
     /// <summary>
     /// Hoops map base class
     /// </summary>
-    public class Hoops_Map : GamemodeMap
+    public class Hoops_Map : GamemodeBaseMap
     {
         /// <summary>
         /// Hoop class

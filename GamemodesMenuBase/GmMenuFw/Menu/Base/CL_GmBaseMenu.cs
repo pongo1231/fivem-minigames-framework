@@ -1,12 +1,14 @@
 ﻿using CitizenFX.Core;
 using CitizenFX.Core.Native;
+using GamemodesClientMenuFw.GmMenuFw.Item;
+using GamemodesClientMenuFw.GmMenuFw.Item.Base;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 
-using static GamemodesClientMenuBase.Menu.GmMenuItem;
+using static GamemodesClientMenuFw.GmMenuFw.Item.GmMenuActionItem;
 
-namespace GamemodesClientMenuBase.Menu
+namespace GamemodesClientMenuFw.GmMenuFw.Menu.Base
 {
     /// <summary>
     /// Menu base
@@ -51,7 +53,7 @@ namespace GamemodesClientMenuBase.Menu
         /// <summary>
         /// Collection of menu items
         /// </summary>
-        protected readonly Queue<GmMenuItem> m_menuItems = new Queue<GmMenuItem>();
+        protected readonly Queue<GmMenuBaseItem> m_menuItems = new Queue<GmMenuBaseItem>();
 
         /// <summary>
         /// Starting X pos of menu this frame
@@ -70,13 +72,22 @@ namespace GamemodesClientMenuBase.Menu
         protected abstract bool MenuTick();
 
         /// <summary>
-        /// Add a labeled menu item with an optional callback
+        /// Add a labeled menu item
+        /// </summary>
+        /// <param name="_label">Label to display</param>
+        public void AddLabelItem(string _label)
+        {
+            m_menuItems.Enqueue(new GmMenuLabelItem(m_itemWidth, m_itemHeight, _label));
+        }
+
+        /// <summary>
+        /// Add a labeled menu item with an callback
         /// </summary>
         /// <param name="_label">Label to display</param>
         /// <param name="_onClick">Callback to invoke on click</param>
-        public void AddLabelItem(string _label, GmMenuItemClick _onClick = null)
+        public void AddActionItem(string _label, GmMenuItemClick _onClick)
         {
-            m_menuItems.Enqueue(new GmMenuItem(m_itemWidth, m_itemHeight, _label, _onClick));
+            m_menuItems.Enqueue(new GmMenuActionItem(m_itemWidth, m_itemHeight, _label, _onClick));
         }
 
         /// <summary>
@@ -94,13 +105,13 @@ namespace GamemodesClientMenuBase.Menu
             if (m_menuItems.Count > 0)
             {
                 // Store currently selected item to pass to HandleInput later
-                GmMenuItem selectedMenuItem = null;
+                GmMenuBaseItem selectedMenuItem = null;
 
                 // Draw each menu item, also dequeue each of them while doing that
                 int itemsCount = m_menuItems.Count;
                 for (int itemIdx = 0; m_menuItems.Count > 0; itemIdx++)
                 {
-                    GmMenuItem menuItem = m_menuItems.Dequeue();
+                    GmMenuBaseItem menuItem = m_menuItems.Dequeue();
 
                     menuItem.X = PosX;
                     menuItem.Y = PosY;
@@ -132,7 +143,7 @@ namespace GamemodesClientMenuBase.Menu
         /// </summary>
         /// <param name="_max">Index of last menu item</param>
         /// <param name="_selectedItem">Currently selected menu item</param>
-        private void HandleInput(int _max, GmMenuItem _selectedItem)
+        protected virtual void HandleInput(int _max, GmMenuBaseItem _selectedItem)
         {
             // Arrow up
             if (Game.IsControlJustPressed(0, Control.PhoneUp))
@@ -157,9 +168,11 @@ namespace GamemodesClientMenuBase.Menu
             // Enter key
             else if (Game.IsControlJustPressed(0, Control.FrontendRdown))
             {
-                if (_selectedItem.OnClick != null)
+                // Try executing the action if it's an action menu item
+                GmMenuActionItem actionItem = _selectedItem as GmMenuActionItem;
+                if (actionItem != null && actionItem.OnClick != null)
                 {
-                    _selectedItem.OnClick(SelectedIndex, _selectedItem.Label);
+                    actionItem.OnClick(SelectedIndex, actionItem.Label);
                 }
 
                 API.PlaySoundFrontend(-1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", false);

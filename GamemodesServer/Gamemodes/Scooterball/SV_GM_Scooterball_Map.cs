@@ -6,7 +6,7 @@ namespace GamemodesServer.Gamemodes.Scooterball
     /// <summary>
     /// Scooterball map base class
     /// </summary>
-    public abstract class Scooterball_Map : GamemodeMap
+    public abstract class Scooterball_Map : GamemodeBaseMap
     {
         /// <summary>
         /// Position to spawn ball at

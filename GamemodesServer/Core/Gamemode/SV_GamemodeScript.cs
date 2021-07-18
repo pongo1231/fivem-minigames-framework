@@ -16,7 +16,7 @@ namespace GamemodesServer.Core.Gamemode
     /// Gamemode script
     /// </summary>
     /// <typeparam name="MapType">Type of map class that corresponds to this gamemode</typeparam>
-    public abstract class GamemodeScript<MapType> : GamemodeBaseScript where MapType : GamemodeMap
+    public abstract class GamemodeScript<MapType> : GamemodeBaseScript where MapType : GamemodeBaseMap
     {
         /// <summary>
         /// Gamemode event handler class

@@ -5,7 +5,7 @@ using Text = CitizenFX.Core.UI.Text;
 using Font = CitizenFX.Core.UI.Font;
 using Alignment = CitizenFX.Core.UI.Alignment;
 
-namespace GamemodesClientMenuBase.Menu
+namespace GamemodesClientMenuFw.GmMenuFw.Menu
 {
     /// <summary>
     /// User menu with title bar

@@ -11,7 +11,7 @@ namespace GamemodesServer.Core.Map
     /// <summary>
     /// Gamemode map base script
     /// </summary>
-    public abstract class GamemodeMap : GmScript
+    public abstract class GamemodeBaseMap : GmScript
     {
         /// <summary>
         /// Attribute for calling map function on map load
@@ -146,7 +146,7 @@ namespace GamemodesServer.Core.Map
         /// </summary>
         private List<Func<Task>> m_onTickFuncs = new List<Func<Task>>();
 
-        public GamemodeMap()
+        public GamemodeBaseMap()
         {
             // Create delegate helper
             Func<MethodInfo, Func<Task>> createDelegate = (_methodInfo) =>

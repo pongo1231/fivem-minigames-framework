@@ -1,4 +1,4 @@
-﻿using GamemodesClientMenuBase.Menu;
+﻿using GamemodesClientMenuFw.GmMenuFw.Menu;
 
 namespace GamemodesClientPrivate.Core.MapEditor.Menus
 {
