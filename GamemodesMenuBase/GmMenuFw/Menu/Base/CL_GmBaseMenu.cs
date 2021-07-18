@@ -3,7 +3,6 @@ using CitizenFX.Core.Native;
 using GamemodesClientMenuFw.GmMenuFw.Item;
 using GamemodesClientMenuFw.GmMenuFw.Item.Base;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 
 using static GamemodesClientMenuFw.GmMenuFw.Item.GmMenuActionItem;
@@ -18,7 +17,7 @@ namespace GamemodesClientMenuFw.GmMenuFw.Menu.Base
         /// <summary>
         /// Currently selected menu item index
         /// </summary>
-        public int SelectedIndex { get; private set; } = 0;
+        public int SelectedIndex { get; protected set; } = 0;
 
         /// <summary>
         /// Default starting X pos of menu
@@ -53,7 +52,7 @@ namespace GamemodesClientMenuFw.GmMenuFw.Menu.Base
         /// <summary>
         /// Collection of menu items
         /// </summary>
-        protected readonly Queue<GmMenuBaseItem> m_menuItems = new Queue<GmMenuBaseItem>();
+        protected readonly GmMenuQueue<GmMenuBaseItem> m_menuItems = new GmMenuQueue<GmMenuBaseItem>();
 
         /// <summary>
         /// Starting X pos of menu this frame
@@ -64,6 +63,28 @@ namespace GamemodesClientMenuFw.GmMenuFw.Menu.Base
         /// Starting Y pos of menu this frame
         /// </summary>
         protected int PosY { get; set; } = m_posY;
+
+        /// <summary>
+        /// Whether to use either immediate or retained mode
+        /// Immediate = Menu items have to be added every frame
+        /// Retained = Menu items only have to be added once
+        /// </summary>
+        protected bool ImmediateMode { get; set; } = true;
+
+        /// <summary>
+        /// Initial delay before doing repeated navgiation action after first user-initiated navigate
+        /// </summary>
+        private const float m_initialNavigateRepeatDelaySecs = 0.5f;
+
+        /// <summary>
+        /// Continued delay before doing repeated navgiation action after initial automated navigate
+        /// </summary>
+        private const float m_continualNativgateRepeatDelaySecs = 0.05f;
+
+        /// <summary>
+        /// Current delay before doing repeated automatic navigate action
+        /// </summary>
+        private float m_curNavigateRepeatDelaySecs = m_initialNavigateRepeatDelaySecs;
 
         /// <summary>
         /// Tick function to add menu content
@@ -104,28 +125,9 @@ namespace GamemodesClientMenuFw.GmMenuFw.Menu.Base
             // Only run menu drawing logic if it actually contains items
             if (m_menuItems.Count > 0)
             {
-                // Store currently selected item to pass to HandleInput later
-                GmMenuBaseItem selectedMenuItem = null;
-
-                // Draw each menu item, also dequeue each of them while doing that
                 int itemsCount = m_menuItems.Count;
-                for (int itemIdx = 0; m_menuItems.Count > 0; itemIdx++)
-                {
-                    GmMenuBaseItem menuItem = m_menuItems.Dequeue();
 
-                    menuItem.X = PosX;
-                    menuItem.Y = PosY;
-                    menuItem.Color = itemIdx == SelectedIndex ? m_itemSelectedColor : m_itemColor;
-
-                    menuItem.Draw();
-
-                    if (itemIdx == SelectedIndex)
-                    {
-                        selectedMenuItem = menuItem;
-                    }
-
-                    PosY += m_itemHeight;
-                }
+                GmMenuBaseItem selectedMenuItem = DrawItems();
 
                 // Clamp selected index between 0 and last menu item index
                 SelectedIndex = Math.Max(0, Math.Min(itemsCount - 1, SelectedIndex));
@@ -139,6 +141,48 @@ namespace GamemodesClientMenuFw.GmMenuFw.Menu.Base
         }
 
         /// <summary>
+        /// Handle drawing of all menu items
+        /// Only called if amount of items is over 0
+        /// </summary>
+        /// <returns>Currently selected menu item object</returns>
+        protected virtual GmMenuBaseItem DrawItems()
+        {
+            GmMenuBaseItem selectedMenuItem = null;
+
+            // Draw each menu item, also dequeue each of them while doing that if in immediate mode
+            GmMenuQueue<GmMenuBaseItem> menuItemNode = m_menuItems;
+            for (int itemIdx = 0; ImmediateMode ? menuItemNode.Count > 0 : menuItemNode != null; itemIdx++)
+            {
+                GmMenuBaseItem menuItem = menuItemNode.Content;
+
+                menuItem.X = PosX;
+                menuItem.Y = PosY;
+                menuItem.Color = itemIdx == SelectedIndex ? m_itemSelectedColor : m_itemColor;
+
+                menuItem.Draw();
+
+                if (itemIdx == SelectedIndex)
+                {
+                    selectedMenuItem = menuItem;
+                }
+
+                PosY += m_itemHeight;
+
+                // Only pop item if menu is in immediate mode
+                if (ImmediateMode)
+                {
+                    menuItemNode.Dequeue();
+                }
+                else
+                {
+                    menuItemNode = menuItemNode.Next;
+                }
+            }
+
+            return selectedMenuItem;
+        }
+
+        /// <summary>
         /// Handle input
         /// </summary>
         /// <param name="_max">Index of last menu item</param>
@@ -146,8 +190,23 @@ namespace GamemodesClientMenuFw.GmMenuFw.Menu.Base
         protected virtual void HandleInput(int _max, GmMenuBaseItem _selectedItem)
         {
             // Arrow up
-            if (Game.IsControlJustPressed(0, Control.PhoneUp))
+            if (Game.IsControlPressed(0, Control.PhoneUp))
             {
+                // Ensure automated navigate only happens after specified time
+                if (m_curNavigateRepeatDelaySecs > 0)
+                {
+                    m_curNavigateRepeatDelaySecs -= Game.LastFrameTime;
+
+                    if (m_curNavigateRepeatDelaySecs < m_initialNavigateRepeatDelaySecs - Game.LastFrameTime)
+                    {
+                        return;
+                    }
+                }
+                else
+                {
+                    m_curNavigateRepeatDelaySecs = m_continualNativgateRepeatDelaySecs;
+                }
+
                 if (--SelectedIndex < 0)
                 {
                     SelectedIndex = _max;
@@ -156,8 +215,23 @@ namespace GamemodesClientMenuFw.GmMenuFw.Menu.Base
                 API.PlaySoundFrontend(-1, "NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET", false);
             }
             // Arrow down
-            else if (Game.IsControlJustPressed(0, Control.PhoneDown))
+            else if (Game.IsControlPressed(0, Control.PhoneDown))
             {
+                // Ensure automated navigate only happens after specified time
+                if (m_curNavigateRepeatDelaySecs > 0)
+                {
+                    m_curNavigateRepeatDelaySecs -= Game.LastFrameTime;
+
+                    if (m_curNavigateRepeatDelaySecs < m_initialNavigateRepeatDelaySecs - Game.LastFrameTime)
+                    {
+                        return;
+                    }
+                }
+                else
+                {
+                    m_curNavigateRepeatDelaySecs = m_continualNativgateRepeatDelaySecs;
+                }
+
                 if (++SelectedIndex == _max + 1)
                 {
                     SelectedIndex = 0;
@@ -165,17 +239,23 @@ namespace GamemodesClientMenuFw.GmMenuFw.Menu.Base
 
                 API.PlaySoundFrontend(-1, "NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET", false);
             }
-            // Enter key
-            else if (Game.IsControlJustPressed(0, Control.FrontendRdown))
+            else
             {
-                // Try executing the action if it's an action menu item
-                GmMenuActionItem actionItem = _selectedItem as GmMenuActionItem;
-                if (actionItem != null && actionItem.OnClick != null)
-                {
-                    actionItem.OnClick(SelectedIndex, actionItem.Label);
-                }
+                // Reset automated navigate action timer
+                m_curNavigateRepeatDelaySecs = m_initialNavigateRepeatDelaySecs;
 
-                API.PlaySoundFrontend(-1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", false);
+                // Enter key
+                if (Game.IsControlJustPressed(0, Control.FrontendRdown))
+                {
+                    // Try executing the action if it's an action menu item
+                    GmMenuActionItem actionItem = _selectedItem as GmMenuActionItem;
+                    if (actionItem != null && actionItem.OnClick != null)
+                    {
+                        actionItem.OnClick(SelectedIndex, actionItem.Label);
+                    }
+
+                    API.PlaySoundFrontend(-1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", false);
+                }
             }
         }
     }

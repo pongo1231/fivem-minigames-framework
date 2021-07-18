@@ -1,9 +1,11 @@
 ﻿using System.Drawing;
+using GamemodesClientMenuFw.GmMenuFw.Menu.Base;
 
 using Rectangle = CitizenFX.Core.UI.Rectangle;
 using Text = CitizenFX.Core.UI.Text;
 using Font = CitizenFX.Core.UI.Font;
 using Alignment = CitizenFX.Core.UI.Alignment;
+using GamemodesClientMenuFw.GmMenuFw.Item.Base;
 
 namespace GamemodesClientMenuFw.GmMenuFw.Menu
 {
@@ -39,10 +41,21 @@ namespace GamemodesClientMenuFw.GmMenuFw.Menu
         /// <summary>
         /// Tick function to add menu items and run custom logic
         /// </summary>
-        protected abstract void Tick();
+        protected virtual void Tick()
+        {
+
+        }
 
         /// <summary>
-        /// Menu tick function
+        /// Sealed draw items function
+        /// </summary>
+        protected sealed override GmMenuBaseItem DrawItems()
+        {
+           return base.DrawItems();
+        }
+
+        /// <summary>
+        /// Sealed menu tick function
         /// Override Tick instead of this method
         /// </summary>
         protected sealed override bool MenuTick()

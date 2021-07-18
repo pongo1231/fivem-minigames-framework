@@ -1,8 +1,7 @@
 ﻿using CitizenFX.Core;
 using CitizenFX.Core.Native;
-using GamemodesClientMenuFw.GmMenuFw.Menu.Base;
 
-namespace GamemodesClientMenuFw.GmMenuFw.Menu
+namespace GamemodesClientMenuFw.GmMenuFw.Menu.Base
 {
     /// <summary>
     /// Menu base for user toggleable menus

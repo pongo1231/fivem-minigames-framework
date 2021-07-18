@@ -8,7 +8,7 @@ version "0.1"
 client_scripts {
     "GamemodesClient.net.dll",
     "GamemodesClientPrivate.net.dll",
-    "GamemodesClientMenuBase.net.dll"
+    "GamemodesClientMenuFw.net.dll"
 }
 
 server_scripts {

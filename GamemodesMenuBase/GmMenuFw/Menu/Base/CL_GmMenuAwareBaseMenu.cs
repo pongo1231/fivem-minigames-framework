@@ -5,7 +5,7 @@ namespace GamemodesClientMenuFw.GmMenuFw.Menu.Base
     /// <summary>
     /// Menu base for menus with awareness for child and parent menus
     /// </summary>
-    public abstract class GmMenuAwareBaseMenu : GmBaseMenu
+    public abstract class GmMenuAwareBaseMenu : GmOverflowAwareBaseMenu
     {
         /// <summary>
         /// Parent menu
@@ -41,6 +41,9 @@ namespace GamemodesClientMenuFw.GmMenuFw.Menu.Base
                 ParentMenu.ChildMenu = null;
                 ParentMenu = null;
             }
+
+            // Reset selected index
+            SelectedIndex = 0;
         }
 
         /// <summary>

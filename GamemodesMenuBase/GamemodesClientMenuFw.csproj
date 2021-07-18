@@ -7,8 +7,8 @@
     <ProjectGuid>{607A2A32-F1C5-486E-9C73-7E0576BC3A8E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GamemodesClientMenuBase</RootNamespace>
-    <AssemblyName>GamemodesClientMenuBase.net</AssemblyName>
+    <RootNamespace>GamemodesClientMenuFw</RootNamespace>
+    <AssemblyName>GamemodesClientMenuFw.net</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -48,11 +48,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GmMenuFw\CL_GmMenuQueue.cs" />
     <Compile Include="GmMenuFw\Menu\Base\CL_GmMenuAwareBaseMenu.cs" />
     <Compile Include="GmMenuFw\Item\CL_GmMenuActionItem.cs" />
     <Compile Include="GmMenuFw\Item\CL_GmMenuLabelItem.cs" />
+    <Compile Include="GmMenuFw\Menu\Base\CL_GmOverflowAwareBaseMenu.cs" />
     <Compile Include="GmMenuFw\Menu\CL_GmUserMenu.cs" />
-    <Compile Include="GmMenuFw\Menu\CL_GmToggleableBaseMenu.cs" />
+    <Compile Include="GmMenuFw\Menu\Base\CL_GmToggleableBaseMenu.cs" />
     <Compile Include="GmMenuFw\Menu\Base\CL_GmBaseMenu.cs" />
     <Compile Include="GmMenuFw\Item\Base\CL_GmMenuBaseItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -60,5 +62,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
