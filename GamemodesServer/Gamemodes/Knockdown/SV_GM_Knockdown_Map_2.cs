@@ -122,7 +122,8 @@ namespace GamemodesServer.Gamemodes.Knockdown
             if (m_obstacles.Count < 50)
             {
                 // Create obstacle
-                Prop prop = await EntityPool.CreateProp("stt_prop_stunt_bowling_ball", m_obstaclePreSpawnPos, default, true);
+                var prop = await EntityPool.CreateProp(
+                    "stt_prop_stunt_bowling_ball", m_obstaclePreSpawnPos, default, true);
 
                 // Add to list
                 m_obstacles.Add(new Obstacle(prop));
@@ -141,10 +142,10 @@ namespace GamemodesServer.Gamemodes.Knockdown
         private async Task OnTickHandleObstacles()
         {
             // Get current timestamp
-            long curTimestamp = API.GetGameTimer();
+            var curTimestamp = API.GetGameTimer();
 
             // Delete all the obstacles which don't exist anymore
-            foreach (Obstacle obstacle in m_obstacles.ToArray())
+            foreach (var obstacle in m_obstacles.ToArray())
             {
                 if (!obstacle.Prop.Exists())
                 {
@@ -153,19 +154,22 @@ namespace GamemodesServer.Gamemodes.Knockdown
             }
 
             // Iterate through all obstacles
-            foreach (Obstacle obstacle in m_obstacles)
+            foreach (var obstacle in m_obstacles)
             {
                 // Check if obstacles should be respawned
-                if ((obstacle.Prop.Position - m_obstacleSpawnPos1_1).Length() > m_obstacleDespawnDist || obstacle.RespawnTimestamp < curTimestamp)
+                if ((obstacle.Prop.Position - m_obstacleSpawnPos1_1).Length()
+                    > m_obstacleDespawnDist || obstacle.RespawnTimestamp < curTimestamp)
                 {
                     // Spawn obstacle on either left or right side
                     if (RandomUtils.RandomInt(0, 2) == 0)
                     {
-                        obstacle.Prop.Position = Utils.MathUtils.GetRandomPosInArea(m_obstacleSpawnPos1_1, m_obstacleSpawnPos1_2);
+                        obstacle.Prop.Position = Utils.MathUtils
+                            .GetRandomPosInArea(m_obstacleSpawnPos1_1, m_obstacleSpawnPos1_2);
                     }
                     else
                     {
-                        obstacle.Prop.Position = Utils.MathUtils.GetRandomPosInArea(m_obstacleSpawnPos2_1, m_obstacleSpawnPos2_2);
+                        obstacle.Prop.Position = Utils.MathUtils
+                            .GetRandomPosInArea(m_obstacleSpawnPos2_1, m_obstacleSpawnPos2_2);
                     }
 
                     obstacle.TargetVelocity = m_obstacleSpawnPos_Forward;
@@ -188,8 +192,8 @@ namespace GamemodesServer.Gamemodes.Knockdown
         private async Task OnTickSendEvents()
         {
             // Send list of obstacles to all clients
-            List<int> obstacles = new List<int>();
-            foreach (Obstacle obstacle in m_obstacles)
+            var obstacles = new List<int>();
+            foreach (var obstacle in m_obstacles)
             {
                 if (obstacle.Prop.Exists())
                 {

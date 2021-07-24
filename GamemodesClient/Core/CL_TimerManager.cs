@@ -15,7 +15,8 @@ namespace GamemodesClient.Core
         /// <summary>
         /// Timer text
         /// </summary>
-        private Text m_text = new Text(null, new PointF(1200f, 550f), 1f, Color.FromArgb(255, 255, 255), Font.Pricedown, Alignment.Right, true, true);
+        private Text m_text = new Text(null, new PointF(1200f, 550f), 1f,
+            Color.FromArgb(255, 255, 255), Font.Pricedown, Alignment.Right, true, true);
 
         /// <summary>
         /// Timer seconds
@@ -41,10 +42,11 @@ namespace GamemodesClient.Core
             else
             {
                 // Set timer text to timer
-                m_text.Caption = _secondsLeft <= 0 ? null : TimeSpan.FromSeconds(_secondsLeft).ToString(@"mm\:ss");
+                m_text.Caption = _secondsLeft <= 0 ? null
+                    : TimeSpan.FromSeconds(_secondsLeft).ToString(@"mm\:ss");
 
                 // Set text color to white initially
-                Color textColor = Color.FromArgb(255, 255, 255);
+                var textColor = Color.FromArgb(255, 255, 255);
 
                 if (_secondsLeft <= 10)
                 {

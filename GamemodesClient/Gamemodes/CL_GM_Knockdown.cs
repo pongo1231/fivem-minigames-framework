@@ -44,7 +44,8 @@ namespace GamemodesClient.Gamemodes
             m_obstacles.Clear();
 
             // Request a scooter from server
-            TriggerServerEvent("gamemodes:sv_cl_requestscooter", SpawnManager.SpawnPos, SpawnManager.SpawnRot);
+            TriggerServerEvent("gamemodes:sv_cl_requestscooter", SpawnManager.SpawnPos,
+                SpawnManager.SpawnRot);
 
             await Task.FromResult(0);
         }
@@ -56,7 +57,7 @@ namespace GamemodesClient.Gamemodes
         [EventHandler("gamemodes:cl_sv_knockdown_spawnedobstacle")]
         private void OnServerSpawnedObstacle(int _networkId)
         {
-            GmNetEntity<Prop> obstacle = new GmNetEntity<Prop>(_networkId, true);
+            var obstacle = new GmNetEntity<Prop>(_networkId, true);
 
             obstacle.Entity.Opacity = 0;
         }
@@ -72,7 +73,7 @@ namespace GamemodesClient.Gamemodes
             m_obstacles.Clear();
 
             // Add all network ids to list
-            foreach (dynamic networkId in _obstacles)
+            foreach (var networkId in _obstacles)
             {
                 m_obstacles.Add(new GmNetEntity<Prop>(networkId, true));
             }
@@ -90,16 +91,18 @@ namespace GamemodesClient.Gamemodes
                 // Draw mission objective text corresponding to team
                 if (TeamManager.TeamType == ETeamType.TEAM_RED)
                 {
-                    ScreenUtils.ShowSubtitle("Don't fall off to avoid giving the ~b~Blue Team~w~ points!");
+                    ScreenUtils.ShowSubtitle(
+                        "Don't fall off to avoid giving the ~b~Blue Team~w~ points!");
                 }
                 else if (TeamManager.TeamType == ETeamType.TEAM_BLUE)
                 {
-                    ScreenUtils.ShowSubtitle("Don't fall off to avoid giving the ~r~Red Team~w~ points!");
+                    ScreenUtils.ShowSubtitle(
+                        "Don't fall off to avoid giving the ~r~Red Team~w~ points!");
                 }
             }
 
             // Get scooter
-            GmNetEntity<Vehicle> scooter = PlayerScooterManager.CurrentScooter;
+            var scooter = PlayerScooterManager.CurrentScooter;
 
             // Check if scooter exists
             if (scooter.Exists)
@@ -122,14 +125,15 @@ namespace GamemodesClient.Gamemodes
                     }
                 }
 
-                // No camping allowed
-                float scooterRoll = scooter.Entity.Rotation.Y;
-                API.SetVehicleReduceGrip(scooter.Entity.Handle, scooter.Entity.Speed < 5f && (scooterRoll < -10f || scooterRoll > 10f));
+                // Make player's vehicle slide in case they are trying to camp somewhere
+                var scooterRoll = scooter.Entity.Rotation.Y;
+                API.SetVehicleReduceGrip(scooter.Entity.Handle,
+                    scooter.Entity.Speed < 5f && (scooterRoll < -10f || scooterRoll > 10f));
             }
 
             /* Handle obstacles */
 
-            foreach (GmNetEntity<Prop> obstacle in m_obstacles)
+            foreach (var obstacle in m_obstacles)
             {
                 // Check if it (still) exists
                 if (obstacle.Exists)
@@ -137,11 +141,13 @@ namespace GamemodesClient.Gamemodes
                     // Disable collisions with current scooter if in no collisions mode
                     if (scooter.Exists && m_noCollisionsTimestamp > API.GetGameTimer())
                     {
-                        API.SetEntityNoCollisionEntity(obstacle.Entity.Handle, scooter.Entity.Handle, true);
+                        API.SetEntityNoCollisionEntity(obstacle.Entity.Handle,
+                            scooter.Entity.Handle, true);
                     }
 
                     // Hide if too far away
-                    float dist = MathUtils.GetDistance(obstacle.Entity.Position, Game.PlayerPed.Position);
+                    var dist = MathUtils.GetDistance(obstacle.Entity.Position,
+                        Game.PlayerPed.Position);
                     if (dist > 250f)
                     {
                         obstacle.Entity.Opacity = Math.Max((int)(255 - (dist - 250f) * 25.5f), 0);
@@ -163,7 +169,7 @@ namespace GamemodesClient.Gamemodes
         private async Task OnTickIndicateNoCollisionsMode()
         {
             // Get scooter
-            GmNetEntity<Vehicle> scooter = PlayerScooterManager.CurrentScooter;
+            var scooter = PlayerScooterManager.CurrentScooter;
 
             // Play no collisions mode animation if appropriate
             if (scooter.Exists && m_noCollisionsTimestamp > API.GetGameTimer())

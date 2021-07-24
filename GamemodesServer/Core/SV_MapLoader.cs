@@ -92,7 +92,8 @@ namespace GamemodesServer.Core
             s_mapPlayers.Remove(_player);
 
             // Check if player occupied a spawn
-            PlayerSpawn playerSpawn = s_playerSpawns.Find(_playerSpawn => _playerSpawn.SpawnOccupiedBy == _player);
+            var playerSpawn = s_playerSpawns
+                .Find(_playerSpawn => _playerSpawn.SpawnOccupiedBy == _player);
             if (playerSpawn != null)
             {
                 // Mark spawn as free
@@ -133,53 +134,55 @@ namespace GamemodesServer.Core
             string xml = API.LoadResourceFile(API.GetCurrentResourceName(), _mapName);
 
             // Create a new xml document
-            XmlDocument xmlDoc = new XmlDocument();
+            var xmlDoc = new XmlDocument();
 
             // Load xml
             xmlDoc.LoadXml(xml);
 
             // Get all placements element
-            XmlElement placements = xmlDoc["SpoonerPlacements"];
+            var placements = xmlDoc["SpoonerPlacements"];
 
             // Iterate through all placements
             foreach (XmlElement placement in placements.GetElementsByTagName("Placement"))
             {
                 // Get placement type
-                EPlacementType placementType = (EPlacementType)int.Parse(placement["Type"].InnerText);
+                var placementType = (EPlacementType)int.Parse(placement["Type"].InnerText);
 
                 switch (placementType)
                 {
                     // Prop
                     case EPlacementType.Prop:
                         // Get prop name
-                        string propName = placement["HashName"].InnerText;
+                        var propName = placement["HashName"].InnerText;
 
                         // Get prop position
-                        XmlElement propPosRot = placement["PositionRotation"];
-                        float propX = float.Parse(propPosRot["X"].InnerText);
-                        float propY = float.Parse(propPosRot["Y"].InnerText);
-                        float propZ = float.Parse(propPosRot["Z"].InnerText);
+                        var propPosRot = placement["PositionRotation"];
+                        var propX = float.Parse(propPosRot["X"].InnerText);
+                        var propY = float.Parse(propPosRot["Y"].InnerText);
+                        var propZ = float.Parse(propPosRot["Z"].InnerText);
 
                         // Get prop rotation
-                        float propPitch = float.Parse(propPosRot["Pitch"].InnerText);
-                        float propRoll = float.Parse(propPosRot["Roll"].InnerText);
-                        float propYaw = float.Parse(propPosRot["Yaw"].InnerText);
+                        var propPitch = float.Parse(propPosRot["Pitch"].InnerText);
+                        var propRoll = float.Parse(propPosRot["Roll"].InnerText);
+                        var propYaw = float.Parse(propPosRot["Yaw"].InnerText);
 
                         // Get prop collisions status
-                        bool propCollisions = !bool.Parse(placement["IsCollisionProof"].InnerText);
+                        var propCollisions = !bool.Parse(placement["IsCollisionProof"].InnerText);
 
                         // Add prop to list
-                        s_props.Add(new SHGmProp(propName, new Vector3(propX, propY, propZ), new Vector3(propPitch, propRoll, propYaw), propCollisions));
+                        s_props.Add(new SHGmProp(propName, new Vector3(propX, propY, propZ),
+                            new Vector3(propPitch, propRoll, propYaw), propCollisions));
 
                         break;
 
                     // Ped, used for spawns
                     case EPlacementType.Spawn:
                         // Get relationship group
-                        string relGroupHash = placement["PedProperties"]["RelationshipGroup"].InnerText;
+                        var relGroupHash
+                            = placement["PedProperties"]["RelationshipGroup"].InnerText;
 
                         // Store team type
-                        ETeamType teamType = ETeamType.TEAM_UNK;
+                        var teamType = ETeamType.TEAM_UNK;
 
                         // ENEMY group: Red spawn
                         // FRIENDLY group: Blue spawn
@@ -193,18 +196,19 @@ namespace GamemodesServer.Core
                         }
 
                         // Get spawn position
-                        XmlElement spawnPosRot = placement["PositionRotation"];
-                        float spawnX = float.Parse(spawnPosRot["X"].InnerText);
-                        float spawnY = float.Parse(spawnPosRot["Y"].InnerText);
-                        float spawnZ = float.Parse(spawnPosRot["Z"].InnerText);
+                        var spawnPosRot = placement["PositionRotation"];
+                        var spawnX = float.Parse(spawnPosRot["X"].InnerText);
+                        var spawnY = float.Parse(spawnPosRot["Y"].InnerText);
+                        var spawnZ = float.Parse(spawnPosRot["Z"].InnerText);
 
                         // Get spawn rotation
-                        float spawnPitch = float.Parse(spawnPosRot["Pitch"].InnerText);
-                        float spawnRoll = float.Parse(spawnPosRot["Roll"].InnerText);
-                        float spawnYaw = float.Parse(spawnPosRot["Yaw"].InnerText);
+                        var spawnPitch = float.Parse(spawnPosRot["Pitch"].InnerText);
+                        var spawnRoll = float.Parse(spawnPosRot["Roll"].InnerText);
+                        var spawnYaw = float.Parse(spawnPosRot["Yaw"].InnerText);
 
                         // Save player spawn
-                        s_playerSpawns.Add(new PlayerSpawn(new Vector3(spawnX, spawnY, spawnZ), new Vector3(spawnPitch, spawnRoll, spawnYaw), teamType));
+                        s_playerSpawns.Add(new PlayerSpawn(new Vector3(spawnX, spawnY, spawnZ),
+                            new Vector3(spawnPitch, spawnRoll, spawnYaw), teamType));
 
                         break;
                 }
@@ -224,7 +228,7 @@ namespace GamemodesServer.Core
             }
 
             // Iterate through all loaded in players
-            foreach (Player player in PlayerEnrollStateManager.GetLoadedInPlayers())
+            foreach (var player in PlayerEnrollStateManager.GetLoadedInPlayers())
             {
                 // Check if player hasn't been made aware of map yet
                 if (!s_mapPlayers.Contains(player))
@@ -233,11 +237,14 @@ namespace GamemodesServer.Core
                     s_mapPlayers.Add(player);
 
                     // Make client aware of map
-                    await PlayerResponseAwaiter.AwaitResponse(player, "gamemodes:cl_sv_spawnmap", "gamemodes:sv_cl_spawnedmap", s_props);
+                    await PlayerResponseAwaiter.AwaitResponse(player,
+                        "gamemodes:cl_sv_spawnmap", "gamemodes:sv_cl_spawnedmap", s_props);
 
                     // Get first free team spawn
-                    PlayerSpawn freeSpawn = s_playerSpawns.Find(playerSpawn =>
-                        (playerSpawn.SpawnOccupiedBy == null || playerSpawn.SpawnOccupiedBy == player) && playerSpawn.SpawnTeamType == player.GetTeam());
+                    var freeSpawn = s_playerSpawns
+                        .Find(playerSpawn => (playerSpawn.SpawnOccupiedBy == null
+                            || playerSpawn.SpawnOccupiedBy == player)
+                            && playerSpawn.SpawnTeamType == player.GetTeam());
 
                     // Mark spawn as occupied and notify player if spawn was found
                     if (freeSpawn != null)
@@ -246,7 +253,9 @@ namespace GamemodesServer.Core
                         freeSpawn.SpawnOccupiedBy = player;
 
                         // Make client aware of spawn
-                        await PlayerResponseAwaiter.AwaitResponse(player, "gamemodes:cl_sv_setspawn", "gamemodes:sv_cl_gotspawn", freeSpawn.SpawnPos, freeSpawn.SpawnRot);
+                        await PlayerResponseAwaiter.AwaitResponse(player,
+                            "gamemodes:cl_sv_setspawn", "gamemodes:sv_cl_gotspawn",
+                            freeSpawn.SpawnPos, freeSpawn.SpawnRot);
                     }
                 }
             }

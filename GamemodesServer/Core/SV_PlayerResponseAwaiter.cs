@@ -33,7 +33,8 @@ namespace GamemodesServer.Core
         /// <param name="_serverClientEventName">Name of event to send to client</param>
         /// <param name="_clientServerEventName">Name of event to await for from client</param>
         /// <param name="_serverClientEventArgs">Arguments for sending to client</param>
-        private async Task _AwaitResponse(Player _player, string _serverClientEventName, string _clientServerEventName, params object[] _serverClientEventArgs)
+        private async Task _AwaitResponse(Player _player, string _serverClientEventName,
+            string _clientServerEventName, params object[] _serverClientEventArgs)
         {
             // Store whether it completed yet
             bool hasCompleted = false;
@@ -57,10 +58,10 @@ namespace GamemodesServer.Core
             _player.TriggerEvent(_serverClientEventName, _serverClientEventArgs);
 
             // Wait for client to respond
-            long lastTimeStamp = API.GetGameTimer();
+            var lastTimeStamp = API.GetGameTimer();
             while (!hasCompleted)
             {
-                long curTimeStamp = API.GetGameTimer();
+                var curTimeStamp = API.GetGameTimer();
 
                 // Check if it's been 5 seconds already
                 if (lastTimeStamp < curTimeStamp - 5000)
@@ -75,7 +76,8 @@ namespace GamemodesServer.Core
                     {
                         /* Drop player for not responding */
 
-                        Debug.WriteLine($"Dropped {_player.Name} for not responding to {_serverClientEventName}!");
+                        Debug.WriteLine($"Dropped {_player.Name}" +
+                            $" for not responding to {_serverClientEventName}!");
 
                         // Drop player
                         _player.Drop("Timed out during event handling");
@@ -105,18 +107,22 @@ namespace GamemodesServer.Core
         /// <param name="_serverClientEventName">Name of event to send to client</param>
         /// <param name="_clientServerEventName">Name of event to await for from client</param>
         /// <param name="_serverClientEventArgs">Arguments for sending to client</param>
-        public static async Task AwaitResponse(Player _player, string _serverClientEventName, string _clientServerEventName, params object[] _serverClientEventArgs)
+        public static async Task AwaitResponse(Player _player, string _serverClientEventName,
+            string _clientServerEventName, params object[] _serverClientEventArgs)
         {
-            await s_instance._AwaitResponse(_player, _serverClientEventName, _clientServerEventName, _serverClientEventArgs);
+            await s_instance._AwaitResponse(_player, _serverClientEventName,
+                _clientServerEventName, _serverClientEventArgs);
         }
 
         /// <summary>
-        /// Send event and wait for all clients to either respond or get dropped because of not responding
+        /// Send event and wait for all clients to either respond or get dropped
+        /// because of not responding
         /// </summary>
         /// <param name="_serverClientEventName">Name of event to send to client</param>
         /// <param name="_clientServerEventName">Name of event to await for from client</param>
         /// <param name="_serverClientEventArgs">Arguments for sending to client</param>
-        public static async Task AwaitResponse(string _serverClientEventName, string _clientServerEventName, params object[] _serverClientEventArgs)
+        public static async Task AwaitResponse(string _serverClientEventName,
+            string _clientServerEventName, params object[] _serverClientEventArgs)
         {
             // Return if there are no loaded in players
             if (PlayerEnrollStateManager.GetLoadedInPlayers().Length == 0)
@@ -125,12 +131,13 @@ namespace GamemodesServer.Core
             }
 
             // List of waiting tasks
-            List<Task> responseAwaits = new List<Task>();
+            var responseAwaits = new List<Task>();
 
             // Add a waiting task for each player
-            foreach (Player player in PlayerEnrollStateManager.GetLoadedInPlayers())
+            foreach (var player in PlayerEnrollStateManager.GetLoadedInPlayers())
             {
-                responseAwaits.Add(AwaitResponse(player, _serverClientEventName, _clientServerEventName, _serverClientEventArgs));
+                responseAwaits.Add(AwaitResponse(player, _serverClientEventName,
+                    _clientServerEventName, _serverClientEventArgs));
             }
 
             // Wait for all the waiting tasks to complete

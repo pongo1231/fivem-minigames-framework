@@ -104,7 +104,8 @@ namespace GamemodesClient.Core
             if (CurrentScooter.Exists)
             {
                 // Check if scooter at falloff height or dead
-                if (CurrentScooter.Entity.Position.Z < m_fallOffHeight || CurrentScooter.Entity.IsDead)
+                if (CurrentScooter.Entity.Position.Z < m_fallOffHeight
+                    || CurrentScooter.Entity.IsDead)
                 {
                     // Respawn scooter
                     await SpawnManager.Respawn();
@@ -122,7 +123,8 @@ namespace GamemodesClient.Core
         /// </summary>
         public static void Request()
         {
-            TriggerServerEvent("gamemodes:sv_cl_requestscooter", SpawnManager.SpawnPos, SpawnManager.SpawnRot);
+            TriggerServerEvent("gamemodes:sv_cl_requestscooter", SpawnManager.SpawnPos,
+                SpawnManager.SpawnRot);
         }
 
         /// <summary>

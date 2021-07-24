@@ -60,7 +60,8 @@ namespace GamemodesServer.Core
         private void OnPlayerDropped(Player _player, string _dropReason)
         {
             // Get scooter player from player
-            ScooterPlayer scooterPlayer = s_scooterPlayers.Find(_scooterPlayer => _scooterPlayer.Player == _player);
+            var scooterPlayer = s_scooterPlayers
+                .Find(_scooterPlayer => _scooterPlayer.Player == _player);
 
             // Check if scooter player exists
             if (scooterPlayer != null)
@@ -83,7 +84,8 @@ namespace GamemodesServer.Core
         /// <param name="_pos">Position</param>
         /// <param name="_rot">Rotation</param>
         [EventHandler("gamemodes:sv_cl_requestscooter")]
-        private async void OnClientRequestScooter([FromSource]Player _player, Vector3 _pos, Vector3 _rot)
+        private async void OnClientRequestScooter([FromSource]Player _player, Vector3 _pos,
+            Vector3 _rot)
         {
             // Don't get event handler unregistered when client sends garbage to server
             try
@@ -95,10 +97,11 @@ namespace GamemodesServer.Core
                 }
 
                 // Check whether player is not registered already
-                if (s_scooterPlayers.Find(_scooterPlayer => _scooterPlayer.Player == _player) == null)
+                if (s_scooterPlayers.Find(_scooterPlayer => _scooterPlayer.Player == _player)
+                    == null)
                 {
                     // Create new scooter player
-                    ScooterPlayer scooterPlayer = new ScooterPlayer(_player);
+                    var scooterPlayer = new ScooterPlayer(_player);
 
                     // Add player to list
                     s_scooterPlayers.Add(scooterPlayer);
@@ -113,11 +116,14 @@ namespace GamemodesServer.Core
                         await Delay(2000);
 
                         // Spawn scooter
-                        scooterPlayer.Scooter = await EntityPool.CreateVehicle(s_scooterVehicle, _pos, _rot);
+                        scooterPlayer.Scooter
+                            = await EntityPool.CreateVehicle(s_scooterVehicle, _pos, _rot);
                     }
 
                     // Make client aware of scooter
-                    await PlayerResponseAwaiter.AwaitResponse(_player, "gamemodes:cl_sv_spawnedscooter", "gamemodes:sv_cl_gotscooter", scooterPlayer.Scooter.NetworkId);
+                    await PlayerResponseAwaiter.AwaitResponse(_player,
+                        "gamemodes:cl_sv_spawnedscooter", "gamemodes:sv_cl_gotscooter",
+                        scooterPlayer.Scooter.NetworkId);
                 }
             }
             catch (Exception _e)

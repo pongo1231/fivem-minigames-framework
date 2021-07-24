@@ -31,7 +31,7 @@ namespace GamemodesServer.Utils
         /// <param name="_color">Message color</param>
         public static void SendMessage(string _message)
         {
-            foreach (Player player in PlayerEnrollStateManager.GetLoadedInPlayers())
+            foreach (var player in PlayerEnrollStateManager.GetLoadedInPlayers())
             {
                 player.SendMessage(_message);
             }

@@ -41,7 +41,7 @@ namespace GamemodesServer.Gamemodes.Hoops
             m_hoops = CurrentMap.Hoops;
 
             // Activate all hoops again
-            foreach (Hoop hoop in m_hoops)
+            foreach (var hoop in m_hoops)
             {
                 hoop.IsActive = true;
             }
@@ -103,16 +103,16 @@ namespace GamemodesServer.Gamemodes.Hoops
             long curTimestamp = API.GetGameTimer();
 
             // Iterate through each player
-            foreach (Player player in PlayerEnrollStateManager.GetLoadedInPlayers())
+            foreach (var player in PlayerEnrollStateManager.GetLoadedInPlayers())
             {
                 // Get player position
-                Vector3 playerPos = player.Character.Position;
+                var playerPos = player.Character.Position;
 
                 // Iterate through all active hoops
-                foreach (Hoop hoop in m_hoops.Where(_hoop => _hoop.IsActive))
+                foreach (var hoop in m_hoops.Where(_hoop => _hoop.IsActive))
                 {
                     // Get hoop position
-                    Vector3 hoopPos = hoop.Position;
+                    var hoopPos = hoop.Position;
 
                     // Check if player is inside hoop
                     if (playerPos.IsInArea(hoopPos - 3f, hoopPos + 3f))
@@ -128,15 +128,18 @@ namespace GamemodesServer.Gamemodes.Hoops
 
                         // Disable hoop for some time
                         hoop.IsActive = false;
-                        hoop.RespawnTimestamp = hoop.IsExtraWorth ? long.MaxValue : curTimestamp + 30000;
+                        hoop.RespawnTimestamp = hoop.IsExtraWorth
+                            ? long.MaxValue : curTimestamp + 30000;
 
                         // Notify player of hoop collection
-                        player.TriggerEvent("gamemodes:cl_sv_hoops_collectedhoop", hoop.IsExtraWorth);
+                        player.TriggerEvent("gamemodes:cl_sv_hoops_collectedhoop",
+                            hoop.IsExtraWorth);
 
                         // Respawn all hoops (except this one) if there are none left
                         if (m_hoops.Where(_hoop => _hoop.IsActive).Count() == 0)
                         {
-                            foreach (Hoop _hoop in m_hoops.Where(__hoop => __hoop != hoop && !__hoop.IsExtraWorth))
+                            foreach (var _hoop in m_hoops
+                                .Where(__hoop => __hoop != hoop && !__hoop.IsExtraWorth))
                             {
                                 _hoop.IsActive = true;
                             }
@@ -146,7 +149,8 @@ namespace GamemodesServer.Gamemodes.Hoops
             }
 
             // Enable all disabled hoops if time is over
-            foreach (Hoop hoop in m_hoops.Where(_hoop => !_hoop.IsActive && _hoop.RespawnTimestamp < curTimestamp))
+            foreach (var hoop in m_hoops
+                .Where(_hoop => !_hoop.IsActive && _hoop.RespawnTimestamp < curTimestamp))
             {
                 hoop.IsActive = true;
             }
@@ -161,7 +165,8 @@ namespace GamemodesServer.Gamemodes.Hoops
         private async Task OnTick()
         {
             // Send all hoops to clients
-            TriggerClientEvent("gamemodes:cl_sv_hoops_updatehoops", m_hoops.Where(_hoop => _hoop.IsActive));
+            TriggerClientEvent("gamemodes:cl_sv_hoops_updatehoops",
+                m_hoops.Where(_hoop => _hoop.IsActive));
 
             await Delay(100);
         }

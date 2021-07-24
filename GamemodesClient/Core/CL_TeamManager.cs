@@ -44,9 +44,10 @@ namespace GamemodesClient.Core
             TeamPlayers.Clear();
 
             // Add a SHTeamPlayer for each team player
-            foreach (dynamic totallyNotTeamPlayer in _sharedTeamPlayers)
+            foreach (var totallyNotTeamPlayer in _sharedTeamPlayers)
             {
-                TeamPlayers.Add(new SHTeamPlayer(totallyNotTeamPlayer.PlayerNetId, totallyNotTeamPlayer.PlayerTeamType));
+                TeamPlayers.Add(new SHTeamPlayer(totallyNotTeamPlayer.PlayerNetId,
+                    totallyNotTeamPlayer.PlayerTeamType));
             }
         }
     }

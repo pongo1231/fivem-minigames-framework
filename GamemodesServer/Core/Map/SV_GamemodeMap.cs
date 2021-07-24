@@ -157,35 +157,43 @@ namespace GamemodesServer.Core.Map
             };
 
             // Iterate through all functions of child (and all inherited) class(es) via reflection
-            foreach (MethodInfo methodInfo in GetType().GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance))
+            foreach (var methodInfo in GetType()
+                .GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static
+                | BindingFlags.Instance))
             {
                 if (methodInfo.GetCustomAttribute(typeof(MapLoadAttribute)) != null)
                 {
-                    Log.WriteLine($"Registering custom OnLoad for map {methodInfo.DeclaringType.Name}");
+                    Log.WriteLine(
+                        $"Registering custom OnLoad for map {methodInfo.DeclaringType.Name}");
 
                     m_onLoad = createDelegate(methodInfo);
                 }
                 else if (methodInfo.GetCustomAttribute(typeof(MapUnloadAttribute)) != null)
                 {
-                    Log.WriteLine($"Registering custom OnUnload for map {methodInfo.DeclaringType.Name}");
+                    Log.WriteLine(
+                        $"Registering custom OnUnload for map {methodInfo.DeclaringType.Name}");
 
                     m_onUnload = createDelegate(methodInfo);
                 }
                 else if (methodInfo.GetCustomAttribute(typeof(MapEventHandlerAttribute)) != null)
                 {
-                    Log.WriteLine($"Registering EventHandler for map {methodInfo.DeclaringType.Name}");
+                    Log.WriteLine(
+                        $"Registering EventHandler for map {methodInfo.DeclaringType.Name}");
 
                     // Get event name
-                    string eventName = ((MapEventHandlerAttribute)methodInfo.GetCustomAttribute(typeof(MapEventHandlerAttribute))).EventName;
+                    var eventName = ((MapEventHandlerAttribute)
+                        methodInfo.GetCustomAttribute(typeof(MapEventHandlerAttribute))).EventName;
 
                     // Get parameters
-                    Type[] parameters = methodInfo.GetParameters().Select(parameter => parameter.ParameterType).ToArray();
+                    var parameters = methodInfo.GetParameters()
+                        .Select(parameter => parameter.ParameterType).ToArray();
 
                     // Build type for callback
-                    Type actionType = Expression.GetDelegateType(parameters.Concat(new[] { typeof(void) }).ToArray());
+                    var actionType = Expression
+                        .GetDelegateType(parameters.Concat(new[] { typeof(void) }).ToArray());
 
                     // Create callback delegate
-                    Delegate callback = methodInfo.IsStatic
+                    var callback = methodInfo.IsStatic
                         ? Delegate.CreateDelegate(actionType, methodInfo)
                         : Delegate.CreateDelegate(actionType, this, methodInfo);
 
@@ -234,7 +242,7 @@ namespace GamemodesServer.Core.Map
             }
 
             // Register all event handlers
-            foreach (MapEventHandler eventHandler in m_eventHandlers)
+            foreach (var eventHandler in m_eventHandlers)
             {
                 EventHandlers[eventHandler.EventName] += eventHandler.Callback;
             }
@@ -258,13 +266,13 @@ namespace GamemodesServer.Core.Map
             TimecycModManager.ClearTimecycModifiers();
 
             // Unregister all event handlers
-            foreach (MapEventHandler eventHandler in m_eventHandlers)
+            foreach (var eventHandler in m_eventHandlers)
             {
                 EventHandlers[eventHandler.EventName] -= eventHandler.Callback;
             }
 
             // Unregister all tick functions
-            foreach (Func<Task> onTickFunc in m_onTickFuncs)
+            foreach (var onTickFunc in m_onTickFuncs)
             {
                 Tick -= onTickFunc;
             }

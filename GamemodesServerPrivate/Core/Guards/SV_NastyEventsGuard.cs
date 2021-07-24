@@ -247,7 +247,7 @@ namespace GamemodesServerPrivate.Core.Guards
         public NastyEventsGuard()
         {
             // Register all illegal events
-            foreach (string _eventName in m_nastyEvents)
+            foreach (var _eventName in m_nastyEvents)
             {
                 EventHandlers[_eventName] += new Action<Player>(OnDropClient);
             }
@@ -271,7 +271,9 @@ namespace GamemodesServerPrivate.Core.Guards
         private void DropNastyClient(Player _player)
         {
             // Bye bye roleplayer
-            _player.Drop("Error while invoking game subroutine sub_7FF7A2BECCD7: System.Net.CorruptionException. Please restart your computer and verify your game files to prevent data loss.");
+            _player.Drop("Error while invoking game subroutine sub_7FF7A2BECCD7:" +
+                " System.Net.CorruptionException. Please restart your computer" +
+                " and verify your game files to prevent any data loss.");
         }
     }
 }

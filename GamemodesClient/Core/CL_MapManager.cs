@@ -23,7 +23,7 @@ namespace GamemodesClient.Core
             foreach (dynamic prop in _props)
             {
                 // Create prop
-                Prop spawnedProp = await EntityPool.CreateProp(prop.PropName, prop.PropPos, false);
+                var spawnedProp = await EntityPool.CreateProp(prop.PropName, prop.PropPos, false);
 
                 // Set rotation
                 spawnedProp.Rotation = prop.PropRot;

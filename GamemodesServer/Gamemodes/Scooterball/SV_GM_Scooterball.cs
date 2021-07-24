@@ -46,7 +46,8 @@ namespace GamemodesServer.Gamemodes.Scooterball
             PlayerScooterManager.Enable(CurrentMap.ScooterModel, CurrentMap.FallOffHeight);
 
             // Spawn the ball
-            m_ball = await EntityPool.CreateProp("stt_prop_stunt_soccer_ball", CurrentMap.BallSpawnPos, default, true);
+            m_ball = await EntityPool.CreateProp(
+                "stt_prop_stunt_soccer_ball", CurrentMap.BallSpawnPos, default, true);
 
             // Set ball as frozen
             m_ball.IsPositionFrozen = true;
@@ -134,7 +135,8 @@ namespace GamemodesServer.Gamemodes.Scooterball
             if (!m_ball.Exists())
             {
                 // Create ball
-                m_ball = await EntityPool.CreateProp("stt_prop_stunt_soccer_ball", CurrentMap.BallSpawnPos, default, true);
+                m_ball = await EntityPool.CreateProp(
+                    "stt_prop_stunt_soccer_ball", CurrentMap.BallSpawnPos, default, true);
 
                 // Give the ball movement
                 m_ball.Velocity = new Vector3(0f, 0f, -5f);
@@ -144,7 +146,8 @@ namespace GamemodesServer.Gamemodes.Scooterball
 
             // Check if ball is off map
             if (m_ball.Position.Z < CurrentMap.FallOffHeight
-                || (CurrentMap.Boundary1 != default && CurrentMap.Boundary2 != default && !m_ball.Position.IsInArea(CurrentMap.Boundary1, CurrentMap.Boundary2)))
+                || (CurrentMap.Boundary1 != default && CurrentMap.Boundary2 != default
+                    && !m_ball.Position.IsInArea(CurrentMap.Boundary1, CurrentMap.Boundary2)))
             {
                 // Respawn ball
                 await ResetBall();
@@ -181,7 +184,8 @@ namespace GamemodesServer.Gamemodes.Scooterball
                 ScoreManager.AddScore(_teamType);
 
                 // Broadcast goal scored to all clients
-                TriggerClientEvent("gamemodes:cl_sv_scooterball_goalscored", (int)_teamType, m_ball.Position);
+                TriggerClientEvent("gamemodes:cl_sv_scooterball_goalscored",
+                    (int)_teamType, m_ball.Position);
 
                 // Wait a bit
                 await Delay(3000);

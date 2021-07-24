@@ -78,10 +78,10 @@ namespace GamemodesServer.Core
             }
 
             // Create a new list to store new players into and sort into teams randomized later
-            List<Player> m_toSortIntoTeams = new List<Player>();
+            var m_toSortIntoTeams = new List<Player>();
 
             // Iterate through all loaded in players
-            foreach (Player player in PlayerEnrollStateManager.GetLoadedInPlayers())
+            foreach (var player in PlayerEnrollStateManager.GetLoadedInPlayers())
             {
                 // Check whether this player doesn't have a team assigned to them yet
                 if (s_teamPlayers.Find(teamPlayer => teamPlayer.Player == player) == null)
@@ -95,14 +95,17 @@ namespace GamemodesServer.Core
             while (m_toSortIntoTeams.Count > 0)
             {
                 // Choose random player from list
-                Player player = m_toSortIntoTeams[RandomUtils.RandomInt(0, m_toSortIntoTeams.Count)];
+                var player = m_toSortIntoTeams[RandomUtils
+                    .RandomInt(0, m_toSortIntoTeams.Count)];
 
                 // Store type of team
-                ETeamType teamType = ETeamType.TEAM_UNK;
+                var teamType = ETeamType.TEAM_UNK;
 
                 // Get players count of both teams
-                int redCount = s_teamPlayers.FindAll(teamPlayer => teamPlayer.TeamType == ETeamType.TEAM_RED).Count;
-                int blueCount = s_teamPlayers.FindAll(teamPlayer => teamPlayer.TeamType == ETeamType.TEAM_BLUE).Count;
+                var redCount = s_teamPlayers
+                    .FindAll(teamPlayer => teamPlayer.TeamType == ETeamType.TEAM_RED).Count;
+                var blueCount = s_teamPlayers
+                    .FindAll(teamPlayer => teamPlayer.TeamType == ETeamType.TEAM_BLUE).Count;
 
                 // Set player into team with fewer players
                 if (redCount < blueCount)
@@ -121,7 +124,8 @@ namespace GamemodesServer.Core
                 m_toSortIntoTeams.Remove(player);
 
                 // Wait for client to be aware of new team
-                await PlayerResponseAwaiter.AwaitResponse(player, "gamemodes:cl_sv_setteam", "gamemodes:cl_sv_gotteam", (int)teamType);
+                await PlayerResponseAwaiter.AwaitResponse(player,
+                    "gamemodes:cl_sv_setteam", "gamemodes:cl_sv_gotteam", (int)teamType);
             }
 
             // Set teams as loaded
@@ -137,12 +141,13 @@ namespace GamemodesServer.Core
         private async Task OnTickBroadcastTeamStates()
         {
             // Create list
-            List<SHTeamPlayer> sharedTeamPlayers = new List<SHTeamPlayer>();
+            var sharedTeamPlayers = new List<SHTeamPlayer>();
 
             // Store all team players in list
-            foreach (TeamPlayer teamPlayer in s_teamPlayers)
+            foreach (var teamPlayer in s_teamPlayers)
             {
-                sharedTeamPlayers.Add(new SHTeamPlayer(int.Parse(teamPlayer.Player.Handle), (int)teamPlayer.TeamType));
+                sharedTeamPlayers.Add(new SHTeamPlayer(int.Parse(teamPlayer.Player.Handle),
+                    (int)teamPlayer.TeamType));
             }
 
             // Broadcast team state to all clients
@@ -158,7 +163,7 @@ namespace GamemodesServer.Core
         /// <returns>Team of player</returns>
         public static ETeamType GetPlayerTeam(Player _player)
         {
-            TeamPlayer teamPlayer = s_teamPlayers.Find(_teamPlayer => _teamPlayer.Player == _player);
+            var teamPlayer = s_teamPlayers.Find(_teamPlayer => _teamPlayer.Player == _player);
 
             return teamPlayer == null ? ETeamType.TEAM_UNK : teamPlayer.TeamType;
         }

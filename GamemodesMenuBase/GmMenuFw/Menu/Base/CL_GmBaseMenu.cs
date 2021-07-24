@@ -52,7 +52,8 @@ namespace GamemodesClientMenuFw.GmMenuFw.Menu.Base
         /// <summary>
         /// Collection of menu items
         /// </summary>
-        protected readonly GmMenuQueue<GmMenuBaseItem> m_menuItems = new GmMenuQueue<GmMenuBaseItem>();
+        protected readonly GmMenuQueue<GmMenuBaseItem> m_menuItems
+            = new GmMenuQueue<GmMenuBaseItem>();
 
         /// <summary>
         /// Starting X pos of menu this frame
@@ -125,9 +126,9 @@ namespace GamemodesClientMenuFw.GmMenuFw.Menu.Base
             // Only run menu drawing logic if it actually contains items
             if (m_menuItems.Count > 0)
             {
-                int itemsCount = m_menuItems.Count;
+                var itemsCount = m_menuItems.Count;
 
-                GmMenuBaseItem selectedMenuItem = DrawItems();
+                var selectedMenuItem = DrawItems();
 
                 // Clamp selected index between 0 and last menu item index
                 SelectedIndex = Math.Max(0, Math.Min(itemsCount - 1, SelectedIndex));
@@ -150,10 +151,11 @@ namespace GamemodesClientMenuFw.GmMenuFw.Menu.Base
             GmMenuBaseItem selectedMenuItem = null;
 
             // Draw each menu item, also dequeue each of them while doing that if in immediate mode
-            GmMenuQueue<GmMenuBaseItem> menuItemNode = m_menuItems;
-            for (int itemIdx = 0; ImmediateMode ? menuItemNode.Count > 0 : menuItemNode != null; itemIdx++)
+            var menuItemNode = m_menuItems;
+            for (var itemIdx = 0; ImmediateMode
+                ? menuItemNode.Count > 0 : menuItemNode != null; itemIdx++)
             {
-                GmMenuBaseItem menuItem = menuItemNode.Content;
+                var menuItem = menuItemNode.Content;
 
                 menuItem.X = PosX;
                 menuItem.Y = PosY;
@@ -197,7 +199,8 @@ namespace GamemodesClientMenuFw.GmMenuFw.Menu.Base
                 {
                     m_curNavigateRepeatDelaySecs -= Game.LastFrameTime;
 
-                    if (m_curNavigateRepeatDelaySecs < m_initialNavigateRepeatDelaySecs - Game.LastFrameTime)
+                    if (m_curNavigateRepeatDelaySecs
+                        < m_initialNavigateRepeatDelaySecs - Game.LastFrameTime)
                     {
                         return;
                     }
@@ -222,7 +225,8 @@ namespace GamemodesClientMenuFw.GmMenuFw.Menu.Base
                 {
                     m_curNavigateRepeatDelaySecs -= Game.LastFrameTime;
 
-                    if (m_curNavigateRepeatDelaySecs < m_initialNavigateRepeatDelaySecs - Game.LastFrameTime)
+                    if (m_curNavigateRepeatDelaySecs
+                        < m_initialNavigateRepeatDelaySecs - Game.LastFrameTime)
                     {
                         return;
                     }
@@ -248,7 +252,7 @@ namespace GamemodesClientMenuFw.GmMenuFw.Menu.Base
                 if (Game.IsControlJustPressed(0, Control.FrontendRdown))
                 {
                     // Try executing the action if it's an action menu item
-                    GmMenuActionItem actionItem = _selectedItem as GmMenuActionItem;
+                    var actionItem = _selectedItem as GmMenuActionItem;
                     if (actionItem != null && actionItem.OnClick != null)
                     {
                         actionItem.OnClick(SelectedIndex, actionItem.Label);

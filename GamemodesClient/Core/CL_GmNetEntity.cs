@@ -36,7 +36,8 @@ namespace GamemodesClient.Core
                 if (m_cachedEntity == null || !m_cachedEntity.Exists())
                 {
                     // Get entity from either handle or network id
-                    int handle = m_isNetworked ? API.NetworkGetEntityFromNetworkId(m_handle) : m_handle;
+                    var handle = m_isNetworked ? API.NetworkGetEntityFromNetworkId(m_handle)
+                        : m_handle;
 
                     // Get entity type
                     switch (API.GetEntityType(handle))

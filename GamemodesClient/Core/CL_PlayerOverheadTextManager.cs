@@ -59,16 +59,17 @@ namespace GamemodesClient.Core
         private async Task OnTick()
         {
             // Mark all overhead players as non-existant at first
-            foreach (OverheadPlayer overheadPlayer in m_overheadPlayers)
+            foreach (var overheadPlayer in m_overheadPlayers)
             {
                 overheadPlayer.StillExists = false;
             }
 
             // Iterate through all players
-            foreach (Player player in Players)
+            foreach (var player in Players)
             {
                 // Get overhead player from player
-                OverheadPlayer overheadPlayer = m_overheadPlayers.Find(_overheadPlayer => _overheadPlayer.Player == player);
+                var overheadPlayer = m_overheadPlayers
+                    .Find(_overheadPlayer => _overheadPlayer.Player == player);
 
                 if (overheadPlayer == null)
                 {
@@ -86,14 +87,16 @@ namespace GamemodesClient.Core
                     // Create a new overhead text if one doesn't exist yet
                     if (!API.IsValidMpGamerTagMovie(overheadPlayer.OverheadHandle))
                     {
-                        overheadPlayer.OverheadHandle = API.CreateFakeMpGamerTag(player.Character.Handle, player.Name, false, false, null, 0);
+                        overheadPlayer.OverheadHandle =
+                            API.CreateFakeMpGamerTag(player.Character.Handle, player.Name, false,
+                            false, null, 0);
                     }
 
                     // Set visibility status of player name
                     API.SetMpGamerTagVisibility(overheadPlayer.OverheadHandle, 0, ShowOverheadText);
 
                     // Get team type
-                    ETeamType teamType = player.GetTeam();
+                    var teamType = player.GetTeam();
 
                     if (teamType == ETeamType.TEAM_RED)
                     {
@@ -114,7 +117,8 @@ namespace GamemodesClient.Core
             }
 
             // Iterate through all overhead players which are still marked as non existant
-            foreach (OverheadPlayer overheadPlayer in m_overheadPlayers.Where(_overheadPlayer => !_overheadPlayer.StillExists).ToArray())
+            foreach (var overheadPlayer in m_overheadPlayers
+                .Where(_overheadPlayer => !_overheadPlayer.StillExists).ToArray())
             {
                 // Remove them from list
                 m_overheadPlayers.Remove(overheadPlayer);

@@ -19,7 +19,8 @@ namespace GamemodesClient.Core
         /// <summary>
         /// Scores text
         /// </summary>
-        private Text m_goalsText = new Text(null, new PointF(640f, 50f), 1.5f, Color.FromArgb(255, 255, 255), Font.Pricedown, Alignment.Center, true, true);
+        private Text m_goalsText = new Text(null, new PointF(640f, 50f), 1.5f,
+            Color.FromArgb(255, 255, 255), Font.Pricedown, Alignment.Center, true, true);
 
         /// <summary>
         /// Update scores event by server

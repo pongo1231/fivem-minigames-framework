@@ -25,7 +25,9 @@
         /// <param name="_label">Label of item</param>
         /// <param name="_onClickAction">Action to execute on click</param>
         /// /// <param name="_suffix">Label to draw on the right side</param>
-        public GmMenuActionItem(int _width, int _height, string _label, GmMenuItemClick _onClickAction = null, string _suffix = null) : base(_width, _height, _label, _suffix)
+        public GmMenuActionItem(int _width, int _height, string _label,
+            GmMenuItemClick _onClickAction = null, string _suffix = null)
+            : base(_width, _height, _label, _suffix)
         {
             OnClick = _onClickAction;
         }

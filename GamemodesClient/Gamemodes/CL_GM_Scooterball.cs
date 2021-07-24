@@ -23,7 +23,8 @@ namespace GamemodesClient.Gamemodes
         /// <summary>
         /// Constructor
         /// </summary>
-        public Scooterball() : base("scooterball", "~INPUT_VEH_ROCKET_BOOST~  -  Boost\n~INPUT_JUMP~  -  Jump")
+        public Scooterball() : base("scooterball",
+            "~INPUT_VEH_ROCKET_BOOST~  -  Boost\n~INPUT_JUMP~  -  Jump")
         {
 
         }
@@ -75,13 +76,15 @@ namespace GamemodesClient.Gamemodes
         private void OnGoalScored(int _teamType, Vector3 _scorePos)
         {
             // Create non-networked kinetic explosion which pushes player away
-            Function.Call(Hash.ADD_EXPLOSION, _scorePos.X, _scorePos.Y, _scorePos.Z, 63, 100f, true, true, 2f, true);
+            Function.Call(Hash.ADD_EXPLOSION, _scorePos.X, _scorePos.Y, _scorePos.Z, 63, 100f,
+                true, true, 2f, true);
 
             // Play goal ptfx
             PtfxUtils.PlayPtfxAtPos(_scorePos, "scr_rcbarry2", "scr_clown_appears", false, 3f);
 
             // Show notification
-            Screen.ShowNotification((ETeamType)_teamType == ETeamType.TEAM_RED ? "~r~Red~w~ scored a goal!" : "~b~Blue~w~ scored a goal!");
+            Screen.ShowNotification((ETeamType)_teamType == ETeamType.TEAM_RED
+                ? "~r~Red~w~ scored a goal!" : "~b~Blue~w~ scored a goal!");
 
             // Check if ball exists
             if (m_ball.Exists)
@@ -123,7 +126,7 @@ namespace GamemodesClient.Gamemodes
             }
 
             // Get scooter
-            GmNetEntity<Vehicle> scooter = PlayerScooterManager.CurrentScooter;
+            var scooter = PlayerScooterManager.CurrentScooter;
 
             // Check if scooter exists
             if (scooter.Exists)
@@ -143,7 +146,7 @@ namespace GamemodesClient.Gamemodes
                     if (Game.IsControlJustPressed(1, Control.Jump) && !scooter.Entity.IsInAir)
                     {
                         // Get current velocity
-                        Vector3 vel = scooter.Entity.Velocity;
+                        var vel = scooter.Entity.Velocity;
 
                         // Set velocity Z
                         vel.Z = 7f;
@@ -161,17 +164,20 @@ namespace GamemodesClient.Gamemodes
                 if (m_ball.Entity.IsVisible)
                 {
                     // Draw marker above ball with color depending on team
-                    Vector3 markerPos = m_ball.Entity.Position + new Vector3(0f, 0f, 5f);
-                    Color markerColor = TeamManager.TeamType == ETeamType.TEAM_RED ? Color.FromArgb(255, 0, 0) : Color.FromArgb(0, 0, 255);
-                    World.DrawMarker(MarkerType.UpsideDownCone, markerPos, default, default, new Vector3(2f, 2f, 2f), markerColor, true);
+                    var markerPos = m_ball.Entity.Position + new Vector3(0f, 0f, 5f);
+                    var markerColor = TeamManager.TeamType == ETeamType.TEAM_RED
+                        ? Color.FromArgb(255, 0, 0) : Color.FromArgb(0, 0, 255);
+                    World.DrawMarker(MarkerType.UpsideDownCone, markerPos, default, default,
+                        new Vector3(2f, 2f, 2f), markerColor, true);
                 }
 
                 // Check if blip for ball is not created yet
                 if (m_ball.Entity.AttachedBlip == null)
                 {
                     // Create blip for ball with color depending on team
-                    Blip blip = m_ball.Entity.AttachBlip();
-                    blip.Color = TeamManager.TeamType == ETeamType.TEAM_RED ? BlipColor.Red : BlipColor.Blue;
+                    var blip = m_ball.Entity.AttachBlip();
+                    blip.Color = TeamManager.TeamType == ETeamType.TEAM_RED
+                        ? BlipColor.Red : BlipColor.Blue;
                     blip.Name = "Ball";
                     API.ShowHeightOnBlip(blip.Handle, false);
                 }

@@ -37,13 +37,14 @@ namespace GamemodesServer.Core
         private async void OnClientRequestRollIn([FromSource] Player _player)
         {
             // Check if auto enroll is turned on and player isn't already enrolled
-            bool disableAutoEnroll = API.GetConvarInt("gamemodes_disable_auto_enroll", 0) != 0;
+            var disableAutoEnroll = API.GetConvarInt("gamemodes_disable_auto_enroll", 0) != 0;
             if (disableAutoEnroll || s_enrolledPlayers.Contains(_player))
             {
                 return;
             }
 
-            await PlayerResponseAwaiter.AwaitResponse(_player, "gamemodes:cl_sv_accepted_roll_in", "gamemodes:sv_cl_prepared_for_roll_in");
+            await PlayerResponseAwaiter.AwaitResponse(_player,
+                "gamemodes:cl_sv_accepted_roll_in", "gamemodes:sv_cl_prepared_for_roll_in");
 
             // Check if player not loaded in already
             if (!s_enrolledPlayers.Contains(_player))
@@ -82,10 +83,10 @@ namespace GamemodesServer.Core
         [Tick]
         private async Task OnTick()
         {
-            bool disableAutoEnroll = API.GetConvarInt("gamemodes_disable_auto_enroll", 0) != 0;
+            var disableAutoEnroll = API.GetConvarInt("gamemodes_disable_auto_enroll", 0) != 0;
 
             // Iterate through all saved players
-            foreach (Player player in s_enrolledPlayers.ToArray())
+            foreach (var player in s_enrolledPlayers.ToArray())
             {
                 // Check if player not ingame anymore
                 if (disableAutoEnroll || !Players.Contains(player))

@@ -30,7 +30,8 @@ namespace GamemodesServer.Core
             EntityGuard.AllowThrough = true;
 
             // Create vehicle
-            Vehicle vehicle = new Vehicle(API.CreateVehicle((uint)API.GetHashKey(_model), _pos.X, _pos.Y, _pos.Z, 0f, true, true));
+            var vehicle = new Vehicle(API.CreateVehicle(
+                (uint)API.GetHashKey(_model), _pos.X, _pos.Y, _pos.Z, 0f, true, true));
 
             // Set vehicle rotation
             vehicle.Rotation = _rot;
@@ -56,13 +57,15 @@ namespace GamemodesServer.Core
         /// <param name="_rot">Rotation of prop</param>
         /// <param name="_dynamic">Whether this prop should be dynamic</param>
         /// <returns>Created prop</returns>
-        public static async Task<Prop> CreateProp(string _model, Vector3 _pos, Vector3 _rot, bool _dynamic)
+        public static async Task<Prop> CreateProp(string _model, Vector3 _pos, Vector3 _rot,
+            bool _dynamic)
         {
             // Lower the entity guard
             EntityGuard.AllowThrough = true;
 
             // Create prop
-            Prop prop = new Prop(API.CreateObjectNoOffset((uint)API.GetHashKey(_model), _pos.X, _pos.Y, _pos.Z, true, true, _dynamic));
+            var prop = new Prop(API.CreateObjectNoOffset(
+                (uint)API.GetHashKey(_model), _pos.X, _pos.Y, _pos.Z, true, true, _dynamic));
 
             // Set prop rotation
             prop.Rotation = _rot;
@@ -86,7 +89,7 @@ namespace GamemodesServer.Core
         public static void ClearEntities()
         {
             // Clear all entities
-            foreach (Entity entity in s_entities)
+            foreach (var entity in s_entities)
             {
                 if (entity.Exists())
                 {

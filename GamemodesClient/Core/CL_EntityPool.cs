@@ -32,7 +32,8 @@ namespace GamemodesClient.Core
             }
 
             // Create new prop
-            Prop prop = new Prop(API.CreateObject(_model.Hash, _pos.X, _pos.Y, _pos.Z, false, true, _dynamic));
+            var prop = new Prop(API.CreateObject(_model.Hash, _pos.X, _pos.Y, _pos.Z, false, true,
+                _dynamic));
 
             // Set position of prop to target position without any offsets
             prop.PositionNoOffset = _pos;
@@ -61,7 +62,8 @@ namespace GamemodesClient.Core
             }
 
             // Create a new vehicle
-            Vehicle vehicle = new Vehicle(API.CreateVehicle((uint)_model.Hash, _pos.X, _pos.Y, _pos.Z, _heading, false, true));
+            var vehicle = new Vehicle(API.CreateVehicle((uint)_model.Hash, _pos.X, _pos.Y, _pos.Z,
+                _heading, false, true));
 
             // Set position of vehicle to target position without any offsets
             vehicle.PositionNoOffset = _pos;
@@ -89,7 +91,7 @@ namespace GamemodesClient.Core
         public static void ClearEntities()
         {
             // Remove all entities in pool
-            foreach (Entity entity in s_entities)
+            foreach (var entity in s_entities)
             {
                 entity.Delete();
             }

@@ -59,10 +59,10 @@ namespace GamemodesClient.Core
             API.SetAbilityBarVisibilityInMultiplayer(true);
 
             // Save current timestamp
-            long curTimeStamp = API.GetGameTimer();
+            var curTimeStamp = API.GetGameTimer();
 
             // Calculate delta from current and last timestamp
-            long boostDelta = curTimeStamp - m_boostFuelLastTimeStamp;
+            var boostDelta = curTimeStamp - m_boostFuelLastTimeStamp;
 
             // Set last timestamp to current timestamp
             m_boostFuelLastTimeStamp = curTimeStamp;
@@ -90,11 +90,14 @@ namespace GamemodesClient.Core
                 m_boostFuel = Math.Max(m_boostFuel - boostDelta * 0.0006f, 0f);
 
                 // Play active boost sound
-                API.PlaySoundFromEntity(-1, "CLOTHES_THROWN", BoostVehicle.Entity.Handle, "RE_DOMESTIC_SOUNDSET", false, 0);
+                API.PlaySoundFromEntity(-1, "CLOTHES_THROWN", BoostVehicle.Entity.Handle,
+                    "RE_DOMESTIC_SOUNDSET", false, 0);
 
                 // Display networked boost particle effects
-                BoostVehicle.Entity.PlayPtfxOnEntity("scr_rcbarry2", "muz_clown", true, 0.2f, API.GetEntityBoneIndexByName(BoostVehicle.Entity.Handle, "wheel_lr"));
-                BoostVehicle.Entity.PlayPtfxOnEntity("scr_rcbarry2", "muz_clown", true, 0.2f, API.GetEntityBoneIndexByName(BoostVehicle.Entity.Handle, "wheel_rr"));
+                BoostVehicle.Entity.PlayPtfxOnEntity("scr_rcbarry2", "muz_clown", true, 0.2f,
+                    API.GetEntityBoneIndexByName(BoostVehicle.Entity.Handle, "wheel_lr"));
+                BoostVehicle.Entity.PlayPtfxOnEntity("scr_rcbarry2", "muz_clown", true, 0.2f,
+                    API.GetEntityBoneIndexByName(BoostVehicle.Entity.Handle, "wheel_rr"));
 
                 // Show boost screen effect
                 Screen.Effects.Start(ScreenEffect.RaceTurbo, 1000);

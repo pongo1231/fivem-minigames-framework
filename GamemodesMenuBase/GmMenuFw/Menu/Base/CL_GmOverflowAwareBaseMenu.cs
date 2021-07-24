@@ -19,17 +19,21 @@ namespace GamemodesClientMenuFw.GmMenuFw.Menu.Base
         protected override GmMenuBaseItem DrawItems()
         {
             GmMenuBaseItem selectedMenuItem = null;
-            int overflowUpBias = -Math.Min(0, (int)(m_menuItems.Count - 1 - SelectedIndex - m_maxVisibleItems * 0.5f));
-            int overflowDownBias = -Math.Min(0, (int)(SelectedIndex - m_maxVisibleItems * 0.5f));
+            var overflowUpBias = -Math.Min(0,
+                (int)(m_menuItems.Count - 1 - SelectedIndex - m_maxVisibleItems * 0.5f));
+            var overflowDownBias = -Math.Min(0, (int)(SelectedIndex - m_maxVisibleItems * 0.5f));
 
-            // Draw each menu item (if visible), also dequeue each of them while doing that if in immediate mode
-            GmMenuQueue<GmMenuBaseItem> menuItemNode = m_menuItems;
-            for (int itemIdx = 0; ImmediateMode ? menuItemNode.Count > 0 : menuItemNode != null; itemIdx++)
+            // Draw each menu item (if visible), also dequeue each of them while doing that
+            // if in immediate mode
+            var menuItemNode = m_menuItems;
+            for (var itemIdx = 0; ImmediateMode
+                ? menuItemNode.Count > 0 : menuItemNode != null; itemIdx++)
             {
                 // Only display if in range
-                if (itemIdx >= SelectedIndex - m_maxVisibleItems * 0.5f - overflowUpBias && itemIdx <= SelectedIndex + m_maxVisibleItems * 0.5f + overflowDownBias)
+                if (itemIdx >= SelectedIndex - m_maxVisibleItems * 0.5f - overflowUpBias
+                    && itemIdx <= SelectedIndex + m_maxVisibleItems * 0.5f + overflowDownBias)
                 {
-                    GmMenuBaseItem menuItem = menuItemNode.Content;
+                    var menuItem = menuItemNode.Content;
 
                     menuItem.X = PosX;
                     menuItem.Y = PosY;

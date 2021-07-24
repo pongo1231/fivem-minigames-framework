@@ -35,7 +35,7 @@
             // Last node?
             else if (Count > 0)
             {
-                GmMenuQueue<T> newNext = new GmMenuQueue<T>();
+                var newNext = new GmMenuQueue<T>();
                 newNext.Content = _item;
                 newNext.Count = 1;
 
@@ -56,7 +56,7 @@
         /// <returns>Content of this node</returns>
         public T Dequeue()
         {
-            T content = Content;
+            var content = Content;
 
             Content = Next != null ? Next.Content : default(T);
             Count = Next != null ? Next.Count : 0;

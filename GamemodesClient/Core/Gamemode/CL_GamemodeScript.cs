@@ -95,7 +95,8 @@ namespace GamemodesClient.Core.Gamemode
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="_eventName">Event name to use for event communication between client and server</param>
+        /// <param name="_eventName">Event name to use for event communication
+        /// between client and server</param>
         /// <param name="_helpText">Help text to display every tick</param>
         public GamemodeScript(string _eventName, string _helpText)
         {
@@ -126,37 +127,44 @@ namespace GamemodesClient.Core.Gamemode
             };
 
             // Go through all functions of child (and all inherited) class(es) via reflection
-            foreach (MethodInfo methodInfo in GetType().GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance))
+            foreach (var methodInfo in GetType()
+                .GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static
+                | BindingFlags.Instance))
             {
                 /* Check for custom attributes and register methods containing them correspondely */
 
                 if (methodInfo.GetCustomAttribute(typeof(GamemodePreStartAttribute)) != null)
                 {
-                    Debug.WriteLine($"Registering custom OnPreStart for gamemode {methodInfo.DeclaringType.Name}");
+                    Debug.WriteLine(
+                        $"Registering custom OnPreStart for gamemode {methodInfo.DeclaringType.Name}");
 
                     m_onPreStart = createDelegate(methodInfo);
                 }
                 else if (methodInfo.GetCustomAttribute(typeof(GamemodeStartAttribute)) != null)
                 {
-                    Debug.WriteLine($"Registering custom OnStart for gamemode {methodInfo.DeclaringType.Name}");
+                    Debug.WriteLine(
+                        $"Registering custom OnStart for gamemode {methodInfo.DeclaringType.Name}");
 
                     m_onStart = createDelegate(methodInfo);
                 }
                 else if (methodInfo.GetCustomAttribute(typeof(GamemodePreStopAttribute)) != null)
                 {
-                    Debug.WriteLine($"Registering custom OnPreStop for gamemode {methodInfo.DeclaringType.Name}");
+                    Debug.WriteLine(
+                        $"Registering custom OnPreStop for gamemode {methodInfo.DeclaringType.Name}");
 
                     m_onPreStop = createDelegate(methodInfo);
                 }
                 else if (methodInfo.GetCustomAttribute(typeof(GamemodeStopAttribute)) != null)
                 {
-                    Debug.WriteLine($"Registering custom OnStop for gamemode {methodInfo.DeclaringType.Name}");
+                    Debug.WriteLine(
+                        $"Registering custom OnStop for gamemode {methodInfo.DeclaringType.Name}");
 
                     m_onStop = createDelegate(methodInfo);
                 }
                 else if (methodInfo.GetCustomAttribute(typeof(GamemodeTickAttribute)) != null)
                 {
-                    Debug.WriteLine($"Registering OnTick for gamemode {methodInfo.DeclaringType.Name}");
+                    Debug.WriteLine(
+                        $"Registering OnTick for gamemode {methodInfo.DeclaringType.Name}");
 
                     // Add to list of tick delegates
                     m_onTickFuncs.Add(createDelegate(methodInfo));
@@ -185,7 +193,7 @@ namespace GamemodesClient.Core.Gamemode
             }
 
             // Register all custom tick functions
-            foreach (Func<Task> onTickFunc in m_onTickFuncs)
+            foreach (var onTickFunc in m_onTickFuncs)
             {
                 Tick += onTickFunc;
             }

@@ -18,7 +18,8 @@ namespace GamemodesClient.Utils
         /// <param name="_networked">Whether it should be networked</param>
         /// <param name="_scale">Scale of ptfx</param>
         /// <param name="_boneIndex">Bone index of entity to play ptfx on</param>
-        public static async void PlayPtfxOnEntity(this Entity _entity, string _asset, string _effectName, bool _networked = false, float _scale = 1f, int _boneIndex = -1)
+        public static async void PlayPtfxOnEntity(this Entity _entity, string _asset,
+            string _effectName, bool _networked = false, float _scale = 1f, int _boneIndex = -1)
         {
             // Request ptfx asset
             API.RequestNamedPtfxAsset(_asset);
@@ -35,11 +36,13 @@ namespace GamemodesClient.Utils
             // Play ptfx
             if (_networked)
             {
-                API.StartNetworkedParticleFxNonLoopedOnPedBone(_effectName, _entity.Handle, 0f, 0f, 0f, 0f, 0f, 0f, _boneIndex, _scale, false, false, false);
+                API.StartNetworkedParticleFxNonLoopedOnPedBone(_effectName, _entity.Handle, 0f, 0f,
+                    0f, 0f, 0f, 0f, _boneIndex, _scale, false, false, false);
             }
             else
             {
-                API.StartParticleFxNonLoopedOnPedBone(_effectName, _entity.Handle, 0f, 0f, 0f, 0f, 0f, 0f, _boneIndex, _scale, false, false, false);
+                API.StartParticleFxNonLoopedOnPedBone(_effectName, _entity.Handle, 0f, 0f, 0f,
+                    0f, 0f, 0f, _boneIndex, _scale, false, false, false);
             }
 
             // Unload ptfx asset
@@ -56,7 +59,8 @@ namespace GamemodesClient.Utils
         /// <param name="_scale">Scale of ptfx</param>
         /// <param name="_boneIndex">Bone index of entity to play ptfx on</param>
         /// <returns>Handle of looped ptfx</returns>
-        public static async Task<int> PlayLoopedPtfxOnEntity(this Entity _entity, string _asset, string _effectName, bool _networked = false, float _scale = 1f, int _boneIndex = -1)
+        public static async Task<int> PlayLoopedPtfxOnEntity(this Entity _entity, string _asset,
+            string _effectName, bool _networked = false, float _scale = 1f, int _boneIndex = -1)
         {
             // Request ptfx asset
             API.RequestNamedPtfxAsset(_asset);
@@ -76,11 +80,14 @@ namespace GamemodesClient.Utils
             // Play ptfx and store handle
             if (_networked)
             {
-                ptfxHandle = API.StartNetworkedParticleFxLoopedOnEntityBone(_effectName, _entity.Handle, 0f, 0f, 0f, 0f, 0f, 0f, _boneIndex, _scale, false, false, false);
+                ptfxHandle = API.StartNetworkedParticleFxLoopedOnEntityBone(_effectName,
+                    _entity.Handle, 0f, 0f, 0f, 0f, 0f, 0f, _boneIndex, _scale, false, false,
+                    false);
             }
             else
             {
-                ptfxHandle = API.StartParticleFxLoopedOnEntityBone(_effectName, _entity.Handle, 0f, 0f, 0f, 0f, 0f, 0f, _boneIndex, _scale, false, false, false);
+                ptfxHandle = API.StartParticleFxLoopedOnEntityBone(_effectName, _entity.Handle,
+                    0f, 0f, 0f, 0f, 0f, 0f, _boneIndex, _scale, false, false, false);
             }
 
             // Unload ptfx asset
@@ -108,7 +115,8 @@ namespace GamemodesClient.Utils
         /// <param name="_effectName">Name of ptfx</param>
         /// <param name="_networked">Whether ptfx should be networked</param>
         /// <param name="_scale">Scale of ptfx</param>
-        public static async void PlayPtfxAtPos(Vector3 _pos, string _asset, string _effectName, bool _networked = false, float _scale = 1f)
+        public static async void PlayPtfxAtPos(Vector3 _pos, string _asset, string _effectName,
+            bool _networked = false, float _scale = 1f)
         {
             // Request ptfx asset
             API.RequestNamedPtfxAsset(_asset);
@@ -125,11 +133,13 @@ namespace GamemodesClient.Utils
             // Play ptfx
             if (_networked)
             {
-                API.StartNetworkedParticleFxNonLoopedAtCoord(_effectName, _pos.X, _pos.Y, _pos.Z, 0f, 0f, 0f, _scale, false, false, false);
+                API.StartNetworkedParticleFxNonLoopedAtCoord(_effectName, _pos.X, _pos.Y, _pos.Z,
+                    0f, 0f, 0f, _scale, false, false, false);
             }
             else
             {
-                API.StartParticleFxNonLoopedAtCoord(_effectName, _pos.X, _pos.Y, _pos.Z, 0f, 0f, 0f, _scale, false, false, false);
+                API.StartParticleFxNonLoopedAtCoord(_effectName, _pos.X, _pos.Y, _pos.Z, 0f, 0f,
+                    0f, _scale, false, false, false);
             }
 
             // Unload ptfx asset

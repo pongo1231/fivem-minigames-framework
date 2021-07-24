@@ -22,7 +22,8 @@ namespace GamemodesServer.Core.Gamemode
         /// <summary>
         /// List of registered gamemodes
         /// </summary>
-        private static List<GamemodeBaseScript> s_registeredGamemodes = new List<GamemodeBaseScript>();
+        private static List<GamemodeBaseScript> s_registeredGamemodes
+            = new List<GamemodeBaseScript>();
 
         /// <summary>
         /// Currently running gamemode
@@ -105,8 +106,9 @@ namespace GamemodesServer.Core.Gamemode
                 }
 
                 // Check if there's a forced gamemode set as convar
-                string forcedGamemodeName = API.GetConvar("gamemodes_forced_gamemode", string.Empty);
-                GamemodeBaseScript forcedGamemode = s_registeredGamemodes.Find(_gamemode => _gamemode.EventName == forcedGamemodeName);
+                var forcedGamemodeName = API.GetConvar("gamemodes_forced_gamemode", string.Empty);
+                var forcedGamemode = s_registeredGamemodes
+                    .Find(_gamemode => _gamemode.EventName == forcedGamemodeName);
 
                 // Choose gamemode to start
                 if (forcedGamemode != null)
@@ -123,21 +125,26 @@ namespace GamemodesServer.Core.Gamemode
                     }
 
                     // Store all except previous gamemodes
-                    GamemodeBaseScript[] gamemodeChoices = s_registeredGamemodes.Where(_gamemode => !_gamemode.ExcludeFromChoicesList).ToArray();
+                    var gamemodeChoices = s_registeredGamemodes
+                        .Where(_gamemode => !_gamemode.ExcludeFromChoicesList).ToArray();
 
                     // Start random gamemode
-                    s_curGamemode = gamemodeChoices[RandomUtils.RandomInt(0, gamemodeChoices.Length)];
+                    s_curGamemode
+                        = gamemodeChoices[RandomUtils.RandomInt(0, gamemodeChoices.Length)];
 
-                    // Reset exclude status for all gamemodes if this gamemode is the last non-excluded one
-                    if (s_registeredGamemodes.Where(_gamemode => !_gamemode.ExcludeFromChoicesList).Count() <= 1)
+                    // Reset exclude status for all gamemodes
+                    // if this gamemode is the last non-excluded one
+                    if (s_registeredGamemodes
+                        .Where(_gamemode => !_gamemode.ExcludeFromChoicesList).Count() <= 1)
                     {
-                        foreach (GamemodeBaseScript gamemode in s_registeredGamemodes)
+                        foreach (var gamemode in s_registeredGamemodes)
                         {
                             gamemode.ExcludeFromChoicesList = false;
                         }
                     }
 
-                    // Exclude this gamemode from list until all other gamemodes have been chosen (if there are more than 1 registered gamemodes)
+                    // Exclude this gamemode from list until all other gamemodes have been chosen
+                    // (if there are more than 1 registered gamemodes)
                     if (s_registeredGamemodes.Count > 1)
                     {
                         s_curGamemode.ExcludeFromChoicesList = true;
@@ -162,7 +169,7 @@ namespace GamemodesServer.Core.Gamemode
             else
             {
                 // Iterate through all loaded in players
-                foreach (Player player in PlayerEnrollStateManager.GetLoadedInPlayers())
+                foreach (var player in PlayerEnrollStateManager.GetLoadedInPlayers())
                 {
                     // Check if player wasn't made aware of gamemode yet
                     if (!m_gamemodePlayers.Contains(player))
@@ -171,12 +178,16 @@ namespace GamemodesServer.Core.Gamemode
                         m_gamemodePlayers.Add(player);
 
                         // Send prestart gamemode event
-                        await PlayerResponseAwaiter.AwaitResponse(player, $"gamemodes:cl_sv_{s_curGamemode.EventName}_prestart", "gamemodes:sv_cl_prestartedgamemode");
+                        await PlayerResponseAwaiter.AwaitResponse(player,
+                            $"gamemodes:cl_sv_{s_curGamemode.EventName}_prestart",
+                            "gamemodes:sv_cl_prestartedgamemode");
 
                         // Send start gamemode event if countdown isn't running
                         if (!m_prestartCountdownRunning)
                         {
-                            await PlayerResponseAwaiter.AwaitResponse(player, $"gamemodes:cl_sv_{s_curGamemode.EventName}_start", "gamemodes:sv_cl_startedgamemode");
+                            await PlayerResponseAwaiter.AwaitResponse(player,
+                                $"gamemodes:cl_sv_{s_curGamemode.EventName}_start",
+                                "gamemodes:sv_cl_startedgamemode");
                         }
                     }
                 }
@@ -187,7 +198,8 @@ namespace GamemodesServer.Core.Gamemode
                     Log.WriteLine($"Starting prestart cam for gamemode {s_curGamemode.EventName}!");
 
                     // Show prestart cam to all clients
-                    TriggerClientEvent("gamemodes:cl_sv_showprestartcam", s_curGamemode.Name, s_curGamemode.Description);
+                    TriggerClientEvent("gamemodes:cl_sv_showprestartcam", s_curGamemode.Name,
+                        s_curGamemode.Description);
 
                     // Wait a bit
                     await Delay(17000);
@@ -202,7 +214,8 @@ namespace GamemodesServer.Core.Gamemode
                 }
 
                 // Check if timer has run out and we aren't waiting for gamemode to stop yet
-                if (TimerManager.HasRunOut && !m_prestartCountdownRunning && !m_awaitingOvertimeGamemodeStop)
+                if (TimerManager.HasRunOut && !m_prestartCountdownRunning
+                    && !m_awaitingOvertimeGamemodeStop)
                 {
                     // Set waiting for gamemode to stop
                     m_awaitingOvertimeGamemodeStop = true;
@@ -210,7 +223,8 @@ namespace GamemodesServer.Core.Gamemode
                     // Notify gamemode of timer being up
                     s_curGamemode.TimerUp();
 
-                    Log.WriteLine($"Timer up, waiting for gamemode {s_curGamemode.EventName} to stop!");
+                    Log.WriteLine(
+                        $"Timer up, waiting for gamemode {s_curGamemode.EventName} to stop!");
                 }
             }
 
@@ -233,7 +247,9 @@ namespace GamemodesServer.Core.Gamemode
                     await s_curGamemode.Start();
 
                     // Wait for all clients to be aware of gamemode start
-                    await PlayerResponseAwaiter.AwaitResponse($"gamemodes:cl_sv_{s_curGamemode.EventName}_start", "gamemodes:sv_cl_startedgamemode");
+                    await PlayerResponseAwaiter.AwaitResponse(
+                        $"gamemodes:cl_sv_{s_curGamemode.EventName}_start",
+                        "gamemodes:sv_cl_startedgamemode");
 
                     // Set countdown as not running anymore
                     m_prestartCountdownRunning = false;
@@ -244,7 +260,8 @@ namespace GamemodesServer.Core.Gamemode
                     // Show /votestop command reminder
                     StopGamemodeVotingHandler.ShowReminder();
 
-                    Log.WriteLine($"Countdown completed, gamemode {s_curGamemode.EventName} fully started!");
+                    Log.WriteLine(
+                        $"Countdown completed, gamemode {s_curGamemode.EventName} fully started!");
                 }
                 else
                 {
@@ -277,18 +294,22 @@ namespace GamemodesServer.Core.Gamemode
             if (PlayerEnrollStateManager.GetLoadedInPlayers().Length > 0)
             {
                 // Wait for all clients to be made aware of this
-                await PlayerResponseAwaiter.AwaitResponse($"gamemodes:cl_sv_{s_curGamemode.EventName}_prestop", "gamemodes:sv_cl_prestoppedgamemode");
+                await PlayerResponseAwaiter.AwaitResponse(
+                    $"gamemodes:cl_sv_{s_curGamemode.EventName}_prestop",
+                    "gamemodes:sv_cl_prestoppedgamemode");
 
                 // Wait a bit
                 await Delay(1000);
 
                 // Get winner team
-                ETeamType winnerTeam = s_curGamemode.GetWinnerTeam();
+                var winnerTeam = s_curGamemode.GetWinnerTeam();
 
                 Log.WriteLine($"Started winner cam for gamemode {s_curGamemode.EventName}!");
 
                 // Show winner cam with winner team broadcasted
-                TriggerClientEvent("gamemodes:cl_sv_showwinnercam", (int)winnerTeam, ScoreManager.GetScore(ETeamType.TEAM_RED), ScoreManager.GetScore(ETeamType.TEAM_BLUE));
+                TriggerClientEvent("gamemodes:cl_sv_showwinnercam", (int)winnerTeam,
+                    ScoreManager.GetScore(ETeamType.TEAM_RED),
+                    ScoreManager.GetScore(ETeamType.TEAM_BLUE));
 
                 // Wait a bit again
                 await Delay(13000);
@@ -305,13 +326,18 @@ namespace GamemodesServer.Core.Gamemode
             if (PlayerEnrollStateManager.GetLoadedInPlayers().Length > 0)
             {
                 // Wait for all clients to stop gamemode
-                await PlayerResponseAwaiter.AwaitResponse($"gamemodes:cl_sv_{s_curGamemode.EventName}_stop", "gamemodes:sv_cl_stoppedgamemode");
+                await PlayerResponseAwaiter.AwaitResponse(
+                    $"gamemodes:cl_sv_{s_curGamemode.EventName}_stop",
+                    "gamemodes:sv_cl_stoppedgamemode");
 
                 // Once again wait a bit
                 await Delay(5000);
             }
 
-            Log.WriteLine($"Stopped gamemode {s_curGamemode.EventName} with scores {ScoreManager.GetScore(ETeamType.TEAM_RED)} (Red) - {ScoreManager.GetScore(ETeamType.TEAM_BLUE)} (Blue)!");
+            Log.WriteLine(
+                $"Stopped gamemode {s_curGamemode.EventName} with scores" +
+                $" {ScoreManager.GetScore(ETeamType.TEAM_RED)} (Red) -" +
+                $" {ScoreManager.GetScore(ETeamType.TEAM_BLUE)} (Blue)!");
 
             // Set current gamemode to none
             s_curGamemode = null;

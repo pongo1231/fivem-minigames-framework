@@ -16,7 +16,8 @@ namespace GamemodesServer.Core.Gamemode
     /// Gamemode script
     /// </summary>
     /// <typeparam name="MapType">Type of map class that corresponds to this gamemode</typeparam>
-    public abstract class GamemodeScript<MapType> : GamemodeBaseScript where MapType : GamemodeBaseMap
+    public abstract class GamemodeScript<MapType> : GamemodeBaseScript
+        where MapType : GamemodeBaseMap
     {
         /// <summary>
         /// Gamemode event handler class
@@ -109,55 +110,66 @@ namespace GamemodesServer.Core.Gamemode
             };
 
             // Iterate through all functions of child (and all inherited) class(es) via reflection
-            foreach (MethodInfo methodInfo in GetType().GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance))
+            foreach (var methodInfo in GetType()
+                .GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static
+                | BindingFlags.Instance))
             {
                 /* Check for custom attributes and register methods containing them correspondely */
 
                 if (methodInfo.GetCustomAttribute(typeof(GamemodePreStartAttribute)) != null)
                 {
-                    Log.WriteLine($"Registering custom OnPreStart for gamemode {methodInfo.DeclaringType.Name}");
+                    Log.WriteLine(
+                        $"Registering custom OnPreStart for gamemode {methodInfo.DeclaringType.Name}");
 
                     m_onPreStart = createDelegate(methodInfo);
                 }
                 else if (methodInfo.GetCustomAttribute(typeof(GamemodeStartAttribute)) != null)
                 {
-                    Log.WriteLine($"Registering custom OnStart for gamemode {methodInfo.DeclaringType.Name}");
+                    Log.WriteLine(
+                        $"Registering custom OnStart for gamemode {methodInfo.DeclaringType.Name}");
 
                     m_onStart = createDelegate(methodInfo);
                 }
                 else if (methodInfo.GetCustomAttribute(typeof(GamemodePreStopAttribute)) != null)
                 {
-                    Log.WriteLine($"Registering custom OnPreStop for gamemode {methodInfo.DeclaringType.Name}");
+                    Log.WriteLine(
+                        $"Registering custom OnPreStop for gamemode {methodInfo.DeclaringType.Name}");
 
                     m_onPreStop = createDelegate(methodInfo);
                 }
                 else if (methodInfo.GetCustomAttribute(typeof(GamemodeStopAttribute)) != null)
                 {
-                    Log.WriteLine($"Registering custom OnStop for gamemode {methodInfo.DeclaringType.Name}");
+                    Log.WriteLine(
+                        $"Registering custom OnStop for gamemode {methodInfo.DeclaringType.Name}");
 
                     m_onStop = createDelegate(methodInfo);
                 }
                 else if (methodInfo.GetCustomAttribute(typeof(GamemodeTimerUpAttribute)) != null)
                 {
-                    Log.WriteLine($"Registering custom OnTimerUp for gamemode {methodInfo.DeclaringType.Name}");
+                    Log.WriteLine(
+                        $"Registering custom OnTimerUp for gamemode {methodInfo.DeclaringType.Name}");
 
                     m_onTimerUp = createDelegate(methodInfo);
                 }
                 else if (methodInfo.GetCustomAttribute(typeof(GamemodeEventHandlerAttribute)) != null)
                 {
-                    Log.WriteLine($"Registering EventHandler for gamemode {methodInfo.DeclaringType.Name}");
+                    Log.WriteLine(
+                        $"Registering EventHandler for gamemode {methodInfo.DeclaringType.Name}");
 
                     // Get event name
-                    string eventName = ((GamemodeEventHandlerAttribute)methodInfo.GetCustomAttribute(typeof(GamemodeEventHandlerAttribute))).EventName;
+                    var eventName = ((GamemodeEventHandlerAttribute)methodInfo
+                        .GetCustomAttribute(typeof(GamemodeEventHandlerAttribute))).EventName;
 
                     // Get parameters
-                    Type[] parameters = methodInfo.GetParameters().Select(parameter => parameter.ParameterType).ToArray();
+                    var parameters = methodInfo.GetParameters()
+                        .Select(parameter => parameter.ParameterType).ToArray();
 
                     // Build type for callback
-                    Type actionType = Expression.GetDelegateType(parameters.Concat(new[] { typeof(void) }).ToArray());
+                    var actionType = Expression
+                        .GetDelegateType(parameters.Concat(new[] { typeof(void) }).ToArray());
 
                     // Create callback delegate
-                    Delegate callback = methodInfo.IsStatic
+                    var callback = methodInfo.IsStatic
                         ? Delegate.CreateDelegate(actionType, methodInfo)
                         : Delegate.CreateDelegate(actionType, this, methodInfo);
 
@@ -166,7 +178,8 @@ namespace GamemodesServer.Core.Gamemode
                 }
                 else if (methodInfo.GetCustomAttribute(typeof(GamemodeTickAttribute)) != null)
                 {
-                    Log.WriteLine($"Registering OnTick for gamemode {methodInfo.DeclaringType.Name}");
+                    Log.WriteLine(
+                        $"Registering OnTick for gamemode {methodInfo.DeclaringType.Name}");
 
                     // Add to list of tick delegates
                     m_onTickFuncs.Add(createDelegate(methodInfo));
@@ -174,12 +187,14 @@ namespace GamemodesServer.Core.Gamemode
             }
 
             // Go through all existing types to search for maps mapped to this gamemode
-            foreach (Type type in Assembly.GetExecutingAssembly().GetTypes().Where(_type => _type.IsClass && !_type.IsAbstract && _type.IsSubclassOf(typeof(MapType))))
+            foreach (var type in Assembly.GetExecutingAssembly().GetTypes()
+                .Where(_type => _type.IsClass && !_type.IsAbstract
+                    && _type.IsSubclassOf(typeof(MapType))))
             {
                 Log.WriteLine($"Registering map {type.Name} for gamemode {GetType().Name}");
 
                 // Create instance of map
-                MapType mapType = (MapType)Activator.CreateInstance(type);
+                var mapType = (MapType)Activator.CreateInstance(type);
 
                 // Add to list of registered maps
                 m_gamemodeMaps.Add(mapType);
@@ -209,8 +224,8 @@ namespace GamemodesServer.Core.Gamemode
             IsGamemodePreStartRunning = true;
 
             // Check if there's a forced map set as convar
-            string forcedMapName = API.GetConvar($"gamemodes_{EventName}_forced_map", string.Empty);
-            MapType forcedMap = m_gamemodeMaps.Find(_map => _map.MapName == forcedMapName);
+            var forcedMapName = API.GetConvar($"gamemodes_{EventName}_forced_map", string.Empty);
+            var forcedMap = m_gamemodeMaps.Find(_map => _map.MapName == forcedMapName);
 
             // Choose map to load
             if (forcedMap != null)
@@ -223,11 +238,13 @@ namespace GamemodesServer.Core.Gamemode
                 // Notify if forced map couldn't be found
                 if (forcedMapName != string.Empty)
                 {
-                    Log.WriteLine($"Couldn't find forced map {forcedMapName} for gamemode {EventName}!");
+                    Log.WriteLine(
+                        $"Couldn't find forced map {forcedMapName} for gamemode {EventName}!");
                 }
 
                 // Store all except previous maps
-                MapType[] mapChoices = m_gamemodeMaps.Where(_map => !_map.ExcludeFromChoicesList).ToArray();
+                var mapChoices = m_gamemodeMaps
+                    .Where(_map => !_map.ExcludeFromChoicesList).ToArray();
 
                 // Select random map
                 CurrentMap = mapChoices[RandomUtils.RandomInt(0, mapChoices.Length)];
@@ -235,13 +252,14 @@ namespace GamemodesServer.Core.Gamemode
                 // Reset exclude status for all maps if this map is the last non-excluded one
                 if (m_gamemodeMaps.Where(_map => !_map.ExcludeFromChoicesList).Count() <= 1)
                 {
-                    foreach (MapType map in m_gamemodeMaps)
+                    foreach (var map in m_gamemodeMaps)
                     {
                         map.ExcludeFromChoicesList = false;
                     }
                 }
 
-                // Exclude this map from list until all other maps have been chosen (if there are more than 1 registered maps)
+                // Exclude this map from list until all other maps have been chosen
+                // (if there are more than 1 registered maps)
                 if (m_gamemodeMaps.Count > 1)
                 {
                     CurrentMap.ExcludeFromChoicesList = true;
@@ -261,13 +279,13 @@ namespace GamemodesServer.Core.Gamemode
             }
 
             // Register all event handlers
-            foreach (GamemodeEventHandler eventHandler in m_eventHandlers)
+            foreach (var eventHandler in m_eventHandlers)
             {
                 EventHandlers[eventHandler.EventName] += eventHandler.Callback;
             }
 
             // Register all tick functions
-            foreach (Func<Task> onTickFunc in m_onTickFuncs)
+            foreach (var onTickFunc in m_onTickFuncs)
             {
                 Tick += onTickFunc;
             }
@@ -299,13 +317,13 @@ namespace GamemodesServer.Core.Gamemode
         public override async Task PreStop()
         {
             // Unregister all event handlers
-            foreach (GamemodeEventHandler eventHandler in m_eventHandlers)
+            foreach (var eventHandler in m_eventHandlers)
             {
                 EventHandlers[eventHandler.EventName] -= eventHandler.Callback;
             }
 
             // Unregister all tick functions
-            foreach (Func<Task> onTickFunc in m_onTickFuncs)
+            foreach (var onTickFunc in m_onTickFuncs)
             {
                 Tick -= onTickFunc;
             }

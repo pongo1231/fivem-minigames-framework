@@ -24,7 +24,7 @@ namespace GamemodesClientPrivate.Core.MapEditor.Menus
         {
             ImmediateMode = false;
 
-            MapAboutMenu menu = new MapAboutMenu();
+            var menu = new MapAboutMenu();
 
             AddChildMenuItem("About", menu);
         }
@@ -46,7 +46,8 @@ namespace GamemodesClientPrivate.Core.MapEditor.Menus
         {
             if (m_editorCamera == null)
             {
-                m_editorCamera = World.CreateCamera(Game.PlayerPed.Position, new Vector3(0f, 0f, Game.PlayerPed.Heading), 60);
+                m_editorCamera = World.CreateCamera(Game.PlayerPed.Position,
+                    new Vector3(0f, 0f, Game.PlayerPed.Heading), 60);
                 World.RenderingCamera = m_editorCamera;
             }
 
@@ -59,15 +60,19 @@ namespace GamemodesClientPrivate.Core.MapEditor.Menus
 
         private void HandleCamera()
         {
-            Vector3 newRot = m_editorCamera.Rotation;
-            newRot.X -= Game.GetDisabledControlNormal(0, Control.LookUpDown) * m_lookMult * Game.LastFrameTime;
+            var newRot = m_editorCamera.Rotation;
+            newRot.X -= Game.GetDisabledControlNormal(0,
+                Control.LookUpDown) * m_lookMult * Game.LastFrameTime;
             newRot.Y = 0f;
-            newRot.Z -= Game.GetDisabledControlNormal(0, Control.LookLeftRight) * m_lookMult * Game.LastFrameTime;
+            newRot.Z -= Game.GetDisabledControlNormal(0,
+                Control.LookLeftRight) * m_lookMult * Game.LastFrameTime;
             m_editorCamera.Rotation = newRot;
 
-            Vector3 newPos = m_editorCamera.Position;
-            newPos -= m_editorCamera.UpVector * Game.GetDisabledControlNormal(0, Control.MoveUpDown) * m_moveMult * Game.LastFrameTime;
-            newPos += m_editorCamera.RightVector * Game.GetDisabledControlNormal(0, Control.MoveLeftRight) * m_moveMult * Game.LastFrameTime;
+            var newPos = m_editorCamera.Position;
+            newPos -= m_editorCamera.UpVector * Game.GetDisabledControlNormal(0,
+                Control.MoveUpDown) * m_moveMult * Game.LastFrameTime;
+            newPos += m_editorCamera.RightVector * Game.GetDisabledControlNormal(0,
+                Control.MoveLeftRight) * m_moveMult * Game.LastFrameTime;
             m_editorCamera.Position = newPos;
         }
     }

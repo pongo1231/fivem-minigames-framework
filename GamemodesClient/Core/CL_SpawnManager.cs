@@ -46,7 +46,7 @@ namespace GamemodesClient.Core
             await ScreenUtils.FadeOut();
 
             // Get current vehicle
-            Vehicle vehicle = Game.PlayerPed.CurrentVehicle;
+            var vehicle = Game.PlayerPed.CurrentVehicle;
 
             // Set target to player ped initially
             Entity target = Game.PlayerPed;

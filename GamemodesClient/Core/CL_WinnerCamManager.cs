@@ -51,7 +51,7 @@ namespace GamemodesClient.Core
             m_scaleforms.Add(new Scaleform("MP_CELEBRATION"));
 
             // Wait for scaleforms to load
-            foreach (Scaleform scaleform in m_scaleforms)
+            foreach (var scaleform in m_scaleforms)
             {
                 while (!scaleform.IsLoaded)
                 {
@@ -60,7 +60,7 @@ namespace GamemodesClient.Core
             }
 
             // Create winner text label for scaleform
-            ETeamType winnerTeam = (ETeamType)_winnerTeam;
+            var winnerTeam = (ETeamType)_winnerTeam;
 
             switch (winnerTeam)
             {
@@ -78,13 +78,14 @@ namespace GamemodesClient.Core
                     break;
             }
 
-            foreach (Scaleform scaleform in m_scaleforms)
+            foreach (var scaleform in m_scaleforms)
             {
                 // Create stat wall
                 scaleform.CallFunction("CREATE_STAT_WALL", "SUMMARY", "HUD_COLOUR_BLACK", 255);
 
                 // Add winner text to stat wall
-                scaleform.CallFunction("ADD_WINNER_TO_WALL", "SUMMARY", "_GAMEMODES_WINNER", "", "", 0, false, $"~r~{_redScore}~w~ - ~b~{_blueScore}", true);
+                scaleform.CallFunction("ADD_WINNER_TO_WALL", "SUMMARY", "_GAMEMODES_WINNER", "",
+                    "", 0, false, $"~r~{_redScore}~w~ - ~b~{_blueScore}", true);
 
                 // Add background to stat wall
                 scaleform.CallFunction("ADD_BACKGROUND_TO_WALL", "SUMMARY", 75, 0);
@@ -107,7 +108,7 @@ namespace GamemodesClient.Core
             m_showWinnerCam = false;
 
             // Clean up scaleforms
-            foreach (Scaleform scaleform in m_scaleforms)
+            foreach (var scaleform in m_scaleforms)
             {
                 scaleform.Dispose();
             }
@@ -147,7 +148,7 @@ namespace GamemodesClient.Core
                 API.SetCinematicModeActive(true);
 
                 // Render scaleforms
-                foreach (Scaleform scaleform in m_scaleforms)
+                foreach (var scaleform in m_scaleforms)
                 {
                     scaleform.Render2D();
                 }

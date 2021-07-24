@@ -24,7 +24,8 @@ namespace GamemodesClientMenuFw.GmMenuFw.Menu.Base
         /// <param name="_childMenu">Instance of menu to open</param>
         public void AddChildMenuItem(string _label, GmMenuAwareBaseMenu _childMenu)
         {
-            m_menuItems.Enqueue(new GmMenuActionItem(m_itemWidth, m_itemHeight, _label, (_idx, _thisLabel) =>
+            m_menuItems.Enqueue(new GmMenuActionItem(m_itemWidth, m_itemHeight, _label,
+                (_idx, _thisLabel) =>
             {
                 ChildMenu = _childMenu;
                 _childMenu.ParentMenu = this;

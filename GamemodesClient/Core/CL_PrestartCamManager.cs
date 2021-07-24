@@ -44,7 +44,7 @@ namespace GamemodesClient.Core
             m_scaleforms.Add(new Scaleform("MP_CELEBRATION"));
 
             // Wait for scaleforms to load
-            foreach (Scaleform scaleform in m_scaleforms)
+            foreach (var scaleform in m_scaleforms)
             {
                 while (!scaleform.IsLoaded)
                 {
@@ -58,13 +58,14 @@ namespace GamemodesClient.Core
                 await Delay(0);
             }
 
-            foreach (Scaleform scaleform in m_scaleforms)
+            foreach (var scaleform in m_scaleforms)
             {
                 // Create stat wall
                 scaleform.CallFunction("CREATE_STAT_WALL", "SUMMARY", "HUD_COLOUR_BLACK", 255);
 
                 // Add intro to stat wall
-                scaleform.CallFunction("ADD_INTRO_TO_WALL", "SUMMARY", $"~y~{_gamemodeName}", $"~g~{_gamemodeDescription}", "", "", "", 0, 0, "", true, "HUD_COLOUR_BLACK");
+                scaleform.CallFunction("ADD_INTRO_TO_WALL", "SUMMARY", $"~y~{_gamemodeName}",
+                    $"~g~{_gamemodeDescription}", "", "", "", 0, 0, "", true, "HUD_COLOUR_BLACK");
 
                 // Add background to stat wall
                 scaleform.CallFunction("ADD_BACKGROUND_TO_WALL", "SUMMARY", 75, 0);
@@ -100,7 +101,7 @@ namespace GamemodesClient.Core
             Screen.Hud.IsRadarVisible = true;
 
             // Clear scaleforms
-            foreach (Scaleform scaleform in m_scaleforms)
+            foreach (var scaleform in m_scaleforms)
             {
                 scaleform.Dispose();
             }
@@ -119,7 +120,7 @@ namespace GamemodesClient.Core
                 API.ThefeedHideThisFrame();
 
                 // Render scaleforms
-                foreach (Scaleform scaleform in m_scaleforms)
+                foreach (var scaleform in m_scaleforms)
                 {
                     scaleform.Render2D();
                 }

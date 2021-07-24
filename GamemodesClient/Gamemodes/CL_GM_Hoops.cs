@@ -28,7 +28,8 @@ namespace GamemodesClient.Gamemodes
         /// <summary>
         /// Constructor
         /// </summary>
-        public Hoops() : base("hoops", "~r~Red Hoops~w~ are worth 1 point.\r~g~Green Hoops~w~ are worth 5 points.")
+        public Hoops() : base("hoops",
+            "~r~Red Hoops~w~ are worth 1 point.\r~g~Green Hoops~w~ are worth 5 points.")
         {
 
         }
@@ -43,7 +44,8 @@ namespace GamemodesClient.Gamemodes
             m_hoops.Clear();
 
             // Request a scooter from server
-            TriggerServerEvent("gamemodes:sv_cl_requestscooter", SpawnManager.SpawnPos, SpawnManager.SpawnRot);
+            TriggerServerEvent("gamemodes:sv_cl_requestscooter", SpawnManager.SpawnPos,
+                SpawnManager.SpawnRot);
 
             await Task.FromResult(0);
         }
@@ -56,7 +58,7 @@ namespace GamemodesClient.Gamemodes
         {
             /* Clear all hoop blips */
 
-            foreach (Blip blip in m_blips)
+            foreach (var blip in m_blips)
             {
                 blip.Delete();
             }
@@ -78,7 +80,7 @@ namespace GamemodesClient.Gamemodes
 
             /* Remove all existing hoop blips */
 
-            foreach (Blip blip in m_blips)
+            foreach (var blip in m_blips)
             {
                 blip.Delete();
             }
@@ -88,9 +90,9 @@ namespace GamemodesClient.Gamemodes
             // Create new blips for all active hoops if gamemode is started
             if (!IsGamemodePreStartRunning)
             {
-                foreach (dynamic hoop in m_hoops)
+                foreach (var hoop in m_hoops)
                 {
-                    Blip blip = World.CreateBlip(hoop.Position);
+                    var blip = World.CreateBlip(hoop.Position);
                     blip.Scale = 0.75f;
                     blip.Color = hoop.IsExtraWorth ? BlipColor.Green : BlipColor.Red;
                     blip.Name = "Hoop";
@@ -111,7 +113,8 @@ namespace GamemodesClient.Gamemodes
             AudioUtils.PlayFrontendAudio("GTAO_Shepherd_Sounds", "Checkpoint_Teammate");
 
             // Show notification
-            Screen.ShowNotification(_isExtraWorth ? "~g~You collected a green hoop!" : "You collected a hoop!");
+            Screen.ShowNotification(_isExtraWorth ? "~g~You collected a green hoop!"
+                : "You collected a hoop!");
         }
 
         /// <summary>
@@ -126,23 +129,27 @@ namespace GamemodesClient.Gamemodes
                 // Draw mission objective text corresponding to team
                 if (TeamManager.TeamType == ETeamType.TEAM_RED)
                 {
-                    ScreenUtils.ShowSubtitle("Collect hoops to score points for the ~r~Red Team~w~!");
+                    ScreenUtils.ShowSubtitle(
+                        "Collect hoops to score points for the ~r~Red Team~w~!");
                 }
                 else if (TeamManager.TeamType == ETeamType.TEAM_BLUE)
                 {
-                    ScreenUtils.ShowSubtitle("Collect hoops to score points for the ~b~Blue Team~w~!");
+                    ScreenUtils.ShowSubtitle(
+                        "Collect hoops to score points for the ~b~Blue Team~w~!");
                 }
 
                 // Draw all active hoops
-                foreach (dynamic hoop in m_hoops)
+                foreach (var hoop in m_hoops)
                 {
-                    World.DrawMarker(MarkerType.VerticleCircle, hoop.Position, Vector3.Zero, Vector3.Zero, new Vector3(7f, 7f, 7f),
-                        hoop.IsExtraWorth ? Color.FromArgb(127, 0, 255, 0) : Color.FromArgb(127, 255, 0, 0), false, true);
+                    World.DrawMarker(MarkerType.VerticleCircle, hoop.Position, Vector3.Zero,
+                        Vector3.Zero, new Vector3(7f, 7f, 7f),
+                        hoop.IsExtraWorth ? Color.FromArgb(127, 0, 255, 0)
+                            : Color.FromArgb(127, 255, 0, 0), false, true);
                 }
             }
 
             // Get scooter
-            GmNetEntity<Vehicle> scooter = PlayerScooterManager.CurrentScooter;
+            var scooter = PlayerScooterManager.CurrentScooter;
 
             // Check if scooter exists
             if (scooter.Exists)

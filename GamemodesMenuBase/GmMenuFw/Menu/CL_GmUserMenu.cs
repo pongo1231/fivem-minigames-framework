@@ -1,11 +1,11 @@
 ﻿using System.Drawing;
 using GamemodesClientMenuFw.GmMenuFw.Menu.Base;
+using GamemodesClientMenuFw.GmMenuFw.Item.Base;
 
 using Rectangle = CitizenFX.Core.UI.Rectangle;
 using Text = CitizenFX.Core.UI.Text;
 using Font = CitizenFX.Core.UI.Font;
 using Alignment = CitizenFX.Core.UI.Alignment;
-using GamemodesClientMenuFw.GmMenuFw.Item.Base;
 
 namespace GamemodesClientMenuFw.GmMenuFw.Menu
 {
@@ -65,11 +65,13 @@ namespace GamemodesClientMenuFw.GmMenuFw.Menu
                 return false;
             }
 
-            Rectangle titleRect = new Rectangle(new PointF(PosX, PosY), new SizeF(m_itemWidth, m_headerHeight), m_headerColor, true);
+            var titleRect = new Rectangle(new PointF(PosX, PosY),
+                new SizeF(m_itemWidth, m_headerHeight), m_headerColor, true);
             titleRect.Draw();
 
-            Text titleText = new Text(Title,
-                new PointF(PosX, PosY - m_headerHeight * 0.5f), 1f, Color.FromArgb(255, 255, 255), Font.Monospace, Alignment.Center, true, true);
+            var titleText = new Text(Title,
+               new PointF(PosX, PosY - m_headerHeight * 0.5f), 1f, Color.FromArgb(255, 255, 255),
+               Font.Monospace, Alignment.Center, true, true);
             titleText.Draw();
 
             // Take title bar in consideration for Y position

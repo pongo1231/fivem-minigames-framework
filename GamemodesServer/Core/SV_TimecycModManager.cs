@@ -27,7 +27,8 @@ namespace GamemodesServer.Core
             // Broadcast timecycle modifier to all clients if existant
             if (s_timecycMod != null)
             {
-                TriggerClientEvent("gamemodes:cl_sv_loadtimecycmods", s_timecycMod, s_timecycModExtra);
+                TriggerClientEvent("gamemodes:cl_sv_loadtimecycmods",
+                    s_timecycMod, s_timecycModExtra);
             }
 
             await Delay(300);

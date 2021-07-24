@@ -35,7 +35,8 @@ namespace GamemodesServer.Core
         private async Task OnTick()
         {
             // Broadcast time and weather to all clients
-            TriggerClientEvent("gamemodes:cl_sv_settimeweather", s_timeHour, s_timeMin, s_timeSec, Weather);
+            TriggerClientEvent("gamemodes:cl_sv_settimeweather",
+                s_timeHour, s_timeMin, s_timeSec, Weather);
 
             await Delay(300);
         }

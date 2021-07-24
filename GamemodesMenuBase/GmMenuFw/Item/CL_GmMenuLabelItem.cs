@@ -40,13 +40,16 @@ namespace GamemodesClientMenuFw.GmMenuFw.Item
         /// <param name="_height">Height</param>
         /// <param name="_label">Label of item</param>
         /// <param name="_suffix">Label to draw on the right side</param>
-        public GmMenuLabelItem(int _width, int _height, string _label, string _suffix = null) : base(_width, _height)
+        public GmMenuLabelItem(int _width, int _height, string _label, string _suffix = null)
+            : base(_width, _height)
         {
-            m_text = new Text(_label, new PointF(), 0.35f, Color.FromArgb(255, 255, 255), Font.ChaletLondon, Alignment.Left, false, false);
+            m_text = new Text(_label, new PointF(), 0.35f, Color.FromArgb(255, 255, 255),
+                Font.ChaletLondon, Alignment.Left, false, false);
 
             if (_suffix != null)
             {
-                m_suffixText = new Text(_suffix, new PointF(), 0.35f, Color.FromArgb(255, 255, 255), Font.ChaletLondon, Alignment.Right, true, true);
+                m_suffixText = new Text(_suffix, new PointF(), 0.35f,
+                    Color.FromArgb(255, 255, 255), Font.ChaletLondon, Alignment.Right, true, true);
             }
         }
 
@@ -60,7 +63,8 @@ namespace GamemodesClientMenuFw.GmMenuFw.Item
             // Draw suffix if existing
             if (m_suffixText != null)
             {
-                m_suffixText.Position = new PointF(X + RectSize.Width * 0.5f - 5, Y - RectSize.Height * 0.5f);
+                m_suffixText.Position = new PointF(X + RectSize.Width * 0.5f - 5,
+                    Y - RectSize.Height * 0.5f);
 
                 m_suffixText.Draw();
             }

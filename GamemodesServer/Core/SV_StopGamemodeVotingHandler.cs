@@ -62,7 +62,8 @@ namespace GamemodesServer.Core
             m_voteTimeoutTimestamp = API.GetGameTimer() + 30000;
 
             // Add all currently loaded in players to list (except voter)
-            foreach (Player player in PlayerEnrollStateManager.GetLoadedInPlayers().Where(pplayer => pplayer != _player))
+            foreach (var player in PlayerEnrollStateManager.GetLoadedInPlayers()
+                .Where(pplayer => pplayer != _player))
             {
                 m_votingPlayers.Add(player);
             }
@@ -70,7 +71,10 @@ namespace GamemodesServer.Core
             // Notify everyone of ongoing vote if there are more players in game than voter
             if (m_votingPlayers.Count > 0)
             {
-                ChatUtils.SendMessage($"^3{_player.Name} started a vote for stopping the current gamemode and starting a new one! Respond with /y to vote for it. All current players need to vote for it to succeed.");
+                ChatUtils.SendMessage($"^3{_player.Name} started a vote for stopping" +
+                    $" the current gamemode and starting a new one!" +
+                    $" Respond with /y to vote for it." +
+                    $" All current players need to vote for it to succeed.");
             }
         }
 
@@ -84,7 +88,8 @@ namespace GamemodesServer.Core
             // Don't continue if a vote isn't running
             if (!m_voteRunning)
             {
-                _player.SendMessage("^1There is no stop vote running currently. Start a vote with /votestop instead.");
+                _player.SendMessage("^1There is no stop vote running currently." +
+                    " Start a vote with /votestop instead.");
 
                 return;
             }
@@ -125,7 +130,7 @@ namespace GamemodesServer.Core
                 {
                     /* Stop vote if time is up */
 
-                    long curTimestamp = API.GetGameTimer();
+                    var curTimestamp = API.GetGameTimer();
 
                     if (m_voteTimeoutTimestamp < curTimestamp)
                     {
@@ -144,7 +149,8 @@ namespace GamemodesServer.Core
         /// </summary>
         public static void ShowReminder()
         {
-            ChatUtils.SendMessage("^2Should the gamemode softlock or cause any other issues you can start a vote to stop it with /votestop.");
+            ChatUtils.SendMessage("^2Should the gamemode softlock or cause any other issues" +
+                " you can start a vote to stop it with /votestop.");
         }
     }
 }

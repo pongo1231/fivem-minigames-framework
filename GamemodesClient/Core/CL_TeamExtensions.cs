@@ -16,7 +16,8 @@ namespace GamemodesClient.Core
         public static ETeamType GetTeam(this Player _player)
         {
             // Get team player from player network id
-            SHTeamPlayer teamPlayer = TeamManager.TeamPlayers.Find(_teamPlayer => _teamPlayer.PlayerNetId == _player.ServerId);
+            var teamPlayer = TeamManager.TeamPlayers
+                .Find(_teamPlayer => _teamPlayer.PlayerNetId == _player.ServerId);
 
             // Return either player's team or unknown team if not found
             return teamPlayer != null ? (ETeamType)teamPlayer.PlayerTeamType : ETeamType.TEAM_UNK;

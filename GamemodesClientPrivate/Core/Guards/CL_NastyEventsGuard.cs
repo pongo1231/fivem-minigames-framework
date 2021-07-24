@@ -31,7 +31,7 @@ namespace GamemodesClientPrivate.Core.Guards
         /// </summary>
         public NastyEventsGuard()
         {
-            foreach (string _eventName in m_nastyEvents)
+            foreach (var _eventName in m_nastyEvents)
             {
                 EventHandlers[_eventName] += new Action(SendDropMeToServer);
             }

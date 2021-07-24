@@ -58,37 +58,46 @@ namespace GamemodesServer.Core
         public GmScript()
         {
             // Store list of all functions of child (and all inherited) class(es) via reflection
-            MethodInfo[] methods = GetType().GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance);
+            var methods = GetType().GetMethods(BindingFlags.Public | BindingFlags.NonPublic
+                | BindingFlags.Static | BindingFlags.Instance);
 
             // Iterate through those with new player attribute
-            foreach (MethodInfo method in methods.Where(method => method.GetCustomAttribute(typeof(NewPlayerAttribute)) != null))
+            foreach (var method in methods.Where(method => method
+                .GetCustomAttribute(typeof(NewPlayerAttribute)) != null))
             {
-                Log.WriteLine($"Registering NewPlayer handler {method.DeclaringType.Name}.{method.Name}");
+                Log.WriteLine(
+                    $"Registering NewPlayer handler {method.DeclaringType.Name}.{method.Name}");
 
                 // Register delegate to new player event
                 if (method.IsStatic)
                 {
-                    NewPlayer += (NewPlayerHandler)Delegate.CreateDelegate(typeof(NewPlayerHandler), method);
+                    NewPlayer += (NewPlayerHandler)Delegate
+                        .CreateDelegate(typeof(NewPlayerHandler), method);
                 }
                 else
                 {
-                    NewPlayer += (NewPlayerHandler)Delegate.CreateDelegate(typeof(NewPlayerHandler), this, method);
+                    NewPlayer += (NewPlayerHandler)Delegate
+                        .CreateDelegate(typeof(NewPlayerHandler), this, method);
                 }
             }
 
             // Iterate through those with player dropped attribute
-            foreach (MethodInfo method in methods.Where(method => method.GetCustomAttribute(typeof(PlayerDroppedAttribute)) != null))
+            foreach (var method in methods.Where(method => method
+            .GetCustomAttribute(typeof(PlayerDroppedAttribute)) != null))
             {
-                Log.WriteLine($"Registering PlayerDropped handler {method.DeclaringType.Name}.{method.Name}");
+                Log.WriteLine(
+                    $"Registering PlayerDropped handler {method.DeclaringType.Name}.{method.Name}");
 
                 // Register delegate to player dropped event
                 if (method.IsStatic)
                 {
-                    PlayerDropped += (PlayerDroppedHandler)Delegate.CreateDelegate(typeof(PlayerDroppedHandler), method);
+                    PlayerDropped += (PlayerDroppedHandler)Delegate
+                        .CreateDelegate(typeof(PlayerDroppedHandler), method);
                 }
                 else
                 {
-                    PlayerDropped += (PlayerDroppedHandler)Delegate.CreateDelegate(typeof(PlayerDroppedHandler), this, method);
+                    PlayerDropped += (PlayerDroppedHandler)Delegate
+                        .CreateDelegate(typeof(PlayerDroppedHandler), this, method);
                 }
             }
         }

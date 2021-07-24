@@ -30,7 +30,8 @@ namespace GamemodesClient.Core
         /// Play a music event
         /// </summary>
         /// <param name="_musicEvent">Name of music event to play</param>
-        /// <param name="_extraMusicEvent">Additional music event to trigger to control intensity of normal music event</param>
+        /// <param name="_extraMusicEvent">Additional music event to trigger to control intensity
+        /// of normal music event</param>
         public static void Play(string _musicEvent = null, string _extraMusicEvent = null)
         {
             // Check if music event is set
@@ -38,7 +39,7 @@ namespace GamemodesClient.Core
             {
                 /* Randomly select a music event */
 
-                int choice = RandomUtils.RandomInt(0, 2);
+                var choice = RandomUtils.RandomInt(0, 2);
 
                 switch (choice)
                 {

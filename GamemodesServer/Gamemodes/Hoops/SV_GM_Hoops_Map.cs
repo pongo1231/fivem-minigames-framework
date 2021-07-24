@@ -19,7 +19,8 @@ namespace GamemodesServer.Gamemodes.Hoops
             /// <param name="_x">X coordinate</param>
             /// <param name="_y">Y coordinate</param>
             /// <param name="_z">Z coordinate</param>
-            /// <param name="_isExtraWorth">If hoop gives extra points (for ones in hard places)</param>
+            /// <param name="_isExtraWorth">If hoop gives extra points
+            /// (for ones in hard to reach places)</param>
             public Hoop(float _x, float _y, float _z, bool _isExtraWorth = false)
             {
                 Position = new Vector3(_x, _y, _z);

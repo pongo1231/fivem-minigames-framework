@@ -15,7 +15,8 @@ namespace GamemodesClient.Core
         /// <summary>
         /// Countdown text
         /// </summary>
-        private Text m_text = new Text(null, new PointF(640f, 100f), 3f, Color.FromArgb(60, 255, 60), Font.Pricedown, Alignment.Center, true, true);
+        private Text m_text = new Text(null, new PointF(640f, 100f), 3f,
+            Color.FromArgb(60, 255, 60), Font.Pricedown, Alignment.Center, true, true);
 
         /// <summary>
         /// Timer

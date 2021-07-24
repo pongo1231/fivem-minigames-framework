@@ -29,7 +29,8 @@ namespace GamemodesClientMenuFw.GmMenuFw.Menu.Base
                     {
                         Close();
 
-                        API.PlaySoundFrontend(-1, "NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET", false);
+                        API.PlaySoundFrontend(-1, "NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET",
+                            false);
                     }
                 }
             }
