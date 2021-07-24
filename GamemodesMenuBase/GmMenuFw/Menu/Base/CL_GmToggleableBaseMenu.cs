@@ -11,7 +11,7 @@ namespace GamemodesClientMenuFw.GmMenuFw.Menu.Base
         /// <summary>
         /// Whether the menu is / should be visible
         /// </summary>
-        public bool Visible
+        public virtual bool Visible
         {
             get
             {
@@ -29,9 +29,14 @@ namespace GamemodesClientMenuFw.GmMenuFw.Menu.Base
                     {
                         Close();
 
-                        API.PlaySoundFrontend(-1, "NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET",
-                            false);
+                        PlayCloseSound();
                     }
+
+                    // Propagate to potential child menus
+                    /*if (ChildMenu != null && ChildMenu is GmToggleableBaseMenu)
+                    {
+                        ((GmToggleableBaseMenu)ChildMenu).m_visible = value;
+                    }*/
                 }
             }
         }
@@ -75,7 +80,9 @@ namespace GamemodesClientMenuFw.GmMenuFw.Menu.Base
             base.Close();
 
             // Reset visibility state
-            Visible = false;
+            m_visible = false;
+
+            PlayCloseSound();
         }
 
         /// <summary>
@@ -99,6 +106,11 @@ namespace GamemodesClientMenuFw.GmMenuFw.Menu.Base
             }
 
             return true;
+        }
+
+        private void PlayCloseSound()
+        {
+            API.PlaySoundFrontend(-1, "NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET",  false);
         }
     }
 }

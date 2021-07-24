@@ -52,6 +52,7 @@
     <Compile Include="SH_TeamPlayer.cs" />
     <Compile Include="Utils\SH_RandomUtils.cs" />
     <Compile Include="Utils\SH_MathUtils.cs" />
+    <Compile Include="Utils\SH_ReflectionUtils.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

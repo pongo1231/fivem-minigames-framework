@@ -1,11 +1,14 @@
 ﻿using System.Drawing;
 using GamemodesClientMenuFw.GmMenuFw.Menu.Base;
-using GamemodesClientMenuFw.GmMenuFw.Item.Base;
+using System;
+using System.Threading.Tasks;
+using System.Linq;
 
 using Rectangle = CitizenFX.Core.UI.Rectangle;
 using Text = CitizenFX.Core.UI.Text;
 using Font = CitizenFX.Core.UI.Font;
 using Alignment = CitizenFX.Core.UI.Alignment;
+using GamemodesShared.Utils;
 
 namespace GamemodesClientMenuFw.GmMenuFw.Menu
 {
@@ -14,6 +17,20 @@ namespace GamemodesClientMenuFw.GmMenuFw.Menu
     /// </summary>
     public abstract class GmUserMenu : GmToggleableBaseMenu
     {
+        /// <summary>
+        /// Attribute for functions which should be called every tick (if open)
+        /// </summary>
+        [AttributeUsage(AttributeTargets.Method)]
+        protected class UserMenuTick : Attribute
+        {
+
+        }
+
+        /// <summary>
+        /// Functions to invoke on close
+        /// </summary>
+        public event Action OnClose = null;
+
         /// <summary>
         /// Label to display in title bar
         /// </summary>
@@ -30,28 +47,31 @@ namespace GamemodesClientMenuFw.GmMenuFw.Menu
         private readonly Color m_headerColor = Color.FromArgb(40, 40, 120);
 
         /// <summary>
+        /// Event for custom menu tick functions of inheritee
+        /// </summary>
+        private event Func<Task> m_onTick = null;
+
+        /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="_title">Label to show in title bar</param>
         public GmUserMenu(string _title)
         {
             Title = _title;
+
+            // Add menu tick functions
+            ReflectionUtils.GetAllMethodsWithAttributeForClass(this, typeof(UserMenuTick),
+                ref m_onTick);
         }
 
         /// <summary>
-        /// Tick function to add menu items and run custom logic
+        /// Close function
         /// </summary>
-        protected virtual void Tick()
+        public override void Close()
         {
+            base.Close();
 
-        }
-
-        /// <summary>
-        /// Sealed draw items function
-        /// </summary>
-        protected sealed override GmMenuBaseItem DrawItems()
-        {
-           return base.DrawItems();
+            OnClose?.Invoke();
         }
 
         /// <summary>
@@ -77,7 +97,8 @@ namespace GamemodesClientMenuFw.GmMenuFw.Menu
             // Take title bar in consideration for Y position
             PosY += (int)(m_headerHeight - m_itemHeight * 0.5f);
 
-            Tick();
+            // Call all custom menu tick functions
+            m_onTick?.Invoke();
 
             return true;
         }

@@ -1,5 +1,6 @@
 ﻿using CitizenFX.Core;
 using CitizenFX.Core.UI;
+using GamemodesShared.Utils;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -65,33 +66,33 @@ namespace GamemodesClient.Core.Gamemode
         /// <summary>
         /// Help text to display on every tick
         /// </summary>
-        private string m_helpText;
+        private string m_helpText = null;
 
         /// <summary>
-        /// Custom prestart function
+        /// Event for custom prestart functions
         /// </summary>
-        private Func<Task> m_onPreStart;
+        private event Func<Task> m_onPreStart = null;
 
         /// <summary>
-        /// Custom onstart function
+        /// Event for custom onstart functions
         /// </summary>
-        private Func<Task> m_onStart;
+        private event Func<Task> m_onStart = null;
 
         /// <summary>
-        /// Custom prestop function
+        /// Event for custom prestop functions
         /// </summary>
-        private Func<Task> m_onPreStop;
+        private event Func<Task> m_onPreStop = null;
 
         /// <summary>
-        /// Custom stop function
+        /// Event for custom stop functions
         /// </summary>
-        private Func<Task> m_onStop;
+        private event Func<Task> m_onStop = null;
 
         /// <summary>
-        /// List of custom tick functions
+        /// Array of custom tick functions
         /// </summary>
         private List<Func<Task>> m_onTickFuncs = new List<Func<Task>>();
-
+        
         /// <summary>
         /// Constructor
         /// </summary>
@@ -118,58 +119,23 @@ namespace GamemodesClient.Core.Gamemode
             // Add help text display tick function to list
             m_onTickFuncs.Add(OnTickHelpText);
 
-            // Helper function for creating a delegate out of method info
-            Func<MethodInfo, Func<Task>> createDelegate = (_methodInfo) =>
-            {
-                return _methodInfo.IsStatic
-                    ? (Func<Task>)Delegate.CreateDelegate(typeof(Func<Task>), _methodInfo)
-                    : (Func<Task>)Delegate.CreateDelegate(typeof(Func<Task>), this, _methodInfo);
-            };
+            /* Register methods with corresponding attributes */
 
-            // Go through all functions of child (and all inherited) class(es) via reflection
-            foreach (var methodInfo in GetType()
-                .GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static
-                | BindingFlags.Instance))
-            {
-                /* Check for custom attributes and register methods containing them correspondely */
+            ReflectionUtils.GetAllMethodsWithAttributeForClass(this,
+                typeof(GamemodePreStartAttribute), ref m_onPreStart);
 
-                if (methodInfo.GetCustomAttribute(typeof(GamemodePreStartAttribute)) != null)
-                {
-                    Debug.WriteLine(
-                        $"Registering custom OnPreStart for gamemode {methodInfo.DeclaringType.Name}");
+            ReflectionUtils.GetAllMethodsWithAttributeForClass(this,
+                typeof(GamemodeStartAttribute), ref m_onStart);
 
-                    m_onPreStart = createDelegate(methodInfo);
-                }
-                else if (methodInfo.GetCustomAttribute(typeof(GamemodeStartAttribute)) != null)
-                {
-                    Debug.WriteLine(
-                        $"Registering custom OnStart for gamemode {methodInfo.DeclaringType.Name}");
+            ReflectionUtils.GetAllMethodsWithAttributeForClass(this,
+                typeof(GamemodePreStopAttribute), ref m_onPreStop);
 
-                    m_onStart = createDelegate(methodInfo);
-                }
-                else if (methodInfo.GetCustomAttribute(typeof(GamemodePreStopAttribute)) != null)
-                {
-                    Debug.WriteLine(
-                        $"Registering custom OnPreStop for gamemode {methodInfo.DeclaringType.Name}");
+            ReflectionUtils.GetAllMethodsWithAttributeForClass(this,
+                typeof(GamemodeStopAttribute), ref m_onStop);
 
-                    m_onPreStop = createDelegate(methodInfo);
-                }
-                else if (methodInfo.GetCustomAttribute(typeof(GamemodeStopAttribute)) != null)
-                {
-                    Debug.WriteLine(
-                        $"Registering custom OnStop for gamemode {methodInfo.DeclaringType.Name}");
-
-                    m_onStop = createDelegate(methodInfo);
-                }
-                else if (methodInfo.GetCustomAttribute(typeof(GamemodeTickAttribute)) != null)
-                {
-                    Debug.WriteLine(
-                        $"Registering OnTick for gamemode {methodInfo.DeclaringType.Name}");
-
-                    // Add to list of tick delegates
-                    m_onTickFuncs.Add(createDelegate(methodInfo));
-                }
-            }
+            m_onTickFuncs.AddRange(ReflectionUtils
+                .GetAllMethodsWithAttributeForClass<Func<Task>>(this,
+                typeof(GamemodeTickAttribute)));
         }
 
         /// <summary>
@@ -187,10 +153,7 @@ namespace GamemodesClient.Core.Gamemode
             PlayerOverheadTextManager.ShowOverheadText = false;
 
             // Run custom prestart function if available
-            if (m_onPreStart != null)
-            {
-                await m_onPreStart();
-            }
+            await m_onPreStart?.Invoke();
 
             // Register all custom tick functions
             foreach (var onTickFunc in m_onTickFuncs)
@@ -226,10 +189,7 @@ namespace GamemodesClient.Core.Gamemode
             Screen.Effects.Start(ScreenEffect.MpCelebWinOut);
 
             // Run custom start function if available
-            if (m_onStart != null)
-            {
-                await m_onStart();
-            }
+            await m_onStart?.Invoke();
 
             // Respond to server waiting for us
             TriggerServerEvent("gamemodes:sv_cl_startedgamemode");
@@ -253,16 +213,13 @@ namespace GamemodesClient.Core.Gamemode
             BoostManager.BoostEnabled = false;
 
             // Unregister all custom tick functions
-            foreach (Func<Task> onTickFunc in m_onTickFuncs)
+            foreach (var onTickFunc in m_onTickFuncs)
             {
                 Tick -= onTickFunc;
             }
 
             // Run custom prestop function if available
-            if (m_onPreStop != null)
-            {
-                await m_onPreStop();
-            }
+            await m_onPreStop?.Invoke();
 
             // Respond to server waiting for us
             TriggerServerEvent("gamemodes:sv_cl_prestoppedgamemode");
@@ -280,10 +237,7 @@ namespace GamemodesClient.Core.Gamemode
             PlayerScooterManager.Cleanup();
 
             // Run custom stop function if available
-            if (m_onStop != null)
-            {
-                await m_onStop();
-            }
+            await m_onStop?.Invoke();
 
             // Respond to server waiting for us
             TriggerServerEvent("gamemodes:sv_cl_stoppedgamemode");

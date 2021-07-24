@@ -134,11 +134,11 @@ namespace GamemodesClientMenuFw.GmMenuFw.Menu.Base
                 SelectedIndex = Math.Max(0, Math.Min(itemsCount - 1, SelectedIndex));
 
                 HandleInput(itemsCount - 1, selectedMenuItem);
-
-                // Reset menu item positions
-                PosX = m_posX;
-                PosY = m_posY;
             }
+
+            // Reset menu item positions
+            PosX = m_posX;
+            PosY = m_posY;
         }
 
         /// <summary>

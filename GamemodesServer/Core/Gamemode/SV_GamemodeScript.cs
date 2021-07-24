@@ -54,32 +54,32 @@ namespace GamemodesServer.Core.Gamemode
         /// <summary>
         /// Current map of gamemode
         /// </summary>
-        protected MapType CurrentMap { get; private set; }
+        protected MapType CurrentMap { get; private set; } = null;
 
         /// <summary>
-        /// Custom prestart function
+        /// Event for custom prestart functions
         /// </summary>
-        private Func<Task> m_onPreStart;
+        private event Func<Task> m_onPreStart = null;
 
         /// <summary>
-        /// Custom start function
+        /// Event for custom start functions
         /// </summary>
-        private Func<Task> m_onStart;
+        private Func<Task> m_onStart = null;
 
         /// <summary>
-        /// Custom prestop function
+        /// Event for custom prestop functions
         /// </summary>
-        private Func<Task> m_onPreStop;
+        private Func<Task> m_onPreStop = null;
 
         /// <summary>
-        /// Custom stop function
+        /// Event for custom stop functions
         /// </summary>
-        private Func<Task> m_onStop;
+        private Func<Task> m_onStop = null;
 
         /// <summary>
-        /// Custom timer up function
+        /// Event for custom timer up functions
         /// </summary>
-        private Func<Task> m_onTimerUp;
+        private Func<Task> m_onTimerUp = null;
 
         /// <summary>
         /// List of event handlers
@@ -101,89 +101,52 @@ namespace GamemodesServer.Core.Gamemode
         /// </summary>
         public GamemodeScript()
         {
-            // Create delegate helper
-            Func<MethodInfo, Func<Task>> createDelegate = (_methodInfo) =>
+            /* Register methods with corresponding attributes */
+
+            ReflectionUtils.GetAllMethodsWithAttributeForClass(this,
+                typeof(GamemodePreStartAttribute), ref m_onPreStart);
+
+            ReflectionUtils.GetAllMethodsWithAttributeForClass(this,
+               typeof(GamemodeStartAttribute), ref m_onStart);
+
+            ReflectionUtils.GetAllMethodsWithAttributeForClass(this,
+               typeof(GamemodePreStopAttribute), ref m_onPreStop);
+
+            ReflectionUtils.GetAllMethodsWithAttributeForClass(this,
+               typeof(GamemodeStopAttribute), ref m_onStop);
+
+            ReflectionUtils.GetAllMethodsWithAttributeForClass(this,
+               typeof(GamemodeTimerUpAttribute), ref m_onTimerUp);
+
+            m_onTickFuncs.AddRange(ReflectionUtils
+                .GetAllMethodsWithAttributeForClass<Func<Task>>(this,
+                    typeof(GamemodeTimerUpAttribute)));
+
+            foreach (var func in ReflectionUtils
+                .GetAllMethodsWithAttributeForClass<Func<Task>>(this,
+                    typeof(GamemodeEventHandlerAttribute)))
             {
-                return _methodInfo.IsStatic
-                    ? (Func<Task>)Delegate.CreateDelegate(typeof(Func<Task>), _methodInfo)
-                    : (Func<Task>)Delegate.CreateDelegate(typeof(Func<Task>), this, _methodInfo);
-            };
+                MethodInfo methodInfo = func.GetMethodInfo();
 
-            // Iterate through all functions of child (and all inherited) class(es) via reflection
-            foreach (var methodInfo in GetType()
-                .GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static
-                | BindingFlags.Instance))
-            {
-                /* Check for custom attributes and register methods containing them correspondely */
+                // Get event name
+                var eventName = ((GamemodeEventHandlerAttribute)methodInfo
+                    .GetCustomAttribute(typeof(GamemodeEventHandlerAttribute))).EventName;
 
-                if (methodInfo.GetCustomAttribute(typeof(GamemodePreStartAttribute)) != null)
-                {
-                    Log.WriteLine(
-                        $"Registering custom OnPreStart for gamemode {methodInfo.DeclaringType.Name}");
+                // Get parameters
+                var parameters = methodInfo.GetParameters()
+                    .Select(parameter => parameter.ParameterType).ToArray();
 
-                    m_onPreStart = createDelegate(methodInfo);
-                }
-                else if (methodInfo.GetCustomAttribute(typeof(GamemodeStartAttribute)) != null)
-                {
-                    Log.WriteLine(
-                        $"Registering custom OnStart for gamemode {methodInfo.DeclaringType.Name}");
+                // Build type for callback
+                var actionType = Expression
+                    .GetDelegateType(parameters.Concat(new[] { typeof(void) }).ToArray());
 
-                    m_onStart = createDelegate(methodInfo);
-                }
-                else if (methodInfo.GetCustomAttribute(typeof(GamemodePreStopAttribute)) != null)
-                {
-                    Log.WriteLine(
-                        $"Registering custom OnPreStop for gamemode {methodInfo.DeclaringType.Name}");
+                // Create callback delegate
+                var callback = methodInfo.IsStatic
+                    ? Delegate.CreateDelegate(actionType, methodInfo)
+                    : Delegate.CreateDelegate(actionType, this, methodInfo);
 
-                    m_onPreStop = createDelegate(methodInfo);
-                }
-                else if (methodInfo.GetCustomAttribute(typeof(GamemodeStopAttribute)) != null)
-                {
-                    Log.WriteLine(
-                        $"Registering custom OnStop for gamemode {methodInfo.DeclaringType.Name}");
-
-                    m_onStop = createDelegate(methodInfo);
-                }
-                else if (methodInfo.GetCustomAttribute(typeof(GamemodeTimerUpAttribute)) != null)
-                {
-                    Log.WriteLine(
-                        $"Registering custom OnTimerUp for gamemode {methodInfo.DeclaringType.Name}");
-
-                    m_onTimerUp = createDelegate(methodInfo);
-                }
-                else if (methodInfo.GetCustomAttribute(typeof(GamemodeEventHandlerAttribute)) != null)
-                {
-                    Log.WriteLine(
-                        $"Registering EventHandler for gamemode {methodInfo.DeclaringType.Name}");
-
-                    // Get event name
-                    var eventName = ((GamemodeEventHandlerAttribute)methodInfo
-                        .GetCustomAttribute(typeof(GamemodeEventHandlerAttribute))).EventName;
-
-                    // Get parameters
-                    var parameters = methodInfo.GetParameters()
-                        .Select(parameter => parameter.ParameterType).ToArray();
-
-                    // Build type for callback
-                    var actionType = Expression
-                        .GetDelegateType(parameters.Concat(new[] { typeof(void) }).ToArray());
-
-                    // Create callback delegate
-                    var callback = methodInfo.IsStatic
-                        ? Delegate.CreateDelegate(actionType, methodInfo)
-                        : Delegate.CreateDelegate(actionType, this, methodInfo);
-
-                    // Add to list of event handlers
-                    m_eventHandlers.Add(new GamemodeEventHandler(eventName, callback));
-                }
-                else if (methodInfo.GetCustomAttribute(typeof(GamemodeTickAttribute)) != null)
-                {
-                    Log.WriteLine(
-                        $"Registering OnTick for gamemode {methodInfo.DeclaringType.Name}");
-
-                    // Add to list of tick delegates
-                    m_onTickFuncs.Add(createDelegate(methodInfo));
-                }
+                // Add to list of event handlers
+                m_eventHandlers.Add(new GamemodeEventHandler(eventName, callback));
             }
 
             // Go through all existing types to search for maps mapped to this gamemode
@@ -273,10 +236,7 @@ namespace GamemodesServer.Core.Gamemode
             await CurrentMap.Load();
 
             // Call custom prestart function if available
-            if (m_onPreStart != null)
-            {
-                await m_onPreStart();
-            }
+            await m_onPreStart?.Invoke();
 
             // Register all event handlers
             foreach (var eventHandler in m_eventHandlers)
@@ -305,10 +265,7 @@ namespace GamemodesServer.Core.Gamemode
             CurrentMap.IsGamemodePreStartRunning = false;
 
             // Call custom start function if available
-            if (m_onStart != null)
-            {
-                await m_onStart();
-            }
+            await m_onStart?.Invoke();
         }
 
         /// <summary>
@@ -329,10 +286,7 @@ namespace GamemodesServer.Core.Gamemode
             }
 
             // Call custom prestop function if available
-            if (m_onPreStop != null)
-            {
-                await m_onPreStop();
-            }
+            await m_onPreStop?.Invoke();
         }
 
         /// <summary>
@@ -350,10 +304,7 @@ namespace GamemodesServer.Core.Gamemode
             EntityPool.ClearEntities();
 
             // Call custom stop function if available
-            if (m_onStop != null)
-            {
-                await m_onStop();
-            }
+            await m_onStop?.Invoke();
 
             Log.WriteLine($"Unloaded map {CurrentMap.GetType().Name} for gamemode {EventName}!");
         }
@@ -364,10 +315,7 @@ namespace GamemodesServer.Core.Gamemode
         public override async void TimerUp()
         {
             // Call custom timer up function if available
-            if (m_onTimerUp != null)
-            {
-                await m_onTimerUp();
-            }
+            await m_onTimerUp?.Invoke();
         }
 
         /// <summary>

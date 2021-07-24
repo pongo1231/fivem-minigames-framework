@@ -1,5 +1,6 @@
 ﻿using CitizenFX.Core;
 using GamemodesClientMenuFw.GmMenuFw.Menu;
+using System.Threading.Tasks;
 
 namespace GamemodesClientPrivate.Core.MapEditor.Menus
 {
@@ -19,7 +20,8 @@ namespace GamemodesClientPrivate.Core.MapEditor.Menus
         /// <summary>
         /// Tick function
         /// </summary>
-        protected override void Tick()
+        [UserMenuTick]
+        private async Task OnTick()
         {
             AddActionItem("Gamemode & Mappy by pongo1231", (_idx, _label) =>
             {
@@ -27,6 +29,8 @@ namespace GamemodesClientPrivate.Core.MapEditor.Menus
             });
 
             AddLabelItem($"lol ur {Game.GameTime}");
+
+            await Task.FromResult(0);
         }
     }
 }
