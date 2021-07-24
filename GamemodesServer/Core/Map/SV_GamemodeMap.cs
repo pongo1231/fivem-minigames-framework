@@ -225,7 +225,7 @@ namespace GamemodesServer.Core.Map
             TimeWeatherManager.SetTime(Time.Hours, Time.Minutes, Time.Seconds);
 
             // Set weather
-            TimeWeatherManager.SetWeather(Weather);
+            TimeWeatherManager.Weather = Weather;
 
             // Call custom load function if available
             if (m_onLoad != null)

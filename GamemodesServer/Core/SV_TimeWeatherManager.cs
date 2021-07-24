@@ -9,24 +9,24 @@ namespace GamemodesServer.Core
     public class TimeWeatherManager : GmScript
     {
         /// <summary>
+        /// Weather
+        /// </summary>
+        public static string Weather { get; set; } = "EXTRASUNNY";
+
+        /// <summary>
         /// Time hours
         /// </summary>
-        private static int s_timeHour;
+        private static int s_timeHour = 12;
 
         /// <summary>
         /// Time minutes
         /// </summary>
-        private static int s_timeMin;
+        private static int s_timeMin = 0;
 
         /// <summary>
         /// Time seconds
         /// </summary>
-        private static int s_timeSec;
-
-        /// <summary>
-        /// Weather
-        /// </summary>
-        private static string s_weather = "EXTRASUNNY";
+        private static int s_timeSec = 0;
         
         /// <summary>
         /// Tick function
@@ -35,7 +35,7 @@ namespace GamemodesServer.Core
         private async Task OnTick()
         {
             // Broadcast time and weather to all clients
-            TriggerClientEvent("gamemodes:cl_sv_settimeweather", s_timeHour, s_timeMin, s_timeSec, s_weather);
+            TriggerClientEvent("gamemodes:cl_sv_settimeweather", s_timeHour, s_timeMin, s_timeSec, Weather);
 
             await Delay(300);
         }
@@ -51,15 +51,6 @@ namespace GamemodesServer.Core
             s_timeHour = _hour;
             s_timeMin = _min;
             s_timeSec = _sec;
-        }
-
-        /// <summary>
-        /// Set weather
-        /// </summary>
-        /// <param name="_weather">Weather name</param>
-        public static void SetWeather(string _weather)
-        {
-            s_weather = _weather;
         }
     }
 }
