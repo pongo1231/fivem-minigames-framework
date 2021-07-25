@@ -30,6 +30,8 @@ namespace GamemodesClient.Core
 
             // Apply timecycle modifiers
             API.PushTimecycleModifier();
+
+            TriggerServerEvent("gamemodes:sv_cl_gottimecycmods");
         }
 
         /// <summary>

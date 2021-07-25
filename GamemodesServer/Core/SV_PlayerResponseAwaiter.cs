@@ -45,8 +45,6 @@ namespace GamemodesServer.Core
             // Callback for event
             Action<Player> callback = (player) =>
             {
-                Debug.WriteLine($"Got response from {_player.Name} for {_serverClientEventName}!");
-
                 // Set as completed
                 hasCompleted = true;
             };

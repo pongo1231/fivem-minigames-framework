@@ -17,8 +17,8 @@ namespace GamemodesShared.Utils
         /// <param name="_instance">Instance of class</param>
         /// <param name="_attributeType">Type of attribute to filter by</param>
         /// <returns>Methods in specified class with specified attribute attached</returns>
-        public static MethodType[] GetAllMethodsWithAttributeForClass<MethodType>(dynamic _instance,
-            Type _attributeType)
+        public static MethodType[]
+            GetAllMethodsWithAttributeForClass<MethodType, AttributeType>(dynamic _instance)
         {
             List<MethodType> funcs = new List<MethodType>();
 
@@ -35,7 +35,7 @@ namespace GamemodesShared.Utils
                 .GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static
                 | BindingFlags.Instance))
             {
-                if (methodInfo.GetCustomAttribute(_attributeType) != null)
+                if (methodInfo.GetCustomAttribute(typeof(AttributeType)) != null)
                 {
                     funcs.Add(createDelegate(methodInfo));
                 }
@@ -52,11 +52,12 @@ namespace GamemodesShared.Utils
         /// <param name="_instance">Instance of class</param>
         /// <param name="_attributeType">Type of attribute to filter by</param>
         /// <param name="_toAddTo">Object to add results to</param>
-        public static void GetAllMethodsWithAttributeForClass<MethodType>(dynamic _instance,
-            Type _attributeType, ref MethodType _toAddTo)
+        public static void
+            GetAllMethodsWithAttributeForClass<MethodType, AttributeType>(dynamic _instance,
+                ref MethodType _toAddTo)
         {
-            foreach (var func in GetAllMethodsWithAttributeForClass<MethodType>(_instance, 
-                _attributeType))
+            foreach (var func in
+                GetAllMethodsWithAttributeForClass<MethodType, AttributeType>(_instance))
             {
                 _toAddTo += func;
             }

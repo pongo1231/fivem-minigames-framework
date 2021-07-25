@@ -65,7 +65,8 @@ namespace GamemodesClient.Core
             }
 
             // Iterate through all players
-            foreach (var player in Players)
+            int count = 3;
+            foreach (var player in Players.Where(_player => _player != Game.Player))
             {
                 // Get overhead player from player
                 var overheadPlayer = m_overheadPlayers
@@ -113,6 +114,14 @@ namespace GamemodesClient.Core
                         // White color for unknown team
                         API.SetMpGamerTagColour(overheadPlayer.OverheadHandle, 0, 0);
                     }
+                }
+
+                // Amortization
+                if (--count == 0)
+                {
+                    count = 3;
+
+                    await Delay(0);
                 }
             }
 

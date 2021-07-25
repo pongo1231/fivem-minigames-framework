@@ -3,6 +3,7 @@ using CitizenFX.Core.UI;
 using System;
 using System.Drawing;
 using System.Threading.Tasks;
+
 using Font = CitizenFX.Core.UI.Font;
 
 namespace GamemodesClient.Core
@@ -21,7 +22,7 @@ namespace GamemodesClient.Core
         /// <summary>
         /// Timer seconds
         /// </summary>
-        public static int SecondsLeft { get; private set; }
+        public static int SecondsLeft { get; private set; } = 0;
 
         /// <summary>
         /// Set timer event by server

@@ -1,9 +1,6 @@
 ﻿using CitizenFX.Core;
-using GamemodesServer.Utils;
 using GamemodesShared.Utils;
 using System;
-using System.Linq;
-using System.Reflection;
 
 namespace GamemodesServer.Core
 {
@@ -60,11 +57,13 @@ namespace GamemodesServer.Core
         {
             /* Register methods with corresponding attributes */
 
-            ReflectionUtils.GetAllMethodsWithAttributeForClass(this,
-                typeof(NewPlayerAttribute), ref NewPlayer);
+            ReflectionUtils
+                .GetAllMethodsWithAttributeForClass<NewPlayerHandler, NewPlayerAttribute>(this,
+                    ref NewPlayer);
 
-            ReflectionUtils.GetAllMethodsWithAttributeForClass(this,
-                typeof(PlayerDroppedHandler), ref PlayerDropped);
+            ReflectionUtils
+                .GetAllMethodsWithAttributeForClass<PlayerDroppedHandler, PlayerDroppedAttribute>(
+                    this, ref PlayerDropped);
         }
     }
 }

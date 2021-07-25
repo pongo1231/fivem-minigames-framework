@@ -58,8 +58,6 @@ namespace GamemodesServer.Core.Gamemode
         /// <summary>
         /// Player dropped function
         /// </summary>
-        /// <param name="_player">Player</param>
-        /// <param name="_dropReason">Reason for drop</param>
         [PlayerDropped]
         private void OnPlayerDropped(Player _player, string _dropReason)
         {

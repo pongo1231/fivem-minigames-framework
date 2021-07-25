@@ -1,11 +1,11 @@
-﻿using CitizenFX.Core;
-using CitizenFX.Core.Native;
+﻿using CitizenFX.Core.Native;
 using GamemodesServer.Core;
 using GamemodesServer.Core.Gamemode;
 using GamemodesServer.Utils;
 using GamemodesShared;
 using System.Linq;
 using System.Threading.Tasks;
+
 using static GamemodesServer.Gamemodes.Hoops.Hoops_Map;
 
 namespace GamemodesServer.Gamemodes.Hoops

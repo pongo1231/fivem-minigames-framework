@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\CL_RichPresenceManager.cs" />
     <Compile Include="Core\MapEditor\CL_MapEditor.cs" />
     <Compile Include="Core\MapEditor\Menus\CL_MapAboutMenu.cs" />
     <Compile Include="Core\MapEditor\Menus\CL_MapMainMenu.cs" />

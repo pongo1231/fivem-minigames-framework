@@ -60,7 +60,7 @@ namespace GamemodesClientMenuFw.GmMenuFw.Menu
             Title = _title;
 
             // Add menu tick functions
-            ReflectionUtils.GetAllMethodsWithAttributeForClass(this, typeof(UserMenuTick),
+            ReflectionUtils.GetAllMethodsWithAttributeForClass<Func<Task>, UserMenuTick>(this,
                 ref m_onTick);
         }
 

@@ -1,5 +1,4 @@
 ﻿using CitizenFX.Core;
-using System.Threading.Tasks;
 
 namespace GamemodesServer.Core
 {
@@ -11,27 +10,21 @@ namespace GamemodesServer.Core
         /// <summary>
         /// Timecycle Modifier
         /// </summary>
-        private static string s_timecycMod;
+        private static string s_timecycMod = null;
 
         /// <summary>
         /// Timecycle Extra Modifier
         /// </summary>
-        private static string s_timecycModExtra;
+        private static string s_timecycModExtra = null;
 
         /// <summary>
-        /// Tick function
+        /// New player function
         /// </summary>
-        [Tick]
-        private async Task OnTick()
+        [NewPlayer]
+        private void OnNewPlayer(Player _player)
         {
-            // Broadcast timecycle modifier to all clients if existant
-            if (s_timecycMod != null)
-            {
-                TriggerClientEvent("gamemodes:cl_sv_loadtimecycmods",
-                    s_timecycMod, s_timecycModExtra);
-            }
-
-            await Delay(300);
+            _ = PlayerResponseAwaiter.AwaitResponse(_player, "gamemodes:cl_sv_loadtimecycmods",
+                "gamemodes:sv_cl_gottimecycmods", s_timecycMod, s_timecycModExtra);
         }
 
         /// <summary>
@@ -43,6 +36,9 @@ namespace GamemodesServer.Core
         {
             s_timecycMod = _mod1;
             s_timecycModExtra = _mod2;
+
+            _ = PlayerResponseAwaiter.AwaitResponse("gamemodes:cl_sv_loadtimecycmods",
+                "gamemodes:sv_cl_gottimecycmods", s_timecycMod, s_timecycModExtra);
         }
 
         /// <summary>
@@ -52,6 +48,9 @@ namespace GamemodesServer.Core
         {
             s_timecycMod = null;
             s_timecycModExtra = null;
+
+            _ = PlayerResponseAwaiter.AwaitResponse("gamemodes:cl_sv_loadtimecycmods",
+                "gamemodes:sv_cl_gottimecycmods", s_timecycMod, s_timecycModExtra);
         }
     }
 }

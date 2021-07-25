@@ -1,4 +1,5 @@
 ﻿using GamemodesServer.Utils;
+using GamemodesShared.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -104,17 +105,17 @@ namespace GamemodesServer.Core.Map
         /// <summary>
         /// File name of map
         /// </summary>
-        protected string MapFileName;
+        protected string MapFileName = null;
 
         /// <summary>
         /// Timecycle modifier to use
         /// </summary>
-        protected string TimecycMod;
+        protected string TimecycMod = null;
 
         /// <summary>
         /// Extra timecycle modifier to use
         /// </summary>
-        protected string TimecycModExtra;
+        protected string TimecycModExtra = null;
 
         /// <summary>
         /// Time to set
@@ -127,14 +128,14 @@ namespace GamemodesServer.Core.Map
         protected string Weather = "EXTRASUNNY";
 
         /// <summary>
-        /// Custom load function
+        /// Event for custom load functions
         /// </summary>
-        private Func<Task> m_onLoad;
+        private event Func<Task> m_onLoad = null;
 
         /// <summary>
-        /// Custom unload function
+        /// Event for custom unload functions
         /// </summary>
-        private Func<Task> m_onUnload;
+        private event Func<Task> m_onUnload = null;
 
         /// <summary>
         /// List of event handlers
@@ -148,65 +149,44 @@ namespace GamemodesServer.Core.Map
 
         public GamemodeBaseMap()
         {
-            // Create delegate helper
-            Func<MethodInfo, Func<Task>> createDelegate = (_methodInfo) =>
-            {
-                return _methodInfo.IsStatic
-                    ? (Func<Task>)Delegate.CreateDelegate(typeof(Func<Task>), _methodInfo)
-                    : (Func<Task>)Delegate.CreateDelegate(typeof(Func<Task>), this, _methodInfo);
-            };
+            /* Register methods with corresponding attributes */
 
-            // Iterate through all functions of child (and all inherited) class(es) via reflection
-            foreach (var methodInfo in GetType()
+            ReflectionUtils
+                .GetAllMethodsWithAttributeForClass<Func<Task>, MapLoadAttribute>(this,
+                    ref m_onLoad);
+
+            ReflectionUtils
+                .GetAllMethodsWithAttributeForClass<Func<Task>, MapUnloadAttribute>(this,
+                    ref m_onUnload);
+
+            m_onTickFuncs.AddRange(ReflectionUtils
+                .GetAllMethodsWithAttributeForClass<Func<Task>, MapTickAttribute>(this));
+
+            foreach (MethodInfo methodInfo in GetType()
                 .GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static
-                | BindingFlags.Instance))
+                    | BindingFlags.Instance)
+                .Where(_methodInfo =>
+                    _methodInfo.GetCustomAttribute(typeof(MapEventHandlerAttribute)) != null))
             {
-                if (methodInfo.GetCustomAttribute(typeof(MapLoadAttribute)) != null)
-                {
-                    Log.WriteLine(
-                        $"Registering custom OnLoad for map {methodInfo.DeclaringType.Name}");
+                // Get event name
+                var eventName = ((MapEventHandlerAttribute)
+                    methodInfo.GetCustomAttribute(typeof(MapEventHandlerAttribute))).EventName;
 
-                    m_onLoad = createDelegate(methodInfo);
-                }
-                else if (methodInfo.GetCustomAttribute(typeof(MapUnloadAttribute)) != null)
-                {
-                    Log.WriteLine(
-                        $"Registering custom OnUnload for map {methodInfo.DeclaringType.Name}");
+                // Get parameters
+                var parameters = methodInfo.GetParameters()
+                    .Select(parameter => parameter.ParameterType).ToArray();
 
-                    m_onUnload = createDelegate(methodInfo);
-                }
-                else if (methodInfo.GetCustomAttribute(typeof(MapEventHandlerAttribute)) != null)
-                {
-                    Log.WriteLine(
-                        $"Registering EventHandler for map {methodInfo.DeclaringType.Name}");
+                // Build type for callback
+                var actionType = Expression
+                    .GetDelegateType(parameters.Concat(new[] { typeof(void) }).ToArray());
 
-                    // Get event name
-                    var eventName = ((MapEventHandlerAttribute)
-                        methodInfo.GetCustomAttribute(typeof(MapEventHandlerAttribute))).EventName;
+                // Create callback delegate
+                var callback = methodInfo.IsStatic
+                    ? Delegate.CreateDelegate(actionType, methodInfo)
+                    : Delegate.CreateDelegate(actionType, this, methodInfo);
 
-                    // Get parameters
-                    var parameters = methodInfo.GetParameters()
-                        .Select(parameter => parameter.ParameterType).ToArray();
-
-                    // Build type for callback
-                    var actionType = Expression
-                        .GetDelegateType(parameters.Concat(new[] { typeof(void) }).ToArray());
-
-                    // Create callback delegate
-                    var callback = methodInfo.IsStatic
-                        ? Delegate.CreateDelegate(actionType, methodInfo)
-                        : Delegate.CreateDelegate(actionType, this, methodInfo);
-
-                    // Add to list of event handlers
-                    m_eventHandlers.Add(new MapEventHandler(eventName, callback));
-                }
-                else if (methodInfo.GetCustomAttribute(typeof(MapTickAttribute)) != null)
-                {
-                    Log.WriteLine($"Registering OnTick for map {methodInfo.DeclaringType.Name}");
-
-                    // Add to list of tick delegates
-                    m_onTickFuncs.Add(createDelegate(methodInfo));
-                }
+                // Add to list of event handlers
+                m_eventHandlers.Add(new MapEventHandler(eventName, callback));
             }
         }
 

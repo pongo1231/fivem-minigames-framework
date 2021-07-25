@@ -121,21 +121,24 @@ namespace GamemodesClient.Core.Gamemode
 
             /* Register methods with corresponding attributes */
 
-            ReflectionUtils.GetAllMethodsWithAttributeForClass(this,
-                typeof(GamemodePreStartAttribute), ref m_onPreStart);
+            ReflectionUtils
+                .GetAllMethodsWithAttributeForClass<Func<Task>, GamemodePreStartAttribute>(this,
+                    ref m_onPreStart);
 
-            ReflectionUtils.GetAllMethodsWithAttributeForClass(this,
-                typeof(GamemodeStartAttribute), ref m_onStart);
+            ReflectionUtils
+                .GetAllMethodsWithAttributeForClass<Func<Task>, GamemodeStartAttribute>(this,
+                    ref m_onStart);
 
-            ReflectionUtils.GetAllMethodsWithAttributeForClass(this,
-                typeof(GamemodePreStopAttribute), ref m_onPreStop);
+            ReflectionUtils
+                .GetAllMethodsWithAttributeForClass<Func<Task>, GamemodePreStopAttribute>(this,
+                    ref m_onPreStop);
 
-            ReflectionUtils.GetAllMethodsWithAttributeForClass(this,
-                typeof(GamemodeStopAttribute), ref m_onStop);
+            ReflectionUtils
+                .GetAllMethodsWithAttributeForClass<Func<Task>, GamemodeStopAttribute>(this,
+                    ref m_onStop);
 
             m_onTickFuncs.AddRange(ReflectionUtils
-                .GetAllMethodsWithAttributeForClass<Func<Task>>(this,
-                typeof(GamemodeTickAttribute)));
+                .GetAllMethodsWithAttributeForClass<Func<Task>, GamemodeTickAttribute>(this));
         }
 
         /// <summary>
@@ -153,7 +156,10 @@ namespace GamemodesClient.Core.Gamemode
             PlayerOverheadTextManager.ShowOverheadText = false;
 
             // Run custom prestart function if available
-            await m_onPreStart?.Invoke();
+            if (m_onPreStart != null)
+            {
+                await m_onPreStart();
+            }
 
             // Register all custom tick functions
             foreach (var onTickFunc in m_onTickFuncs)
@@ -189,7 +195,10 @@ namespace GamemodesClient.Core.Gamemode
             Screen.Effects.Start(ScreenEffect.MpCelebWinOut);
 
             // Run custom start function if available
-            await m_onStart?.Invoke();
+            if (m_onStart != null)
+            {
+                await m_onStart();
+            }
 
             // Respond to server waiting for us
             TriggerServerEvent("gamemodes:sv_cl_startedgamemode");
@@ -219,7 +228,10 @@ namespace GamemodesClient.Core.Gamemode
             }
 
             // Run custom prestop function if available
-            await m_onPreStop?.Invoke();
+            if (m_onPreStop != null)
+            {
+                await m_onPreStop();
+            }
 
             // Respond to server waiting for us
             TriggerServerEvent("gamemodes:sv_cl_prestoppedgamemode");
@@ -237,7 +249,10 @@ namespace GamemodesClient.Core.Gamemode
             PlayerScooterManager.Cleanup();
 
             // Run custom stop function if available
-            await m_onStop?.Invoke();
+            if (m_onStop != null)
+            {
+                await m_onStop?.Invoke();
+            }
 
             // Respond to server waiting for us
             TriggerServerEvent("gamemodes:sv_cl_stoppedgamemode");

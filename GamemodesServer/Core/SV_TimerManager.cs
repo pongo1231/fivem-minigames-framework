@@ -11,7 +11,7 @@ namespace GamemodesServer.Core
         /// <summary>
         /// Timer
         /// </summary>
-        private static int s_secondsLeft;
+        private static int s_secondsLeft = 0;
 
         /// <summary>
         /// Whether we are in overtime (time == -1)
@@ -69,8 +69,6 @@ namespace GamemodesServer.Core
         public static void SetTimer(int _seconds)
         {
             s_secondsLeft = _seconds;
-
-            SendClientEvent();
         }
 
         /// <summary>
@@ -99,7 +97,7 @@ namespace GamemodesServer.Core
         private static void SendClientEvent()
         {
             _ = PlayerResponseAwaiter.AwaitResponse("gamemodes:cl_sv_updatetimer",
-                    "gamemodes:sv_cl_gottimer", s_secondsLeft);
+                "gamemodes:sv_cl_gottimer", s_secondsLeft);
         }
     }
 }
