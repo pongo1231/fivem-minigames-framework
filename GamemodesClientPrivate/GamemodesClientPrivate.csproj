@@ -50,6 +50,7 @@
     <Compile Include="Core\MapEditor\Menus\CL_MapAboutMenu.cs" />
     <Compile Include="Core\MapEditor\Menus\CL_MapMainMenu.cs" />
     <Compile Include="Core\Guards\CL_NastyEventsGuard.cs" />
+    <Compile Include="Core\MapEditor\Menus\CL_MapUtilsMenu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

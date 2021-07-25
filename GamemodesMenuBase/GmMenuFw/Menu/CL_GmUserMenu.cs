@@ -21,7 +21,7 @@ namespace GamemodesClientMenuFw.GmMenuFw.Menu
         /// Attribute for functions which should be called every tick (if open)
         /// </summary>
         [AttributeUsage(AttributeTargets.Method)]
-        protected class UserMenuTick : Attribute
+        protected class GmUserMenuTick : Attribute
         {
 
         }
@@ -60,7 +60,7 @@ namespace GamemodesClientMenuFw.GmMenuFw.Menu
             Title = _title;
 
             // Add menu tick functions
-            ReflectionUtils.GetAllMethodsWithAttributeForClass<Func<Task>, UserMenuTick>(this,
+            ReflectionUtils.GetAllMethodsWithAttributeForClass<Func<Task>, GmUserMenuTick>(this,
                 ref m_onTick);
         }
 

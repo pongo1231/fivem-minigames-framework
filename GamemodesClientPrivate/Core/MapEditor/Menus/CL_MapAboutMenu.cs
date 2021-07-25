@@ -20,7 +20,7 @@ namespace GamemodesClientPrivate.Core.MapEditor.Menus
         /// <summary>
         /// Tick function
         /// </summary>
-        [UserMenuTick]
+        [GmUserMenuTick]
         private async Task OnTick()
         {
             AddActionItem("Gamemode & Mappy by pongo1231", (_idx, _label) =>

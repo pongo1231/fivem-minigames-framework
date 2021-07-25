@@ -33,10 +33,10 @@ namespace GamemodesClientMenuFw.GmMenuFw.Menu.Base
                     }
 
                     // Propagate to potential child menus
-                    /*if (ChildMenu != null && ChildMenu is GmToggleableBaseMenu)
+                    if (ChildMenu != null && ChildMenu is GmToggleableBaseMenu)
                     {
                         ((GmToggleableBaseMenu)ChildMenu).m_visible = value;
-                    }*/
+                    }
                 }
             }
         }

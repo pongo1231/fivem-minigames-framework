@@ -14,9 +14,11 @@ namespace GamemodesClientPrivate.Core.MapEditor.Menus
         {
             ImmediateMode = false;
 
-            var menu = new MapAboutMenu();
+            var utilsMenu = new MapUtilsMenu();
+            AddChildMenuItem("Utils", utilsMenu);
 
-            AddChildMenuItem("About", menu);
+            var aboutMenu = new MapAboutMenu();
+            AddChildMenuItem("About", aboutMenu);
         }
     }
 }
