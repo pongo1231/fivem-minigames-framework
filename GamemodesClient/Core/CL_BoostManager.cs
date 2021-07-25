@@ -15,7 +15,7 @@ namespace GamemodesClient.Core
         /// <summary>
         /// Target vehicle to manage boost of
         /// </summary>
-        public static GmNetEntity<Vehicle> BoostVehicle;
+        public static GmNetEntity<Vehicle> BoostVehicle = default;
 
         /// <summary>
         /// Whether boost should be enabled or not
@@ -30,7 +30,7 @@ namespace GamemodesClient.Core
         /// <summary>
         /// Timestamp to save from last tick execution
         /// </summary>
-        private long m_boostFuelLastTimeStamp;
+        private long m_boostFuelLastTimeStamp = 0;
 
         /// <summary>
         /// Whether boost was triggered

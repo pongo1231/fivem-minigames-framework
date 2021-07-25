@@ -28,7 +28,9 @@ namespace GamemodesClientPrivate.Core
 
             API.SetRichPresence("Knockdown");
 
-            await Task.FromResult(0);
+            API.SetDiscordRichPresenceAction(0, "Learn More", "https://gopong.dev/gamemodes.html");
+
+            await Delay(10000);
         }
     }
 }
