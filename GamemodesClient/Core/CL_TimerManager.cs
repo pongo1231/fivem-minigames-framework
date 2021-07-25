@@ -62,6 +62,9 @@ namespace GamemodesClient.Core
                 // Apply text color
                 m_text.Color = textColor;
             }
+
+            // Respond to server
+            TriggerServerEvent("gamemodes:sv_cl_gottimer");
         }
 
         /// <summary>

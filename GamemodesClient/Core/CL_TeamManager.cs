@@ -49,6 +49,9 @@ namespace GamemodesClient.Core
                 TeamPlayers.Add(new SHTeamPlayer(totallyNotTeamPlayer.PlayerNetId,
                     totallyNotTeamPlayer.PlayerTeamType));
             }
+
+            // Respond to server
+            TriggerServerEvent("gamemodes:sv_cl_gotteamsync");
         }
     }
 }

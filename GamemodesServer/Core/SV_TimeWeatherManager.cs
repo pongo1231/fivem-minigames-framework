@@ -27,6 +27,16 @@ namespace GamemodesServer.Core
         /// Time seconds
         /// </summary>
         private static int s_timeSec = 0;
+
+        /// <summary>
+        /// New player function
+        /// </summary>
+        [NewPlayer]
+        private void OnNewPlayer(Player _player)
+        {
+            _ = PlayerResponseAwaiter.AwaitResponse(_player, "gamemodes:cl_sv_settimeweather",
+                "gamemodes:sv_cl_gottimeweather", s_timeHour, s_timeMin, s_timeSec, Weather);
+        }
         
         /// <summary>
         /// Tick function
@@ -38,7 +48,7 @@ namespace GamemodesServer.Core
             TriggerClientEvent("gamemodes:cl_sv_settimeweather",
                 s_timeHour, s_timeMin, s_timeSec, Weather);
 
-            await Delay(300);
+            await Delay(1000);
         }
 
         /// <summary>
@@ -52,6 +62,9 @@ namespace GamemodesServer.Core
             s_timeHour = _hour;
             s_timeMin = _min;
             s_timeSec = _sec;
+
+            _ = PlayerResponseAwaiter.AwaitResponse("gamemodes:cl_sv_settimeweather",
+                "gamemodes:sv_cl_gottimeweather", s_timeHour, s_timeMin, s_timeSec, Weather);
         }
     }
 }

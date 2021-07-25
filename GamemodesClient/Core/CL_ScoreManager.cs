@@ -32,6 +32,9 @@ namespace GamemodesClient.Core
         {
             // Set score text
             m_goalsText.Caption = $"~r~{_redScore}   ~b~{_blueScore}";
+
+            // Respond to server
+            TriggerServerEvent("gamemodes:sv_cl_gotscores");
         }
 
         /// <summary>

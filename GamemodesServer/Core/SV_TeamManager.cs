@@ -92,6 +92,7 @@ namespace GamemodesServer.Core
             }
 
             // Go through all players in to sort list in randomized order
+            bool syncTeams = false;
             while (m_toSortIntoTeams.Count > 0)
             {
                 // Choose random player from list
@@ -126,34 +127,31 @@ namespace GamemodesServer.Core
                 // Wait for client to be aware of new team
                 await PlayerResponseAwaiter.AwaitResponse(player,
                     "gamemodes:cl_sv_setteam", "gamemodes:cl_sv_gotteam", (int)teamType);
+
+                syncTeams = true;
+            }
+
+            if (syncTeams)
+            {
+                // Create list
+                var sharedTeamPlayers = new List<SHTeamPlayer>();
+
+                // Store all team players in list
+                foreach (var teamPlayer in s_teamPlayers)
+                {
+                    sharedTeamPlayers.Add(new SHTeamPlayer(int.Parse(teamPlayer.Player.Handle),
+                        (int)teamPlayer.TeamType));
+                }
+
+                // Broadcast team state to all clients
+                await PlayerResponseAwaiter.AwaitResponse("gamemodes:cl_sv_syncteams",
+                    "gamemodes:sv_cl_gotteamsync", sharedTeamPlayers);
             }
 
             // Set teams as loaded
             TeamsLoaded = true;
 
             await Task.FromResult(0);
-        }
-
-        /// <summary>
-        /// Tick function for broadcasting team status of everyone
-        /// </summary>
-        [Tick]
-        private async Task OnTickBroadcastTeamStates()
-        {
-            // Create list
-            var sharedTeamPlayers = new List<SHTeamPlayer>();
-
-            // Store all team players in list
-            foreach (var teamPlayer in s_teamPlayers)
-            {
-                sharedTeamPlayers.Add(new SHTeamPlayer(int.Parse(teamPlayer.Player.Handle),
-                    (int)teamPlayer.TeamType));
-            }
-
-            // Broadcast team state to all clients
-            TriggerClientEvent("gamemodes:cl_sv_syncteams", sharedTeamPlayers);
-
-            await Delay(500);
         }
 
         /// <summary>

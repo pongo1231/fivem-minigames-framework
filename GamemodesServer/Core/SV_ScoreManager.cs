@@ -20,15 +20,13 @@ namespace GamemodesServer.Core
         private static int s_blueScore;
 
         /// <summary>
-        /// Tick function
+        /// New player function
         /// </summary>
-        [Tick]
-        private async Task OnTick()
+        [NewPlayer]
+        private void OnNewPlayer(Player _player)
         {
-            // Send current scores to all clients
-            TriggerClientEvent("gamemodes:cl_sv_updatescores", s_redScore, s_blueScore);
-
-            await Delay(200);
+            _ = PlayerResponseAwaiter.AwaitResponse(_player, "gamemodes:cl_sv_updatescores",
+                "gamemodes:sv_cl_gotscores", s_redScore, s_blueScore);
         }
 
         /// <summary>
@@ -49,6 +47,9 @@ namespace GamemodesServer.Core
 
                     break;
             }
+
+            _ = PlayerResponseAwaiter.AwaitResponse("gamemodes:cl_sv_updatescores",
+                "gamemodes:sv_cl_gotscores", s_redScore, s_blueScore);
         }
 
         /// <summary>
@@ -109,6 +110,9 @@ namespace GamemodesServer.Core
         {
             s_redScore = 0;
             s_blueScore = 0;
+
+            _ = PlayerResponseAwaiter.AwaitResponse("gamemodes:cl_sv_updatescores",
+                "gamemodes:sv_cl_gotscores", s_redScore, s_blueScore);
         }
     }
 }

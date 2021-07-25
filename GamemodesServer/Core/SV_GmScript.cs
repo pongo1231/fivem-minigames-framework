@@ -1,5 +1,6 @@
 ﻿using CitizenFX.Core;
 using GamemodesServer.Utils;
+using GamemodesShared.Utils;
 using System;
 using System.Linq;
 using System.Reflection;
@@ -38,7 +39,7 @@ namespace GamemodesServer.Core
         /// <summary>
         /// New player event
         /// </summary>
-        public static NewPlayerHandler NewPlayer;
+        public static NewPlayerHandler NewPlayer = null;
 
         /// <summary>
         /// Delegate for player dropped event
@@ -50,56 +51,20 @@ namespace GamemodesServer.Core
         /// <summary>
         /// Player dropped event
         /// </summary>
-        public static PlayerDroppedHandler PlayerDropped;
+        public static PlayerDroppedHandler PlayerDropped = null;
 
         /// <summary>
         /// Constructor
         /// </summary>
         public GmScript()
         {
-            // Store list of all functions of child (and all inherited) class(es) via reflection
-            var methods = GetType().GetMethods(BindingFlags.Public | BindingFlags.NonPublic
-                | BindingFlags.Static | BindingFlags.Instance);
+            /* Register methods with corresponding attributes */
 
-            // Iterate through those with new player attribute
-            foreach (var method in methods.Where(method => method
-                .GetCustomAttribute(typeof(NewPlayerAttribute)) != null))
-            {
-                Log.WriteLine(
-                    $"Registering NewPlayer handler {method.DeclaringType.Name}.{method.Name}");
+            ReflectionUtils.GetAllMethodsWithAttributeForClass(this,
+                typeof(NewPlayerAttribute), ref NewPlayer);
 
-                // Register delegate to new player event
-                if (method.IsStatic)
-                {
-                    NewPlayer += (NewPlayerHandler)Delegate
-                        .CreateDelegate(typeof(NewPlayerHandler), method);
-                }
-                else
-                {
-                    NewPlayer += (NewPlayerHandler)Delegate
-                        .CreateDelegate(typeof(NewPlayerHandler), this, method);
-                }
-            }
-
-            // Iterate through those with player dropped attribute
-            foreach (var method in methods.Where(method => method
-            .GetCustomAttribute(typeof(PlayerDroppedAttribute)) != null))
-            {
-                Log.WriteLine(
-                    $"Registering PlayerDropped handler {method.DeclaringType.Name}.{method.Name}");
-
-                // Register delegate to player dropped event
-                if (method.IsStatic)
-                {
-                    PlayerDropped += (PlayerDroppedHandler)Delegate
-                        .CreateDelegate(typeof(PlayerDroppedHandler), method);
-                }
-                else
-                {
-                    PlayerDropped += (PlayerDroppedHandler)Delegate
-                        .CreateDelegate(typeof(PlayerDroppedHandler), this, method);
-                }
-            }
+            ReflectionUtils.GetAllMethodsWithAttributeForClass(this,
+                typeof(PlayerDroppedHandler), ref PlayerDropped);
         }
     }
 }

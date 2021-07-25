@@ -23,6 +23,9 @@ namespace GamemodesClient.Core
 
             // Set weather
             API.SetWeatherTypeNowPersist(_weather);
+
+            // Respond to server
+            TriggerServerEvent("gamemodes:sv_cl_gottimeweather");
         }
     }
 }

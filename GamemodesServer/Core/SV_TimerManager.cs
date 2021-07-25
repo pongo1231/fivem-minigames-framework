@@ -36,19 +36,28 @@ namespace GamemodesServer.Core
         }
 
         /// <summary>
+        /// New player function
+        /// </summary>
+        [NewPlayer]
+        private void OnNewPlayer(Player _player)
+        {
+            _ = PlayerResponseAwaiter.AwaitResponse(_player, "gamemodes:cl_sv_updatetimer",
+                "gamemodes:sv_cl_gottimer", s_secondsLeft);
+        }
+
+        /// <summary>
         /// Tick function
         /// </summary>
         [Tick]
         private async Task OnTick()
         {
             // Decrement timer as long as ît's above 0
-            if (s_secondsLeft > 0)
+            if (!HasRunOut)
             {
                 s_secondsLeft--;
-            }
 
-            // Broadcast new timer to all clients
-            TriggerClientEvent("gamemodes:cl_sv_updatetimer", s_secondsLeft);
+                SendClientEvent();
+            }
 
             await Delay(1000);
         }
@@ -60,6 +69,8 @@ namespace GamemodesServer.Core
         public static void SetTimer(int _seconds)
         {
             s_secondsLeft = _seconds;
+
+            SendClientEvent();
         }
 
         /// <summary>
@@ -68,6 +79,8 @@ namespace GamemodesServer.Core
         public static void SetOvertime()
         {
             s_secondsLeft = -1;
+
+            SendClientEvent();
         }
 
         /// <summary>
@@ -76,6 +89,17 @@ namespace GamemodesServer.Core
         public static void StopTimer()
         {
             s_secondsLeft = 0;
+
+            SendClientEvent();
+        }
+
+        /// <summary>
+        /// Sends the client event
+        /// </summary>
+        private static void SendClientEvent()
+        {
+            _ = PlayerResponseAwaiter.AwaitResponse("gamemodes:cl_sv_updatetimer",
+                    "gamemodes:sv_cl_gottimer", s_secondsLeft);
         }
     }
 }
