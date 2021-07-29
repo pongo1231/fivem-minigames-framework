@@ -20,7 +20,12 @@ namespace GamemodesServer.Gamemodes.Scooterball
         /// <summary>
         /// Ball entity
         /// </summary>
-        private Prop m_ball;
+        private Prop m_ball = null;
+
+        /// <summary>
+        /// Previous position of ball for anti tamper detection
+        /// </summary>
+        private Vector3 m_prevBallPos = Vector3.Zero;
 
         /// <summary>
         /// Constructor
@@ -169,6 +174,24 @@ namespace GamemodesServer.Gamemodes.Scooterball
         }
 
         /// <summary>
+        /// Tick function for blocking ball position tampering
+        /// </summary>
+        [GamemodeTick]
+        private async Task OnTickAntiBallTamper()
+        {
+            // Check if ball position has been tampered with by comparing to previous coords
+            if (Vector3.Distance(m_ball.Position, m_prevBallPos) > 5f)
+            {
+                await ResetBall();
+            }
+
+            // Set previous coords to current coords
+            m_prevBallPos = m_ball.Position;
+
+            await Delay(50);
+        }
+
+        /// <summary>
         /// Score a goal for a team
         /// </summary>
         /// <param name="_teamType">Team</param>
@@ -210,14 +233,17 @@ namespace GamemodesServer.Gamemodes.Scooterball
             // Set position to ball spawn position
             m_ball.Position = CurrentMap.BallSpawnPos;
 
+            // Reset stored previous position
+            m_prevBallPos = m_ball.Position;
+
             // Wait a bit
-            await Delay(1000);
+            //await Delay(1000);
 
             // Broadcast ball as resetted to all clients
-            TriggerClientEvent("gamemodes:sv_cl_scooterball_resetball");
+            //TriggerClientEvent("gamemodes:sv_cl_scooterball_resetball");
 
             // Wait a bit
-            await Delay(1000);
+            //await Delay(1000);
 
             // Give the ball movement
             m_ball.Velocity = new Vector3(0f, 0f, -5f);

@@ -113,6 +113,9 @@ namespace GamemodesClient.Core
                     // Flag as respawned this frame
                     RespawnedThisFrame = true;
                 }
+
+                // Never let it explode from another explosion
+                CurrentScooter.Entity.IsExplosionProof = true;
             }
 
             await Task.FromResult(0);

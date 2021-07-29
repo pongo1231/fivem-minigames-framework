@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\Guards\SV_MiscGuards.cs" />
     <Compile Include="Core\SV_PlayerScooterManager.cs" />
     <Compile Include="Core\SV_PlayerTeamExtensions.cs" />
     <Compile Include="Core\SV_ScoreManager.cs" />
@@ -71,7 +72,6 @@
     <Compile Include="Core\Map\SV_GamemodeMap.cs" />
     <Compile Include="Core\SV_EntityPool.cs" />
     <Compile Include="Core\Guards\SV_EntityGuard.cs" />
-    <Compile Include="Core\Guards\SV_ExplosionsGuard.cs" />
     <Compile Include="Core\SV_PlayerEnrollManager.cs" />
     <Compile Include="Core\SV_PlayerResponseAwaiter.cs" />
     <Compile Include="Core\SV_Main.cs" />
