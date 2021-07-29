@@ -1,4 +1,5 @@
-﻿using CitizenFX.Core;
+﻿#if DEBUG
+using CitizenFX.Core;
 using CitizenFX.Core.Native;
 using CitizenFX.Core.UI;
 using GamemodesClient.Core;
@@ -81,3 +82,4 @@ namespace GamemodesClientPrivate.Core.MapEditor
         }
     }
 }
+#endif
