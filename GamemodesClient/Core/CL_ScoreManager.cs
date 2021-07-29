@@ -43,8 +43,8 @@ namespace GamemodesClient.Core
         [Tick]
         private async Task OnTick()
         {
-            // Draw scores text if enabled
-            if (DrawScores)
+            // Draw scores text if enabled (and not in demo mode)
+            if (DrawScores && !DemoMode.IsInDemoMode)
             {
                 m_goalsText.Draw();
             }

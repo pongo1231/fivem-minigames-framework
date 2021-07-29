@@ -1,5 +1,6 @@
 ﻿using CitizenFX.Core;
 using CitizenFX.Core.UI;
+using GamemodesClient.Core;
 using System.Threading.Tasks;
 
 namespace GamemodesClient.Utils
@@ -61,7 +62,11 @@ namespace GamemodesClient.Utils
         /// <param name="_text">Text of subtitle</param>
         public static void ShowSubtitle(string _text)
         {
-            Screen.ShowSubtitle(_text, 500);
+            // Don't do so if in demo mode
+            if (!DemoMode.IsInDemoMode)
+            {
+                Screen.ShowSubtitle(_text, 500);
+            }
         }
     }
 }

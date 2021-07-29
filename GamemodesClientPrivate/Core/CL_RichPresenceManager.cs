@@ -26,9 +26,9 @@ namespace GamemodesClientPrivate.Core
             API.SetDiscordRichPresenceAssetSmall("rank-100");
             API.SetDiscordRichPresenceAssetSmallText("Rank 100");
 
-            API.SetRichPresence("Knockdown");
+            API.SetRichPresence("Bandito Ball");
 
-            API.SetDiscordRichPresenceAction(0, "Learn More", "https://gopong.dev/gamemodes.html");
+            API.SetDiscordRichPresenceAction(0, "Learn More", "https://gopong.dev/gamemodes");
 
             await Delay(10000);
         }

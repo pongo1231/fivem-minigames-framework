@@ -47,8 +47,11 @@ namespace GamemodesClient.Core
             // Disable handbrakes
             Game.DisableControlThisFrame(1, Control.VehicleHandbrake);
 
-            // Disable cinematic camera
-            Game.DisableControlThisFrame(1, Control.VehicleCinCam);
+            // Disable cinematic camera (if not in demo mode)
+            if (!DemoMode.IsInDemoMode)
+            {
+                Game.DisableControlThisFrame(1, Control.VehicleCinCam);
+            }
 
             await Task.FromResult(0);
         }

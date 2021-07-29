@@ -74,8 +74,11 @@ namespace GamemodesClient.Core
         [Tick]
         private async Task OnTick()
         {
-            // Draw timer text
-            m_text.Draw();
+            // Draw timer text (if not in demo mode)
+            if (!DemoMode.IsInDemoMode)
+            {
+                m_text.Draw();
+            }
 
             await Task.FromResult(0);
         }

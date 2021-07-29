@@ -263,8 +263,8 @@ namespace GamemodesClient.Core.Gamemode
         /// </summary>
         private async Task OnTickHelpText()
         {
-            // Draw help text if available and not in prestart cam
-            if (!IsGamemodePreStartRunning && m_helpText != null)
+            // Draw help text if available and not in prestart cam (and not in demo mode)
+            if (!IsGamemodePreStartRunning && m_helpText != null && !DemoMode.IsInDemoMode)
             {
                 Screen.DisplayHelpTextThisFrame(m_helpText);
             }
