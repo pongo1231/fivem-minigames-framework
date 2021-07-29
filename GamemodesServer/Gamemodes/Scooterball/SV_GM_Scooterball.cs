@@ -237,13 +237,13 @@ namespace GamemodesServer.Gamemodes.Scooterball
             m_prevBallPos = m_ball.Position;
 
             // Wait a bit
-            //await Delay(1000);
+            await Delay(1000);
 
             // Broadcast ball as resetted to all clients
-            //TriggerClientEvent("gamemodes:sv_cl_scooterball_resetball");
+            TriggerClientEvent("gamemodes:sv_cl_scooterball_resetball");
 
             // Wait a bit
-            //await Delay(1000);
+            await Delay(1000);
 
             // Give the ball movement
             m_ball.Velocity = new Vector3(0f, 0f, -5f);

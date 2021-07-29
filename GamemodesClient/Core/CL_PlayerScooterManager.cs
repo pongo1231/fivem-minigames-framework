@@ -114,6 +114,12 @@ namespace GamemodesClient.Core
                     RespawnedThisFrame = true;
                 }
 
+                // Make sure the scooter doesn't explode through tampering
+                if (CurrentScooter.Entity.IsDead)
+                {
+                    CurrentScooter.Entity.Repair();
+                }
+
                 // Never let it explode from another explosion
                 CurrentScooter.Entity.IsExplosionProof = true;
             }
