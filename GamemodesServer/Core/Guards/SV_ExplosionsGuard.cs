@@ -11,10 +11,8 @@ namespace GamemodesServer.Core.Guards
         /// <summary>
         /// Explosion event
         /// </summary>
-        /// <param name="_player">Player who caused the explosion</param>
-        /// <param name="data">JSON data of explosion</param>
         [EventHandler("explosionEvent")]
-        private void OnExplosionEvent([FromSource] Player _player, string data)
+        private void OnExplosionEvent([FromSource] Player _player, string _data)
         {
             // Cancel it, we don't need any networked explosions
             API.CancelEvent();

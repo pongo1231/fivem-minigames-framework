@@ -16,7 +16,6 @@ namespace GamemodesServer.Core.Guards
         /// <summary>
         /// Entity creating event
         /// </summary>
-        /// <param name="_handle">Handle of entity</param>
         [EventHandler("entityCreating")]
         private void OnEntityCreating(int _handle)
         {
