@@ -61,8 +61,8 @@ namespace GamemodesServer.Core
             {
                 var curTimeStamp = API.GetGameTimer();
 
-                // Check if it's been 5 seconds already
-                if (lastTimeStamp < curTimeStamp - 5000)
+                // Check if it's been 10 seconds already
+                if (lastTimeStamp < curTimeStamp - 10000)
                 {
                     // Check whether client is still in the game
                     if (!PlayerEnrollStateManager.GetLoadedInPlayers().Contains(_player))
