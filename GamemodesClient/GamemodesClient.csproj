@@ -36,7 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CitizenFX.Core.Client, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CitizenFX.Core.Client.1.0.4209\lib\net45\CitizenFX.Core.Client.dll</HintPath>
+      <HintPath>..\packages\CitizenFX.Core.Client.1.0.5356\lib\net45\CitizenFX.Core.Client.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="Core\CL_AmbientManager.cs" />
     <Compile Include="Core\CL_BoostManager.cs" />
+    <Compile Include="Core\CL_DemoMode.cs" />
     <Compile Include="Core\CL_EntityPool.cs" />
     <Compile Include="Core\CL_GmScript.cs" />
     <Compile Include="Core\CL_Main.cs" />

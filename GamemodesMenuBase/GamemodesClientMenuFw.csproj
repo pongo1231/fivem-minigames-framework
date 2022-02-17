@@ -32,7 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CitizenFX.Core.Client, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CitizenFX.Core.Client.1.0.4209\lib\net45\CitizenFX.Core.Client.dll</HintPath>
+      <HintPath>..\packages\CitizenFX.Core.Client.1.0.5356\lib\net45\CitizenFX.Core.Client.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -60,14 +60,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\GamemodesShared\GamemodesShared.csproj">
       <Project>{3f7964c1-f081-406a-8869-f0b5648840a6}</Project>
       <Name>GamemodesShared</Name>
       <Private>False</Private>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
