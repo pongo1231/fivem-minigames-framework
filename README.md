@@ -1,6 +1,6 @@
 # GOSP - The Gamemodes Open Source Project
 
-An attempt for an open source framework to easily build extensive mini-games for FiveM with. Leave it up to the framework to handle lobbying, player management, spectating and the like!
+An attempt to create an open source framework to easily build extensive mini-games for FiveM with. Leave it up to the framework to handle lobbying, player management, spectating and the like!
 
 This was meant to be open-sourced once completed, however it's unlikely this will ever see completion. Feel free to use this for your own projects!
 
